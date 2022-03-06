@@ -54,7 +54,7 @@ if [[ using_cached_swift == true ]]; then
 else
   echo "Downloading Swift $version"
   
-  if [[ is_dev == true ]]; then
+  if [[ is_dev ]]; then
     branch="development"
     release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
   else
