@@ -1,7 +1,6 @@
 # Download Swift
 
-if [[ ! -d /opt/swift ]]
-then
+if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
 fi
 
@@ -10,10 +9,10 @@ reinstalling_swift=false
 is_dev=false
 swift_version="-1"
 
-if [[ $# == 2 && "$1" == "-dev" ]]
+if [[ $# == 2 && "$1" == "-dev" ]]; then
   is_dev = true
   swift_version = "dev $2"
-elif [[ $# == 1 ]]
+elif [[ $# == 1 ]]; then
   swift_version = "$1"
 else
   echo "Usage: bash install_swift.sh [-dev] VERSION"
