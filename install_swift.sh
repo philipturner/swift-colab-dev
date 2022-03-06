@@ -44,9 +44,11 @@ fi
 
 # Download Swift toolchain
 
-# instead, say "using cached download: ---" whenever possible
-echo "Downloading Swift $version"
-echo $using_cached_swift
+if [[ using_cached_swift == true ]]; then
+  echo "Using previously downloaded Swift $version"
+else
+  echo "Downloading Swift $version"
+fi
 
 # write to swift-version.txt immediately AFTER finish downloading
 
