@@ -65,8 +65,10 @@ else
   tar_file="$release-ubuntu18.04.tar.gz"
   url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
   
-#   curl url | tar -xz
-#   mv tar_file "toolchain"
+  curl url | tar -xz
+  mv tar_file "toolchain"
+  
+  echo version > "swift-version.txt"
 fi
 
 # write to swift-version.txt immediately AFTER finish downloading
