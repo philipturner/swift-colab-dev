@@ -1,3 +1,4 @@
+#/bin/bash
 # Download Swift
 
 if [[ ! -d /opt/swift ]]; then
@@ -9,13 +10,13 @@ reinstalling_swift=false
 is_dev=false
 swift_version="-1"
 
-if [[ $# == 2 && "$1" == "-dev" ]]; then
+if [[ $# == 2 && "$1" == "--snapshot" ]]; then
   is_dev=true
   swift_version="dev ($2)"
 elif [[ $# == 1 && "$1" != "--help" ]]; then
   swift_version="$1"
 else
-  echo "Usage: bash install_swift.sh [<version>] | [-dev <YYYY-MM-DD>]"
+  echo "Usage: bash install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
 fi
 
 if [[ $is_dev == false ]]; then
