@@ -38,7 +38,7 @@ else
 fi
 
 if [[ using_cached_swift == false && -e toolchain ]]; then
-  echo "There should not be an existing 'toolchain' folder unless using cached Swift."
+  echo "There should be no 'toolchain' folder unless using cached Swift."
   exit -1
 fi
 
