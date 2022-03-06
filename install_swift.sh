@@ -9,18 +9,25 @@ cd /opt/swift
 
 if [[ $# == 2 && $1 == "--snapshot" ]]; then
   is_dev=true
-  swift_version=$2
+  version=$2
 elif [[ $# == 1 && $1 != "--help" ]]; then
   is_dev=false
-  swift_version=$1
+  version=$1
 else
   echo "Usage: bash install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
   exit -1
 fi
 
-echo "Downloading Swift $swift_version"
-
-# if [[ -e "swift-version.txt" && ]]; then
+if [[ -e "swift-version.txt" ]]; then
+  old_version = `cat "swift-version.txt"`
   
+  if [[ version != old_version ]]; then
+#     mv -r toolchain "toolchain-$version"
+  fi
+fi
+
+# instead, say "using cached download: ---" whenever possible
+echo "Downloading Swift $version"
+# write to swift-version.txt immediately AFTER finish downloading
 
 reinstalling_swift=false
