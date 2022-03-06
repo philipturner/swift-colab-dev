@@ -67,7 +67,7 @@ else
   
   echo $url
   curl $url | tar -xz
-  mv $tar_file "toolchain"
+  mv "$release-ubuntu18.04" "toolchain"
   
   echo $version > "swift-version.txt"
 fi
