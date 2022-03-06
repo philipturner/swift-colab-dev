@@ -1,11 +1,12 @@
 #/bin/bash
-# Download Swift
 
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
 fi
 
 cd /opt/swift
+
+# Extract program arguments
 
 if [[ $# == 2 && $1 == "--snapshot" ]]; then
   is_dev=true
@@ -17,6 +18,8 @@ else
   echo "Usage: bash install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
   exit -1
 fi
+
+# Determine whether to reuse cached files
 
 using_cached_swift=true
 
@@ -33,6 +36,8 @@ if [[ using_cached_swift == false && -e toolchain ]]; then
   echo "There should not be an existing 'toolchain' folder unless using cached Swift."
   exit -1
 fi
+
+# Download Swift toolchain
 
 # instead, say "using cached download: ---" whenever possible
 echo "Downloading Swift $version"
