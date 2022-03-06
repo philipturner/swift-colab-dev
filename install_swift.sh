@@ -42,6 +42,11 @@ if [[ using_cached_swift == false && -e toolchain ]]; then
   exit -1
 fi
 
+if [[ using_cached_swift == true && ! -e toolchain ]]; then
+  echo "There should be a 'toolchain' folder when using cached Swift."
+  exit -1
+fi
+
 # Download Swift toolchain
 
 if [[ using_cached_swift == true ]]; then
@@ -58,6 +63,7 @@ else
   fi
   
   tar_file="$release-ubuntu18.04.tar.gz"
+  url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
 fi
 
 # write to swift-version.txt immediately AFTER finish downloading
