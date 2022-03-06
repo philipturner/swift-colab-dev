@@ -18,17 +18,22 @@ else
   exit -1
 fi
 
+using_cached_swift=true
+
 if [[ -e "swift-version.txt" ]]; then
   old_version = `cat "swift-version.txt"`
   
   if [[ version != old_version ]]; then
-     echo hi
-#     mv -r toolchain "toolchain-$version"
+    mv -r toolchain "toolchain-$old_version"
+    using_cached_swift=false
   fi
+fi
+
+if [[ using_cached_swift == false && -e toolchain ]]; then
+  echo "There should not be an existing 'toolchain' folder unless using cached Swift."
+  exit -1
 fi
 
 # instead, say "using cached download: ---" whenever possible
 echo "Downloading Swift $version"
 # write to swift-version.txt immediately AFTER finish downloading
-
-reinstalling_swift=false
