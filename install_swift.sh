@@ -41,4 +41,8 @@ fi
 
 # instead, say "using cached download: ---" whenever possible
 echo "Downloading Swift $version"
+
 # write to swift-version.txt immediately AFTER finish downloading
+
+
+# if not using cached Swift, delete build products of PythonKit
