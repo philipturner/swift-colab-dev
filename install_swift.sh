@@ -18,12 +18,6 @@ else
   exit -1
 fi
 
-if [[ $is_dev == false ]]; then
-  echo "hello world 1"
-else
-  echo "hello world 2"
-fi
-
 echo "Downloading Swift $swift_version"
 
 reinstalling_swift=false
