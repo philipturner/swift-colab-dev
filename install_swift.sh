@@ -31,6 +31,7 @@ if [[ -e "swift-version.txt" ]]; then
     using_cached_swift=true
   elif [[ -d "toolchain-$version" ]]; then
     echo control_path_2
+    mv "toolchain" "toolchain-$old_version"
     mv "toolchain-$version" "toolchain"
     using_cached_swift=true
   else
