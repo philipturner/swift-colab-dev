@@ -22,6 +22,7 @@ if [[ -e "swift-version.txt" ]]; then
   old_version = `cat "swift-version.txt"`
   
   if [[ version != old_version ]]; then
+     echo hi
 #     mv -r toolchain "toolchain-$version"
   fi
 fi
