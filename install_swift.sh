@@ -7,7 +7,7 @@ fi
 
 cd /opt/swift
 
-if [[ $# == 2 && "$1" == "--snapshot" ]]; then
+if [[ $# == 2 && $1 == "--snapshot" ]]; then
   is_dev=true
   swift_version=$2
 elif [[ $# == 1 && "$1" != "--help" ]]; then
@@ -19,5 +19,8 @@ else
 fi
 
 echo "Downloading Swift $swift_version"
+
+# if [[ -e "swift-version.txt" && ]]; then
+  
 
 reinstalling_swift=false
