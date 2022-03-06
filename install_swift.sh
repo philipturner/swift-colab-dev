@@ -27,10 +27,10 @@ if [[ -e "swift-version.txt" ]]; then
   if [[ $version == $old_version ]]; then
     using_cached_swift=true
   elif [[ -e "toolchain-$version" ]]; then
-    mv -r "toolchain-$version" "toolchain"
+    mv "toolchain-$version" "toolchain"
     using_cached_swift=true
   else
-    mv -r "toolchain" "toolchain-$old_version"
+    mv "toolchain" "toolchain-$old_version"
     using_cached_swift=false
   fi
 else
