@@ -23,13 +23,18 @@ fi
 
 if [[ -e "swift-version.txt" ]]; then
   old_version=`cat "swift-version.txt"`
+  echo $version
+  echo $old_version
   
   if [[ $version == $old_version ]]; then
+    echo control_path_1
     using_cached_swift=true
-  elif [[ -e "toolchain-$version" ]]; then
+  elif [[ -d "toolchain-$version" ]]; then
+    echo control_path_2
     mv "toolchain-$version" "toolchain"
     using_cached_swift=true
   else
+    echo control_path_3
     mv "toolchain" "toolchain-$old_version"
     using_cached_swift=false
   fi
