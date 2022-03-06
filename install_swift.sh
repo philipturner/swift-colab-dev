@@ -24,7 +24,7 @@ fi
 if [[ -e "swift-version.txt" ]]; then
   old_version=`cat "swift-version.txt"`
   
-  if [[ version == old_version ]]; then
+  if [[ $version == $old_version ]]; then
     using_cached_swift=true
   elif [[ -e "toolchain-$version" ]]; then
     mv -r "toolchain-$version" "toolchain"
@@ -37,13 +37,13 @@ else
   using_cached_swift=false
 fi
 
-if [[ ! using_cached_swift && -e "toolchain" ]]; then
+if [[ ! $using_cached_swift && -e "toolchain" ]]; then
   echo $using_cached_swift
   echo "There should be no 'toolchain' folder unless using cached Swift."
   exit -1
 fi
 
-if [[ using_cached_swift && ! -e "toolchain" ]]; then
+if [[ $using_cached_swift && ! -e "toolchain" ]]; then
   echo $using_cached_swift
   echo "There should be a 'toolchain' folder when using cached Swift."
   exit -1
@@ -51,12 +51,12 @@ fi
 
 # Download Swift toolchain
 
-if [[ using_cached_swift ]]; then
+if [[ $using_cached_swift ]]; then
   echo "Using previously downloaded Swift $version"
 else
   echo "Downloading Swift $version"
   
-  if [[ is_dev ]]; then
+  if [[ $is_dev ]]; then
     branch="development"
     release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
   else
