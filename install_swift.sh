@@ -27,10 +27,10 @@ if [[ -e "swift-version.txt" ]]; then
   if [[ version == old_version ]]; then
     using_cached_swift=true
   elif [[ -e "toolchain-$version" ]]; then
-    mv -r "toolchain-$version" toolchain
+    mv -r "toolchain-$version" "toolchain"
     using_cached_swift=true
   else
-    mv -r toolchain "toolchain-$old_version"
+    mv -r "toolchain" "toolchain-$old_version"
     using_cached_swift=false
   fi
 else
@@ -65,10 +65,10 @@ else
   tar_file="$release-ubuntu18.04.tar.gz"
   url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
   
-  curl url | tar -xz
-  mv tar_file "toolchain"
+  curl $url | tar -xz
+  mv $tar_file "toolchain"
   
-  echo version > "swift-version.txt"
+  echo $version > "swift-version.txt"
 fi
 
 # write to swift-version.txt immediately AFTER finish downloading
