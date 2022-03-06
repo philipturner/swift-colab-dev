@@ -48,6 +48,16 @@ if [[ using_cached_swift == true ]]; then
   echo "Using previously downloaded Swift $version"
 else
   echo "Downloading Swift $version"
+  
+  if [[ is_dev == true ]]; then
+    branch="development"
+    release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
+  else
+    branch="swift-$version-release"
+    release="swift-$version-RELEASE"
+  fi
+  
+  tar_file="$release-ubuntu18.04.tar.gz"
 fi
 
 # write to swift-version.txt immediately AFTER finish downloading
