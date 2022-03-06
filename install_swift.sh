@@ -38,13 +38,11 @@ else
 fi
 
 if [[ $using_cached_swift == false && -e "toolchain" ]]; then
-  echo $using_cached_swift
   echo "There should be no 'toolchain' folder unless using cached Swift."
   exit -1
 fi
 
 if [[ $using_cached_swift == true && ! -e "toolchain" ]]; then
-  echo $using_cached_swift
   echo "There should be a 'toolchain' folder when using cached Swift."
   exit -1
 fi
@@ -73,8 +71,6 @@ else
   
   echo $version > "swift-version.txt"
 fi
-
-# write to swift-version.txt immediately AFTER finish downloading
 
 # make another progress file for all the non-Swift dependencies:
 #
