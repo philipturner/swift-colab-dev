@@ -68,5 +68,10 @@ fi
 
 # write to swift-version.txt immediately AFTER finish downloading
 
+# make another progress file for all the non-Swift dependencies:
+#
+# patchelf
+# wurlitzer
+# PythonKit - to avoid "already exists" errors in the output
 
 # if not using cached Swift, delete build products of PythonKit
