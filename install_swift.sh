@@ -8,4 +8,4 @@ fi
 cd /opt/swift
 should_reinstall="false"
 
-echo "$$"
+echo "$@"
