@@ -24,7 +24,6 @@ else
   echo "hello world 2"
 fi
 
-echo $swift_version
-echo $is_dev
+echo "Downloading Swift $swift_version"
 
 reinstalling_swift=false
