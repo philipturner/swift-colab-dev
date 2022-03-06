@@ -15,7 +15,7 @@ elif [[ $# == 1 && $1 != "--help" ]]; then
   is_dev=false
   version=$1
 else
-  echo "Usage: bash install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
+  echo "Usage: ./install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
   exit -1
 fi
 
