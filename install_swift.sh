@@ -22,7 +22,7 @@ fi
 # Determine whether to reuse cached files
 
 if [[ -e "swift-version.txt" ]]; then
-  old_version = `cat "swift-version.txt"`
+  old_version=`cat "swift-version.txt"`
   
   if [[ version == old_version ]]; then
     using_cached_swift=true
