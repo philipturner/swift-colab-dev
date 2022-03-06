@@ -37,19 +37,19 @@ else
   using_cached_swift=false
 fi
 
-if [[ using_cached_swift == false && -e "toolchain" ]]; then
+if [[ ! using_cached_swift && -e "toolchain" ]]; then
   echo "There should be no 'toolchain' folder unless using cached Swift."
   exit -1
 fi
 
-if [[ using_cached_swift == true && ! -e "toolchain" ]]; then
+if [[ using_cached_swift && ! -e "toolchain" ]]; then
   echo "There should be a 'toolchain' folder when using cached Swift."
   exit -1
 fi
 
 # Download Swift toolchain
 
-if [[ using_cached_swift == true ]]; then
+if [[ using_cached_swift ]]; then
   echo "Using previously downloaded Swift $version"
 else
   echo "Downloading Swift $version"
