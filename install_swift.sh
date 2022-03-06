@@ -10,7 +10,7 @@ cd /opt/swift
 if [[ $# == 2 && $1 == "--snapshot" ]]; then
   is_dev=true
   swift_version=$2
-elif [[ $# == 1 && "$1" != "--help" ]]; then
+elif [[ $# == 1 && $1 != "--help" ]]; then
   is_dev=false
   swift_version=$1
 else
