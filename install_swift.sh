@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [[ ! -d /opt/swift ]]; then
-  mkdir /opt/swift
+if [[ ! -d "/opt/swift" ]]; then
+  mkdir "/opt/swift"
 fi
 
-cd /opt/swift
+cd "/opt/swift"
 
 # Extract program arguments
 
@@ -37,12 +37,12 @@ else
   using_cached_swift=false
 fi
 
-if [[ using_cached_swift == false && -e toolchain ]]; then
+if [[ using_cached_swift == false && -e "toolchain" ]]; then
   echo "There should be no 'toolchain' folder unless using cached Swift."
   exit -1
 fi
 
-if [[ using_cached_swift == true && ! -e toolchain ]]; then
+if [[ using_cached_swift == true && ! -e "toolchain" ]]; then
   echo "There should be a 'toolchain' folder when using cached Swift."
   exit -1
 fi
@@ -64,6 +64,9 @@ else
   
   tar_file="$release-ubuntu18.04.tar.gz"
   url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
+  
+#   curl url | tar -xz
+#   mv tar_file "toolchain"
 fi
 
 # write to swift-version.txt immediately AFTER finish downloading
