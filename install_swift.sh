@@ -135,9 +135,14 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
 
   # ensure two-command link check isn't what's breaking this
   lldb_process_link=/opt/swift/lib/liblldb_process.so
-  if [[ ! -L $lldb_process_link ]]; then
-    ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
+#   if [[ ! -L $lldb_process_link ]]; then
+#     ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
+#   fi
+
+  if [[ -e $lldb_process_link ]]; then
+    rm $lldb_process_link
   fi
+  cp "$(pwd)/liblldb_process.so" $lldb_process_link
   
   cd ../
   cat "/opt/swift/lib/llblldb_process.so"
