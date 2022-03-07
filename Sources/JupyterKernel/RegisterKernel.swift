@@ -10,5 +10,6 @@ public func JupyterKernel_registerSwiftKernel() {
   from wurlitzer import sys_pipes
   
   with sys_pipes():
+    PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
 }
