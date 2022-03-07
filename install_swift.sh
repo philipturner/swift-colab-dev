@@ -128,8 +128,8 @@ then
   cd "packages/PythonKit"
   
   if [[ -d .build ]]; then
-    echo "Previously compiled with a different Swift version. \
-    Removing existing PythonKit build products."
+    echo "Previously compiled with a different Swift version. 
+Removing existing PythonKit build products."
     rm -r .build
   fi
   
@@ -142,7 +142,7 @@ then
   fi
 
   cd /opt/swift
-#   echo $version > "progress/pythonkit-compiler-version.txt"
+  echo $version > "progress/pythonkit-compiler-version.txt"
 else
   echo "Using cached PythonKit binary"
 fi
