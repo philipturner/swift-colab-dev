@@ -124,7 +124,7 @@ IN="bla@some.com john@home.com"
 # why is `tr` needed?
 mails=$(echo $IN)
 
-for addr in $IN
+for addr in $(ls /opt/swift/swift-colab)
 do
     echo "> [$addr]"
 done
