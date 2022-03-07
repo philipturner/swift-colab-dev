@@ -198,15 +198,17 @@ Removing existing JupyterKernel build products."
   for subpath in $(ls ./)
   do
     echo $subpath
-    if [[ -e subpath ]]; then
-      # Do I need whitespace from parentheses?
-      source_file_paths+=( $subpath )
-    else
-      source_file_paths+=( $subpath )
-    fi
+    source_file_paths+=( $subpath )
+#     if [[ -e subpath ]]; then
+#       # Do I need whitespace from parentheses?
+#       source_file_paths+=( $subpath )
+#     else
+#       source_file_paths+=( $subpath )
+#     fi
   done
   
   echo "$source_file_paths"
+  echo $(ls ./)
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
