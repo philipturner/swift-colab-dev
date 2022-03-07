@@ -210,9 +210,6 @@ Removing existing JupyterKernel build products."
   
   validate2=$'
 import Foundation
-
-// Load PythonKit
-_ = dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be \'nil\':", libJupyterKernel as Any)
 
@@ -222,13 +219,12 @@ func loadSymbol<T>(name: String) -> T {
   return unsafeBitCast(address, to: T.self)
 }
 
-// Load validation_test
 let validation_test: @convention(c) () -> Void =
   loadSymbol(name: "validation_test")
 validation_test()
 '
-  
   echo "$validate2" > validate2.swift
+  
   export LD_LIBRARY_PATH="/opt/swift/lib:$LD_LIBRARY_PATH"
   swift validate2.swift
   
@@ -257,7 +253,6 @@ let JupyterKernel_registerSwiftKernel = unsafeBitCast(
   funcAddress, to: (@convention(c) () -> Void).self)
 JupyterKernel_registerSwiftKernel()
 '
-
   echo "$register_kernel" > register_kernel.swift
   swift register_kernel.swift
 fi
