@@ -142,7 +142,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   cat "/opt/swift/lib/llblldb_process.so"
   echo ""
   echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
-  ln /opt/swift/lib
+  ls /opt/swift/lib
   
   swift validate.swift
   
