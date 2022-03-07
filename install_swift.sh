@@ -53,7 +53,7 @@ fi
 # Download Swift toolchain
 
 if [[ $using_cached_swift == true ]]; then
-  echo "Using previously downloaded Swift $version"
+  echo "Using cached Swift $version"
 else
   echo "Downloading Swift $version"
   
@@ -89,8 +89,6 @@ if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
   cd ../
   
   echo "true" > downloaded-secondary-deps.txt
-else
-  echo "Using previously downloaded secondary dependencies"
 fi
 
 # if not using cached Swift, search for and conditionally delete build products of PythonKit
