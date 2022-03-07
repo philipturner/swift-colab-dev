@@ -211,13 +211,13 @@ Removing existing JupyterKernel build products."
   
   ls /opt/swift/lib
   
-  validate_script=$'
+  validation_script=$'
 import Foundation
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be \'nil\':", libJupyterKernel as Any)'
   
-  echo "$validate_script" > validate_script.swift
-  swift validate_script.swift
+  echo "$validation_script" > validation_script.swift
+  swift validation_script.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
