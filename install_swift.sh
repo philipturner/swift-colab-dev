@@ -141,7 +141,7 @@ import Foundation
 print(2)" > test.swift
   swift test.swift
   echo $(cat validate.swift)
-  swift validate.swift
+  swift validate2.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
