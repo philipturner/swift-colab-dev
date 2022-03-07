@@ -161,11 +161,11 @@ Removing existing PythonKit build products."
   fi
   
   swift build -c release -Xswiftc -Onone
-  pythonkit_library_link="/opt/swift/lib/libPythonKit.so"
+  pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
   
   if [[ ! -L $pythonkit_library_link ]]; then
     echo "Adding symbolic link to PythonKit binary"
-    ln -s "$(pwd)/.build/release/libPythonKit.so" $pythonkit_library_link
+    ln -s "$(pwd)/.build/release/libPythonKit.a" $pythonkit_library_link
   fi
 
   cd /opt/swift
@@ -199,7 +199,7 @@ Removing existing JupyterKernel build products."
     "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
     -emit-module -emit-library -module-name "JupyterKernel"
   
-  pythonkit_lib="/opt/swift/lib/libPythonKit.so"
+  pythonkit_lib="/opt/swift/lib/libPythonKit.a"
 #   patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
@@ -246,8 +246,8 @@ import Foundation
 // Load PythonKit
 //print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
 
-let LD_LIBRARY_PATH = String(cString: getenv("LD_LIBRARY_PATH")) as String
-precondition(setenv("LD_LIBRARY_PATH", "/opt/swift/lib:\(LD_LIBRARY_PATH)", 1) == 0)
+//let LD_LIBRARY_PATH = String(cString: getenv("LD_LIBRARY_PATH")) as String
+//precondition(setenv("LD_LIBRARY_PATH", "/opt/swift/lib:\(LD_LIBRARY_PATH)", 1) == 0)
 
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print(libJupyterKernel)
