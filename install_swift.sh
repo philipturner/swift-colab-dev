@@ -114,7 +114,9 @@ fi
 # Build LLDB bindings
 
 clang_version=$(ls toolchain/usr/lib/clang)
+echo $clang_version
 lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
+echo $lldb_path
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
