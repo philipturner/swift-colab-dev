@@ -11,6 +11,7 @@ public func JupyterKernel_registerSwiftKernel() {
   let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
+  // try calling dlopen on PythonKit in this script to eliminate need for patchelf
   let pythonScript = """
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
