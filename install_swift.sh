@@ -127,7 +127,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
 #   clang++ -shared -o liblldb_process.so lldb_process.o
   
   # can I have lowercase fPIC?
-  clang++ -I../include -c ../lldb_process.cpp -fPIC
+  clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb #-fpic
   
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
