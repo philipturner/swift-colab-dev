@@ -121,13 +121,16 @@ echo $lldb_path
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
   
+  lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
+  
+  if [[ ! -L $lldb_process_library_link ]]; then
+    echo "Adding symbolic link to Swift LLDB bindings"
+#     ln -s "$(pwd)/.build/release/libPythonKit.so" $lldb_process_library_link
+  fi
   
 else
   echo "Using cached Swift LLDB bindings"
 fi
-#ln -s $lldb_path "path/to/liblldb.so"
-
-# echo "Using cached lldb_process binary"
 
 # Build PythonKit
 
