@@ -14,4 +14,6 @@ public func JupyterKernel_registerSwiftKernel() {
     with sys_pipes():
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
+  
+  // sys.argv = Bundle.main.executablePath
 }
