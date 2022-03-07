@@ -186,6 +186,8 @@ then
   if [[ -d packages/JupyterKernel ]]; then
     rm -r packages/JupyterKernel
   fi
+  
+  mv swift-colab/Sources/JupyterKernel packages/JupyterKernel
 else
   echo "Using cached JupyterKernel library"
 fi
