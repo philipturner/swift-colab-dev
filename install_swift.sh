@@ -134,6 +134,9 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
     ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
   fi
   
+  cd ../
+  swift validate.swift
+  
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
 #   echo "true" > "progress/compiled-lldb-bindings"
