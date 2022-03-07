@@ -226,9 +226,7 @@ let validation_test: @convention(c) () -> Void =
 validation_test()
 '
   echo "$validate2" > validate2.swift
-  
-#   export LD_LIBRARY_PATH="/opt/swift/lib:$LD_LIBRARY_PATH"
-#   swift validate2.swift
+  swift validate2.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
@@ -245,22 +243,10 @@ if [[ $replacing_python_kernel == true ]]; then
   register_kernel='
 import Foundation
 
-// Load PythonKit
-//print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
-
-//let LD_LIBRARY_PATH = String(cString: getenv("LD_LIBRARY_PATH")) as String
-//precondition(setenv("LD_LIBRARY_PATH", "/opt/swift/lib:\(LD_LIBRARY_PATH)", 1) == 0)
-
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
-print("checkpoint 1")
 print(libJupyterKernel)
-print("checkpoint 2")
-//print(String(cString: dlerror(), encoding: .utf8))
-print("checkpoint 3")
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
-print("checkpoint 4")
 
-// Extract registerSwiftKernel
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
   funcAddress, to: (@convention(c) () -> Void).self)
 JupyterKernel_registerSwiftKernel()
