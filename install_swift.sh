@@ -114,12 +114,11 @@ fi
 # Build LLDB bindings
 
 clang_version=$(ls toolchain/usr/lib/clang)
-echo $clang_version
 lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
-echo $lldb_path
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
+  cd swift-colab/Sources/lldb-process
   
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   
@@ -128,6 +127,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
 #     ln -s "$(pwd)/.build/release/libPythonKit.so" $lldb_process_library_link
   fi
   
+  cd /opt/swift
+#   echo "true" > "progress/compiled-lldb-bindings"
 else
   echo "Using cached Swift LLDB bindings"
 fi
