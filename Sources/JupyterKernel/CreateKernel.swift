@@ -1,4 +1,10 @@
 import Foundation
 import PythonKit
 
-print(Python.None)
+@_cdecl("testFunction")
+func testFunction() {
+  print("Should be '42':", meaningOfLife)
+  print("Should be 'None':", Python.None)
+}
+
+
