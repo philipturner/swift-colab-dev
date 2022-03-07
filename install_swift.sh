@@ -208,6 +208,14 @@ Removing existing JupyterKernel build products."
   patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
   ldd libJupyterKernel.so
   
+  jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
+  if [[ ! -L $jupyterkernel_lib ]]; then
+    echo "Adding symbolic link to PythonKit binary"
+    ln -s "$(pwd)/libJupyterKernel.so" $jupyterkernel_lib
+  fi
+  
+  ls /opt/swift/lib
+  
   # Put this into the link command, not a relative path.
 #     jupyterkernel_lib_dest="$(pwd)/libJupyterKernel.so"
   
