@@ -76,6 +76,8 @@ else
   echo $version > "progress/swift-version.txt"
 fi
 
+export PATH="/opt/swift/toolchain/usr/bin:$PATH"
+
 # Download secondary dependencies
 
 if [[ ! -e "progress/downloaded-secondary-deps.txt" ]]; then
@@ -94,7 +96,19 @@ else
   echo "Using cached secondary dependencies"
 fi
 
+if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
+  echo "Downloading Swift-Colab"
+  # TODO: clone swift-colab-dev here & rename once the repo is stable
+else
+  echo "Using cached Swift-Colab"
+fi
+
 # Build LLDB bindings
 
 # Build PythonKit
-# if previously compiled with a different Swift version, delete and re-compile PythonKit
+
+
+
+# if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
+
+
