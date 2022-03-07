@@ -126,7 +126,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
 #   clang++ -c ../lldb_process.cpp
 #   clang++ -shared -o liblldb_process.so lldb_process.o
   
-  clang++ -I../include -c ../lldb_process.cpp #-fpic
+  clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
   
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
