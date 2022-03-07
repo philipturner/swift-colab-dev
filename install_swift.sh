@@ -184,7 +184,7 @@ then
   echo "Compiling JupyterKernel"
   
   jupyterkernel_path="packages/JupyterKernel"
-  if [[ -d $jupyterkernel_path]]; then
+  if [[ -d $jupyterkernel_path ]]; then
     echo "\
 Previously compiled with a different Swift version. \
 Removing existing JupyterKernel build products."
