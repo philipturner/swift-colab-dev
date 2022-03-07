@@ -132,6 +132,13 @@ then
   if [[ ! -L $pythonkit_library_link ]]; then
     echo "Adding symbolic link to PythonKit binary"
     ln -s "$(pwd)/.build/libPythonKit.so" $pythonkit_library_link
+    
+    if [[ ! -L $pythonkit_library_link ]]; then
+      echo "Adding symbolic link to PythonKit binary"
+      ln -s "$(pwd)/.build/libPythonKit.so" $pythonkit_library_link
+    else
+      echo "This should never happen!"
+    fi
   else
     echo "This should never happen!"
   fi
