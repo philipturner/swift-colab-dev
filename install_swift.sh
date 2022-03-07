@@ -123,8 +123,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  clang++ -c ../lldb_process.cpp -fpic
-  clang++  -shared -o liblldb_process.so lldb_process.o -fpic
+  clang++ -c ../lldb_process.cpp
+  clang++ -shared -o liblldb_process.so lldb_process.o
   
 #   clang++ -I../include -c ../lldb_process.cpp -fpic
 #   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
@@ -140,6 +140,10 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   cd ../
   cat "/opt/swift/lib/llblldb_process.so"
+  echo ""
+  echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
+  ln /opt/swift/lib
+  
   swift validate.swift
   
   cd /opt/swift
