@@ -125,15 +125,14 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
   
-    
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
   lldb_link_target="$(readlink $lldb_link_path)"
   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
-  
-  echo $(objdump -p liblldb_process.so | grep 'NEEDED')
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
-  ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
+  if [[ ! -L $lldb_process_library_link ]]; then
+    ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
+  fi
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
