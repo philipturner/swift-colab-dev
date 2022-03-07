@@ -245,7 +245,8 @@ import Foundation
 
 // Load PythonKit
 print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
-let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
+let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
+print(libJupyterKernel)
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
 
 // Extract registerSwiftKernel
