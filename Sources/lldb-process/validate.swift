@@ -21,5 +21,5 @@ let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
 //   ModuleNotFoundError: No module named 'lldb'
 // This error only happens on dev toolchains, maybe because the headers are for LLDB 10? 
 // Regardless, the error seems to cause no harm.
-print(func1("success output222"))
+print(func1("success output"))
 print("hello world 2")
