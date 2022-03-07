@@ -184,6 +184,9 @@ then
   echo "Compiling JupyterKernel"
   
   if [[ -d packages/JupyterKernel ]]; then
+    echo "\
+Previously compiled with a different Swift version. \
+Removing existing JupyterKernel build products."
     rm -r packages/JupyterKernel
   fi
   cp -r swift-colab/Sources/JupyterKernel packages/JupyterKernel
