@@ -120,6 +120,12 @@ echo $lldb_path
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
+  
+  if [[ -e $lldb_path ]]; then
+    echo "exists"
+  else
+    echo "dne"
+  fi
 else
   echo "Using cached Swift LLDB bindings"
 fi
