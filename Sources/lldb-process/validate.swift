@@ -2,10 +2,10 @@ import Foundation
 
 print("hello world")
 
-print(FileManager.default.contents(atPath: "/opt/swift/lib/libPythonKit.so") as Any)
+// print(FileManager.default.contents(atPath: "/opt/swift/lib/libPythonKit.so") as Any)
 
-// let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
-// print(lldb_process)
+let lldb_process = dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)
+print(lldb_process)
 
 // func loadSymbol<T>(name: String) -> T {
 //   let address = dlsym(lldb_process, name)
