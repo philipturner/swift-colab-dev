@@ -253,8 +253,8 @@ import Foundation
 
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print(libJupyterKernel)
-print(String(cString: dlerror()))
-let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
+print(String(cString: dlerror(), encoding: .utf8))
+let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
 
 // Extract registerSwiftKernel
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
