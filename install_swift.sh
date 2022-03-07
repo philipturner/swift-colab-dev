@@ -162,13 +162,13 @@ Removing existing PythonKit build products."
   fi
   
   swift build -c release -Xswiftc -Onone
-  ls ./.build/release
-  pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
+#   ls ./.build/release
+#   pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
   
-  if [[ ! -L $pythonkit_library_link ]]; then
-    echo "Adding symbolic link to PythonKit binary"
-    ln -s "$(pwd)/.build/release/libPythonKit.a" $pythonkit_library_link
-  fi
+#   if [[ ! -L $pythonkit_library_link ]]; then
+#     echo "Adding symbolic link to PythonKit binary"
+#     ln -s "$(pwd)/.build/release/libPythonKit.a" $pythonkit_library_link
+#   fi
 
   cd /opt/swift
   echo $version > "progress/pythonkit-compiler-version"
@@ -200,9 +200,6 @@ Removing existing JupyterKernel build products."
   swiftc -Onone $source_files \
     "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
     -emit-module -emit-library -module-name "JupyterKernel"
-  
-  pythonkit_lib="/opt/swift/lib/libPythonKit.a"
-  ldd libJupyterKernel.so
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
