@@ -130,9 +130,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   lldb_link_target="$(readlink $lldb_link_path)"
   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
 
-  lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   if [[ ! -L $lldb_process_library_link ]]; then
-    ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
+    cp "$(pwd)/liblldb_process.so" "/opt/swift/lib/llblldb_process.so"
   fi
   
   cd ../
