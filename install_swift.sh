@@ -122,7 +122,7 @@ lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 
 IN="bla@some.com john@home.com"
 # why is `tr` needed?
-mails=$(echo $IN | tr ";" "\n")
+mails=$(echo $IN)
 
 for addr in $mails
 do
