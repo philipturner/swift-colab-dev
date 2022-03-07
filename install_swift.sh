@@ -2,6 +2,7 @@
 
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
+  mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
 fi
@@ -121,9 +122,17 @@ lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 # TODO: if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
 
 if [[ ! -e "progress/pythonkit-compiler-version.txt" || 
-  $version != `cat "progress/pythonkit-compiler-version.txt"` ]]; then
+  $version != `cat "progress/pythonkit-compiler-version.txt"` ]]
+then
   echo "Compiling PythonKit"
+  cd "packages/PythonKit"
   
+  if [[ -d .build ]]; then
+    echo "Removing existing PythonKit build products"
+    rm -r .build
+  fi
+  
+  cd /opt/swift
 #   echo $version > "progress/pythonkit-compiler-version.txt"
 else
   echo "Using cached PythonKit binary"
