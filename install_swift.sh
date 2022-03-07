@@ -205,8 +205,6 @@ Removing existing JupyterKernel build products."
     ln -s "$(pwd)/libJupyterKernel.so" $jupyterkernel_lib
   fi
   
-  ls /opt/swift/lib
-  
   validation_script=$'
 import Foundation
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
