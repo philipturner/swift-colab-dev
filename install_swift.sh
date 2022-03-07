@@ -130,7 +130,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   ln -s $lldb_full_path $lldb_link_path
   
   clang++ -I../include -c ../lldb_process.cpp
-  clang++ "-L$lldb_link_path" -shared -o lldb_process.so lldb_process.o -lLLDB
+  clang++ -L/opt/swift/lib/libLLDB.so -shared -o lldb_process.so lldb_process.o -lLLDB
   otool -o liblldb_process.so
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
