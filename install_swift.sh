@@ -147,7 +147,7 @@ else
 fi
 
 echo "aaaa bbbb cccc\
-dddd"
+  dddd"
 
 
 # Build JupyterKernel
