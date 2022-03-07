@@ -132,7 +132,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o lldb_process.so lldb_process.o -llldb
-  otool -o liblldb_process.so
+#   otool -o liblldb_process.so
+  echo $(objdump -p liblldb_process.so | grep 'NEEDED')
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
