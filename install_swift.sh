@@ -135,7 +135,9 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   
   cd ../
-  swift validate.swift
+  echo $PATH
+  echo "" > test.swift
+  swift test.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
