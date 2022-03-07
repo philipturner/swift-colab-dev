@@ -123,28 +123,23 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  clang++ -c ../lldb_process.cpp
-  clang++ -shared -o liblldb_process.so lldb_process.o
+#   clang++ -c ../lldb_process.cpp
+#   clang++ -shared -o liblldb_process.so lldb_process.o
   
-#   clang++ -I../include -c ../lldb_process.cpp -fpic
-#   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
+  clang++ -I../include -c ../lldb_process.cpp -fpic
+  # can't I use /opt/swift/lib as search path?
+  clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
   
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
   lldb_link_target="$(readlink $lldb_link_path)"
 #   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
 
-  if [[ -e "/opt/swift/lib/llblldb_process.so" ]]; then
-    rm "/opt/swift/lib/llblldb_process.so"
+  lldb_process_link="/opt/swift/lib/llblldb_process.so"
+  if [[ ! -L $lldb_process_link ]]; then
+    ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
   fi
-#   cp ./liblldb_process.so /opt/swift/lib/liblldb_process.so
-  ln -s "$(pwd)/liblldb_process.so" /opt/swift/lib/liblldb_process.so
   
   cd ../
-  cat "/opt/swift/lib/llblldb_process.so"
-  echo ""
-  echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
-  ls /opt/swift/lib
-  
   swift validate.swift
   
   cd /opt/swift
