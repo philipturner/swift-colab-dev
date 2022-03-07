@@ -125,8 +125,12 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
+  # after debugging - can I change to lowercase lldb or another word entirely?
+  lldb_link_path="/opt/swift/lib/libLLDB.so"
+  ln -s $lldb_full_path $lldb_link_path
+  
   clang++ -I../include -c ../lldb_process.cpp
-  clang++ "-L/$lldb_full_path" -shared -o lldb_process.so lldb_process.o -lLLDB
+  clang++ "-L$lldb_link_path" -shared -o lldb_process.so lldb_process.o -lLLDB
   otool -o liblldb_process.so
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
