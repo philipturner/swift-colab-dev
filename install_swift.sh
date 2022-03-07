@@ -2,6 +2,7 @@
 
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
+  mkdir /opt/swift/include
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
@@ -132,6 +133,16 @@ then
     rm -r .build
   fi
   
+  swift build -c release -Xswiftc -Onone
+  pythonkit_library_link="/opt/swift/lib/libPythonKit.so"
+  
+  if [[ ! -e $pythonkit_library_link ]]; then
+    echo "Adding symbolic link to PythonKit binary"
+    ln -s "$(pwd)/.build/libPythonKit.so" $pythonkit_library_link
+  else
+    echo "This should never happen!"
+  fi
+
   cd /opt/swift
 #   echo $version > "progress/pythonkit-compiler-version.txt"
 else
