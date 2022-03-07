@@ -173,11 +173,6 @@ fi
 
 # Build JupyterKernel
 
-# for addr in $(ls /opt/swift/swift-colab)
-# do
-#     echo "> [$addr]"
-# done
-
 if [[ ! -e "progress/jupyterkernel-compiler-version" ||
   $version != `cat "progress/jupyterkernel-compiler-version"` ]]
 then
@@ -216,8 +211,13 @@ Removing existing JupyterKernel build products."
   
   ls /opt/swift/lib
   
-  # Put this into the link command, not a relative path.
-#     jupyterkernel_lib_dest="$(pwd)/libJupyterKernel.so"
+  validate_script="\
+import Foundation
+let libJupyterKernel = dlopen($jupyterkernel_lib, RTLD_LAZY | RTLD_GLOBAL)
+print(\"Should not be 'nil':\", libJupyterKernel as Any)"
+  
+  echo $validate_script > validate_script.swift
+  swift validate_script.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
