@@ -20,6 +20,7 @@ func loadSymbol<T>(name: String) -> T {
 
 let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 =
   loadSymbol(name: "validation_test")
+print("\(fileName): Debug checkpoint 3")
 
 // For an unknown reason, it prints an error saying:
 //   ModuleNotFoundError: No module named 'lldb'
@@ -27,7 +28,7 @@ let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 =
 // Regardless, the error seems to cause no harm.
 print("Should see 'success output' logged. Ignore any 'ModuleNotFoundError'.")
 print(validation_test("success output"))
-print("\(fileName): Debug checkpoint 3")
+print("\(fileName): Debug checkpoint 4")
 
 print()
 print("=== end '\(fileName)' ===")
