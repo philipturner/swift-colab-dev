@@ -6,7 +6,7 @@ public func JupyterKernel_registerSwiftKernel() {
   print("=== Registering Swift Jupyter kernel ===")
   
   let pythonScript = """
-  from ctypes import *
+  from ctypes import PyDLL
   from wurlitzer import sys_pipes
   
   with sys_pipes():
