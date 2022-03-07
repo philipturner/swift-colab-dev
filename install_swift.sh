@@ -160,7 +160,7 @@ Removing existing PythonKit build products."
     rm -r .build
   fi
   
-  swift build -c release -Xswiftc -Onone
+  swift build -c release -Xswiftc -Onone -Xswiftc -static
   pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
   
   if [[ ! -L $pythonkit_library_link ]]; then
