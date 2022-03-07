@@ -4,7 +4,7 @@ print("hello world")
 
 // print(FileManager.default.contents(atPath: "/opt/swift/lib/libPythonKit.so") as Any)
 
-let lldb_process = dlopen("/opt/swift/toolchain/usr/lib/lidlldb.so", RTLD_LAZY | RTLD_GLOBAL)
+let lldb_process = dlopen("/opt/swift/toolchain/usr/lib/lidlldb.so.13.0.0git", RTLD_LAZY | RTLD_GLOBAL)
 // let lldb_process = dlopen("/opt/swift/packages/PythonKit/.build/release/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)
 // print(String(cString: dlerror()))
 print(lldb_process)
