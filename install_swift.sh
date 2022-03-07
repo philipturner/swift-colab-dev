@@ -123,26 +123,14 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-#   clang++ -c ../lldb_process.cpp
-#   clang++ -shared -o liblldb_process.so lldb_process.o
-  
-  # can I have lowercase fPIC?
   clang++ -I../include -c ../lldb_process.cpp -fpic
-  clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb #-fpic
+  clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so \
+    lldb_process.o -llldb
   
-  lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
-  lldb_link_target="$(readlink $lldb_link_path)"
-
-  # ensure two-command link check isn't what's breaking this
   lldb_process_link=/opt/swift/lib/liblldb_process.so
   if [[ ! -L $lldb_process_link ]]; then
     ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
   fi
-
-#   if [[ -e $lldb_process_link ]]; then
-#     rm $lldb_process_link
-#   fi
-#   cp "$(pwd)/liblldb_process.so" $lldb_process_link
   
   cd ../
   cat "/opt/swift/lib/llblldb_process.so"
@@ -150,7 +138,6 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
   ls /opt/swift/lib
   
-  # does this also work on the dev toolchain?
   swift validate.swift
   
   cd /opt/swift
@@ -169,8 +156,7 @@ then
   cd "packages/PythonKit"
   
   if [[ -d .build ]]; then
-    echo "Previously compiled with a different Swift version. 
-Removing existing PythonKit build products."
+    echo "Previously compiled with a different Swift version. Removing existing PythonKit build products."
     rm -r .build
   fi
   
