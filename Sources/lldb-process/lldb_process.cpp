@@ -1,11 +1,11 @@
 #include <stdio.h>
-// #include <LLDB/LLDB.h>
+#include <LLDB/LLDB.h>
 
 extern "C" {
 
 int func1(char *input)
 {
-//   lldb::SBDebugger::Initialize();
+  lldb::SBDebugger::Initialize();
 //   auto debugger = lldb::SBDebugger::Create();
   
 //   auto expr_opts = lldb::SBExpressionOptions();
