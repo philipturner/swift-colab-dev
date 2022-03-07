@@ -136,7 +136,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   if [[ -e "/opt/swift/lib/llblldb_process.so" ]]; then
     rm "/opt/swift/lib/llblldb_process.so"
   fi
-  cp ./liblldb_process.so /opt/swift/lib/llblldb_process.so
+  cp ./liblldb_process.so /opt/swift/lib/liblldb_process.so
   
   cd ../
   cat "/opt/swift/lib/llblldb_process.so"
