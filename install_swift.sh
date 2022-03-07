@@ -138,7 +138,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   cd ../
   # Uncomment to debug Swift-Colab
-  swift validate.swift
+#   swift validate.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
@@ -150,7 +150,7 @@ fi
 # Build PythonKit
 
 if [[ ! -e "progress/pythonkit-compiler-version" || 
-  $version != `cat "progress/pythonkit-compiler-version"` || true == true ]]
+  $version != `cat "progress/pythonkit-compiler-version"` ]]
 then
   echo "Compiling PythonKit"
   cd "packages/PythonKit"
@@ -217,8 +217,8 @@ let validation_test: @convention(c) () -> Void =
 validation_test()
 '
   # Uncomment to debug Swift-Colab
-  echo "$validate2" > validate2.swift
-  swift validate2.swift
+#   echo "$validate2" > validate2.swift
+#   swift validate2.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
