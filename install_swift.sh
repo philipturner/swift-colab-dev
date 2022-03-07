@@ -255,7 +255,7 @@ let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | 
 print("checkpoint 1")
 print(libJupyterKernel)
 print("checkpoint 2")
-print(String(cString: dlerror(), encoding: .utf8))
+//print(String(cString: dlerror(), encoding: .utf8))
 print("checkpoint 3")
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
 print("checkpoint 4")
