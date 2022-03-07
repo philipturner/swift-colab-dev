@@ -87,7 +87,7 @@ if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
 
   # TODO: remove wurlitzer dependency once Swift-Colab 2.0 is stable
   # to reduce load times
-  apt install patchelf
+  apt install patchelf # this takes 10 seconds to download. Try a workaround for it too.
   pip install wurlitzer
   
   cd "packages"
