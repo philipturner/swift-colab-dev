@@ -216,7 +216,7 @@ import Foundation
 let libJupyterKernel = dlopen("$jupyterkernel_lib", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be \'nil\':", libJupyterKernel as Any)'
   
-  echo $validate_script > validate_script.swift
+  echo "$validate_script" > validate_script.swift
   swift validate_script.swift
   
   cd /opt/swift
