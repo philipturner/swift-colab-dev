@@ -175,3 +175,15 @@ fi
 # do
 #     echo "> [$addr]"
 # done
+
+if [[ ! -e "progress/jupyterkernel-compiler-version" ||
+  $version != `cat "progress/jupyterkernel-compiler-version"` ]]
+then
+  echo "Compiling JupyterKernel"
+  
+  if [[ -d packages/JupyterKernel ]]; then
+    rm -r packages/JupyterKernel
+  fi
+else
+  echo "Using cached JupyterKernel library"
+fi
