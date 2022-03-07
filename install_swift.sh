@@ -82,7 +82,7 @@ if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
   pip install wurlitzer
   
   cd "packages"
-  git clone --single-branch --branch -v0.2.1 \
+  git clone --single-branch --branch v0.2.1 \
     https://github.com/pvieito/PythonKit
   cd ../
   
