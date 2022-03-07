@@ -23,8 +23,8 @@ fi
 
 # Determine whether to reuse cached files
 
-if [[ -e "progress/version.txt" ]]; then
-  old_version=`cat "progress/version.txt"`
+if [[ -e "progress/swift-version.txt" ]]; then
+  old_version=`cat "progress/swift-version.txt"`
   
   if [[ $version == $old_version ]]; then
     using_cached_swift=true
@@ -32,7 +32,7 @@ if [[ -e "progress/version.txt" ]]; then
     using_cached_swift=true
     mv "toolchain" "toolchain-$old_version"
     mv "toolchain-$version" "toolchain"
-    echo $version > "progress/version.txt"  
+    echo $version > "progress/swift-version.txt"  
   else
     using_cached_swift=false
     mv "toolchain" "toolchain-$old_version"
