@@ -195,16 +195,21 @@ Removing existing JupyterKernel build products."
   cd $jupyterkernel_path
   source_files=$(find $(pwd) -name '*.swift' -print)
   
-  pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
-  pythonkit_lib="/opt/swift/lib/libPythonKit.so"
-  
   mkdir build && cd build
+  pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
   swiftc -Onone $source_files \
     "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
     -emit-module -emit-library -module-name "JupyterKernel"
   
   ls ./
   ldd libJupyterKernel.so
+  
+  pythonkit_lib="/opt/swift/lib/libPythonKit.so"
+  patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
+  ldd libJupyterKernel.so
+  
+  # Put this into the link command, not a relative path.
+#     jupyterkernel_lib_dest="$(pwd)/libJupyterKernel.so"
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
