@@ -1,5 +1,5 @@
 import Foundation
-
+print("hello world 1")
 let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
 print(lldb_process)
 
@@ -13,3 +13,4 @@ let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
   loadSymbol(name: "func1")
 
 print(func1("success output"))
+print("hello world 2")
