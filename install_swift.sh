@@ -114,7 +114,7 @@ fi
 clang_version=$(ls toolchain/usr/lib/clang)
 lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 
-echo $(cat lldb_path)
+echo $(cat $lldb_path)
 
 # Build PythonKit
 # TODO: if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
