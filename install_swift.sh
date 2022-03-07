@@ -217,8 +217,8 @@ let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | 
 print("Should not be \'nil\':", libJupyterKernel as Any)
 
 func loadSymbol<T>(name: String) -> T {
-  let address = dlsym(lldb_process, name)
-  print("Should not be 'nil':", address as Any)
+  let address = dlsym(libJupyterKernel, name)
+  print("Should not be \'nil\':", address as Any)
   return unsafeBitCast(address, to: T.self)
 }
 
