@@ -1,5 +1,6 @@
 import Foundation
 let fileName = "validate.swift"
+print("=== begin \(fileName) ===")
 
 // For an unknown reason, only `liblldb.so` crashes when using a symbolic link at `/opt/swift/lib`
 print("\(fileName): Debug checkpoint 1")
@@ -26,3 +27,5 @@ let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
 print("Should see `success output` logged")
 print(func1("success output"))
 print("\(fileName): Debug checkpoint 3")
+
+print("=== end \(fileName) ===")
