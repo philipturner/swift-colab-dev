@@ -214,7 +214,18 @@ Removing existing JupyterKernel build products."
   validation_script=$'
 import Foundation
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
-print("Should not be \'nil\':", libJupyterKernel as Any)'
+print("Should not be \'nil\':", libJupyterKernel as Any)
+
+func loadSymbol<T>(name: String) -> T {
+  let address = dlsym(lldb_process, name)
+  print("Should not be 'nil':", address as Any)
+  return unsafeBitCast(address, to: T.self)
+}
+
+let validation_test: @convention(c) () -> Void =
+  loadSymbol(name: "validation_test")
+validation_test()
+'
   
   echo "$validation_script" > validation_script.swift
   swift validation_script.swift
