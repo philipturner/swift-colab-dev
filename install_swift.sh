@@ -198,7 +198,7 @@ Removing existing JupyterKernel build products."
   for subpath in $(ls ./)
   do
     echo $subpath
-    source_file_paths+=( $subpath, $subpath )
+    source_file_paths+=( $subpath,$subpath )
     source_file_paths+=( $subpath )
 #     if [[ -e subpath ]]; then
 #       # Do I need whitespace from parentheses?
