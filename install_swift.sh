@@ -150,6 +150,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
   ls /opt/swift/lib
   
+  # does this also work on the dev toolchain?
   swift validate.swift
   
   cd /opt/swift
