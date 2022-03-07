@@ -200,6 +200,7 @@ Removing existing JupyterKernel build products."
     if [[ -e subpath ]]; then
       # Do I need whitespace from parentheses?
       source_file_paths+=( $subpath )
+    fi
   done
   
   echo $source_file_paths
