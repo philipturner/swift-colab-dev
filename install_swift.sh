@@ -151,6 +151,11 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo $(cat /opt/swift/swift-colab/Sources/lldb-process/build/liblldb_process.so)
   ls /opt/swift/lib
   
+  echo "path is"
+  echo $LD_LIBRARY_PATH
+  echo "end path is"
+  
+  export LD_LIBRARY_PATH="/opt/swift/toolchain/usr/lib:$LD_LIBRARY_PATH"
   swift validate.swift
   
   cd /opt/swift
