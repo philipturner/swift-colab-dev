@@ -120,14 +120,22 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/lldb-process
   
+  if [[ ! -d build ]]; then
+    mkdir build
+  fi
+  cd build
+  
+  # here, compile lldb_process
+
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   
   if [[ ! -L $lldb_process_library_link ]]; then
     echo "Adding symbolic link to Swift LLDB bindings"
-#     ln -s "$(pwd)/.build/release/libPythonKit.so" $lldb_process_library_link
+#     ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
   fi
   
   cd /opt/swift
+  # Don't uncomment this until Swift-Colab 2.0 is stable
 #   echo "true" > "progress/compiled-lldb-bindings"
 else
   echo "Using cached Swift LLDB bindings"
