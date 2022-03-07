@@ -231,3 +231,23 @@ validation_test()
 else
   echo "Using cached JupyterKernel library"
 fi
+
+# Overwrite Python kernel
+
+replacing_python_kernel=true
+
+if [[ $replacing_python_kernel == true ]]; then
+  register_kernel='
+import Foundation
+let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
+let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
+
+let JupyterKernel_registerSwiftKernel = unsafeBitCast(
+  funcAddress, to: (() -> Void).self)
+JupyterKernel_registerSwiftKernel()
+print("Register succeeded------")
+'
+
+  echo "$register_kernel" > register_kernel.swift
+  swift register_kernel.swift
+fi
