@@ -213,7 +213,7 @@ Removing existing JupyterKernel build products."
   
   validate_script=$'
 import Foundation
-let libJupyterKernel = dlopen("$jupyterkernel_lib", RTLD_LAZY | RTLD_GLOBAL)
+let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be \'nil\':", libJupyterKernel as Any)'
   
   echo "$validate_script" > validate_script.swift
