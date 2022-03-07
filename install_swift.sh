@@ -123,7 +123,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  clang++ -c ../lldb_process.cpp -fpic
+  clang++ -c ../lldb_process.cpp 
   clang++  -shared -o liblldb_process.so lldb_process.o 
   
 #   clang++ -I../include -c ../lldb_process.cpp -fpic
