@@ -140,6 +140,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
 import Foundation
 print(2)" > test.swift
   swift test.swift
+  echo $(cat validate.swift)
+  swift validate.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
