@@ -120,7 +120,6 @@ lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 # echo "Using cached lldb_process binary"
 
 # Build PythonKit
-# TODO: if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
 
 if [[ ! -e "progress/pythonkit-compiler-version.txt" || 
   $version != `cat "progress/pythonkit-compiler-version.txt"` ]]
@@ -129,7 +128,7 @@ then
   cd "packages/PythonKit"
   
   if [[ -d .build ]]; then
-    echo "Removing existing PythonKit build products"
+    echo "Previously compiled with a different Swift version. Removing existing PythonKit build products."
     rm -r .build
   fi
   
@@ -146,6 +145,10 @@ then
 else
   echo "Using cached PythonKit binary"
 fi
+
+echo "aaaa bbbb cccc\
+dddd"
+
 
 # Build JupyterKernel
 
