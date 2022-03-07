@@ -2,6 +2,7 @@
 
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
+  mkdir /opt/swift/include
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
