@@ -4,11 +4,11 @@ print("=== begin '\(fileName)' ===")
 print()
 
 // For an unknown reason, only `liblldb.so` crashes when using a symbolic link at `/opt/swift/lib`
-print("\(fileName): Debug checkpoint 1")
+print("Debug checkpoint 1")
 let lldb = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be 'nil':", lldb as Any)
 
-print("\(fileName): Debug checkpoint 2")
+print("Debug checkpoint 2")
 let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be 'nil':", lldb_process as Any)
 
@@ -20,7 +20,7 @@ func loadSymbol<T>(name: String) -> T {
 
 let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 =
   loadSymbol(name: "validation_test")
-print("\(fileName): Debug checkpoint 3")
+print("Debug checkpoint 3")
 
 // For an unknown reason, it prints an error saying:
 //   ModuleNotFoundError: No module named 'lldb'
@@ -28,7 +28,7 @@ print("\(fileName): Debug checkpoint 3")
 // Regardless, the error seems to cause no harm.
 print("Should see 'success output' logged. Ignore any 'ModuleNotFoundError'.")
 print(validation_test("success output"))
-print("\(fileName): Debug checkpoint 4")
+print("Debug checkpoint 4")
 
 print()
 print("=== end '\(fileName)' ===")
