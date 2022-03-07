@@ -132,7 +132,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
   lldb_link_target="$(readlink $lldb_link_path)"
 #   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
-  patchelf --replace-needed "liblldb.so.10git" "/opt/swift/toolchain/lib/liblldb.so.10git" liblldb_process.so
+  patchelf --replace-needed "liblldb.so.10git" "/opt/swift/toolchain/lib/liblldb.so.10.0.0git" liblldb_process.so
 
   # ensure two-command link check isn't what's breaking this
   lldb_process_link=/opt/swift/lib/liblldb_process.so
