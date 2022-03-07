@@ -128,6 +128,14 @@ then
   echo "Compiling PythonKit"
   cd "packages/PythonKit"
   
+  # relocate below after debugging
+  if [[ ! -L $pythonkit_library_link ]]; then
+    echo "Adding symbolic link to PythonKit binary"
+    ln -s "$(pwd)/.build/libPythonKit.so" $pythonkit_library_link
+  else
+    echo "This should never happen!"
+  fi
+  
   if [[ -d .build ]]; then
     echo "Removing existing PythonKit build products"
     rm -r .build
@@ -136,12 +144,7 @@ then
   swift build -c release -Xswiftc -Onone
   pythonkit_library_link="/opt/swift/lib/libPythonKit.so"
   
-  if [[ ! -e $pythonkit_library_link ]]; then
-    echo "Adding symbolic link to PythonKit binary"
-    ln -s "$(pwd)/.build/libPythonKit.so" $pythonkit_library_link
-  else
-    echo "This should never happen!"
-  fi
+  
 
   cd /opt/swift
 #   echo $version > "progress/pythonkit-compiler-version.txt"
