@@ -151,7 +151,8 @@ then
   cd "packages/PythonKit"
   
   if [[ -d .build ]]; then
-    echo "Previously compiled with a different Swift version. \
+    echo "\
+Previously compiled with a different Swift version. \
 Removing existing PythonKit build products."
     rm -r .build
   fi
