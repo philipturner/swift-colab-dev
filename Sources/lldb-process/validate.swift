@@ -1,7 +1,7 @@
 import Foundation
 print("hello world 0")
-let lldb = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GLOBAL)
-print(lldb as Any)
+// let lldb = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GLOBAL)
+// print(lldb as Any)
 
 print("hello world 1")
 let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
