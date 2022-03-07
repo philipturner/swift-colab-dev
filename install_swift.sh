@@ -25,8 +25,8 @@ fi
 
 # Determine whether to reuse cached files
 
-if [[ -e "progress/swift-version.txt" ]]; then
-  old_version=`cat "progress/swift-version.txt"`
+if [[ -e "progress/swift-version" ]]; then
+  old_version=`cat "progress/swift-version"`
   
   if [[ $version == $old_version ]]; then
     using_cached_swift=true
@@ -34,7 +34,7 @@ if [[ -e "progress/swift-version.txt" ]]; then
     using_cached_swift=true
     mv "toolchain" "toolchain-$old_version"
     mv "toolchain-$version" "toolchain"
-    echo $version > "progress/swift-version.txt"  
+    echo $version > "progress/swift-version"  
   else
     using_cached_swift=false
     mv "toolchain" "toolchain-$old_version"
@@ -75,14 +75,14 @@ else
   curl $url | tar -xz
   mv "$release-ubuntu18.04" "toolchain"
   
-  echo $version > "progress/swift-version.txt"
+  echo $version > "progress/swift-version"
 fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
 # Download secondary dependencies
 
-if [[ ! -e "progress/downloaded-secondary-deps.txt" ]]; then
+if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
   echo "Downloading secondary dependencies"
 
   apt install patchelf
@@ -93,20 +93,20 @@ if [[ ! -e "progress/downloaded-secondary-deps.txt" ]]; then
     https://github.com/pvieito/PythonKit
   cd ../
   
-  echo "true" > "progress/downloaded-secondary-deps.txt"
+  echo "true" > "progress/downloaded-secondary-deps"
 else
   echo "Using cached secondary dependencies"
 fi
 
 # Download Swift-Colab
 
-if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
+if [[ ! -e "progress/downloaded-swift-colab" ]]; then
   cp -r /content/swift-colab "swift-colab"
 
   # echo "Downloading Swift-Colab"
   # git clone --single-branch --branch release/latest \
   #   https://github.com/philipturner/swift-colab
-  # echo "true" > "progress/downloaded-swift-colab.txt"
+  # echo "true" > "progress/downloaded-swift-colab"
 else
   echo "Using cached Swift-Colab"
 fi
@@ -116,7 +116,7 @@ fi
 clang_version=$(ls toolchain/usr/lib/clang)
 lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 
-if [[ ! -e "progress/compiled-lldb-bindings.txt" ]]; then
+if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
 else
   echo "Using cached Swift LLDB bindings"
@@ -127,8 +127,8 @@ fi
 
 # Build PythonKit
 
-if [[ ! -e "progress/pythonkit-compiler-version.txt" || 
-  $version != `cat "progress/pythonkit-compiler-version.txt"` ]]
+if [[ ! -e "progress/pythonkit-compiler-version" || 
+  $version != `cat "progress/pythonkit-compiler-version"` ]]
 then
   echo "Compiling PythonKit"
   cd "packages/PythonKit"
@@ -148,7 +148,7 @@ Removing existing PythonKit build products."
   fi
 
   cd /opt/swift
-  echo $version > "progress/pythonkit-compiler-version.txt"
+  echo $version > "progress/pythonkit-compiler-version"
 else
   echo "Using cached PythonKit binary"
 fi
