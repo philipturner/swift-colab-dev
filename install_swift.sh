@@ -98,7 +98,9 @@ fi
 
 if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
   echo "Downloading Swift-Colab"
-  # TODO: clone swift-colab-dev here & rename once the repo is stable
+  # TODO: clone swift-colab here & rename once the repo is stable
+  cp /content/swift-colab swift-colab
+  echo $(ls /opt/swift/swift-colab)
 else
   echo "Using cached Swift-Colab"
 fi
