@@ -252,9 +252,13 @@ import Foundation
 //precondition(setenv("LD_LIBRARY_PATH", "/opt/swift/lib:\(LD_LIBRARY_PATH)", 1) == 0)
 
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
+print("checkpoint 1")
 print(libJupyterKernel)
+print("checkpoint 2")
 print(String(cString: dlerror(), encoding: .utf8))
+print("checkpoint 3")
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
+print("checkpoint 4")
 
 // Extract registerSwiftKernel
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
