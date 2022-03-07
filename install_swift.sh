@@ -244,7 +244,11 @@ if [[ $replacing_python_kernel == true ]]; then
 import Foundation
 
 // Load PythonKit
-print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
+//print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
+
+let LD_LIBRARY_PATH = String(cString: getenv("LD_LIBRARY_PATH")) as String
+precondition(putenv("LD_LIBRARY_PATH=/opt/swift/lib:\(LD_LIBRARY_PATH)") == 0)
+
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print(libJupyterKernel)
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
