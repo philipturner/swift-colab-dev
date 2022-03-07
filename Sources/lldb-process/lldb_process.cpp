@@ -3,7 +3,7 @@
 
 extern "C" {
 
-int func1(char *input)
+int validation_test(char *input)
 {
   lldb::SBDebugger::Initialize();
   auto debugger = lldb::SBDebugger::Create();
@@ -16,7 +16,7 @@ int func1(char *input)
   expr_opts.SetGenerateDebugInfo(true);
   
   puts(input);
-  return 5;
+  return 123;
 }
 
 } // extern "C"
