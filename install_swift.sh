@@ -115,6 +115,12 @@ fi
 
 clang_version=$(ls toolchain/usr/lib/clang)
 lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
+
+if [[ ! -e "progress/compiled-lldb-bindings.txt" ]]; then
+  echo "Compiling Swift LLDB bindings"
+else
+  echo "Using cached Swift LLDB bindings"
+fi
 #ln -s $lldb_path "path/to/liblldb.so"
 
 # echo "Using cached lldb_process binary"
