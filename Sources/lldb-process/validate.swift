@@ -2,7 +2,7 @@ import Foundation
 
 print("hello world")
 
-// print(FileManager.default.contents(atPath: "/opt/swift/lib/libPythonKit.so") as Any)
+print(FileManager.default.contents(atPath: "/opt/swift/toolchain/usr/lib/lidlldb.so.10.0.0git") as Any)
 
 let lldb_process = dlopen("/opt/swift/toolchain/usr/lib/lidlldb.so.10.0.0git", RTLD_LAZY | RTLD_GLOBAL)
 // let lldb_process = dlopen("/opt/swift/packages/PythonKit/.build/release/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)
