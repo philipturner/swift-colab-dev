@@ -203,6 +203,7 @@ Removing existing JupyterKernel build products."
     -emit-module -emit-library -module-name "JupyterKernel"
   
   ls ./
+  ldd libJupyterKernel.so
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
