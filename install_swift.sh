@@ -134,10 +134,13 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   lldb_link_target="$(readlink $lldb_link_path)"
 #   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
 
-  lldb_process_link="/opt/swift/lib/llblldb_process.so"
-  if [[ ! -L $lldb_process_link ]]; then
-    ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
+  lldb_process_destination="/opt/swift/lib/llblldb_process.so"
+  if [[ -e $lldb_process_destination ]]; then
+    rm $lldb_process_destination
   fi
+  cp "$(pwd)/liblldb_process.so" $lldb_process_destination
+  
+  # need to manually copy stuff again
   
   cd ../
   swift validate.swift
