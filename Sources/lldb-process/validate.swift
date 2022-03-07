@@ -1,6 +1,6 @@
-import Foundation
+// import Foundation
 
-print("hello world")
+// print("hello world")
 
 // let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
 
