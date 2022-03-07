@@ -100,6 +100,7 @@ fi
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
+  rm -r swift-colab
   cp -r /content/swift-colab "swift-colab"
 
   # Don't uncomment this until Swift-Colab 2.0 is stable
