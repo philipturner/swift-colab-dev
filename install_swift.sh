@@ -148,7 +148,7 @@ fi
 # Build PythonKit
 
 if [[ ! -e "progress/pythonkit-compiler-version" || 
-  $version != `cat "progress/pythonkit-compiler-version"` ]]
+  $version != `cat "progress/pythonkit-compiler-version"` || true == true ]]
 then
   echo "Compiling PythonKit"
   cd "packages/PythonKit"
@@ -161,6 +161,7 @@ Removing existing PythonKit build products."
   fi
   
   swift build -c release -Xswiftc -Onone -Xswiftc -static
+  ls ./.build/release
   pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
   
   if [[ ! -L $pythonkit_library_link ]]; then
