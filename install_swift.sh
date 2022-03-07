@@ -3,6 +3,7 @@
 if [[ ! -d "/opt/swift" ]]; then
   mkdir "/opt/swift"
   mkdir "/opt/swift/packages"
+  mkdir "/opt/swift/progress"
 fi
 
 cd "/opt/swift"
@@ -22,8 +23,8 @@ fi
 
 # Determine whether to reuse cached files
 
-if [[ -e "swift-version.txt" ]]; then
-  old_version=`cat "swift-version.txt"`
+if [[ -e "progress/version.txt" ]]; then
+  old_version=`cat "progress/version.txt"`
   
   if [[ $version == $old_version ]]; then
     using_cached_swift=true
@@ -31,7 +32,7 @@ if [[ -e "swift-version.txt" ]]; then
     using_cached_swift=true
     mv "toolchain" "toolchain-$old_version"
     mv "toolchain-$version" "toolchain"
-    echo $version > "swift-version.txt"  
+    echo $version > "progress/version.txt"  
   else
     using_cached_swift=false
     mv "toolchain" "toolchain-$old_version"
@@ -72,12 +73,12 @@ else
   curl $url | tar -xz
   mv "$release-ubuntu18.04" "toolchain"
   
-  echo $version > "swift-version.txt"
+  echo $version > "progress/swift-version.txt"
 fi
 
 # Download secondary dependencies
 
-if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
+if [[ ! -e "progress/downloaded-secondary-deps.txt" ]]; then
   echo "Downloading secondary dependencies"
 
   apt install patchelf
@@ -88,9 +89,13 @@ if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
     https://github.com/pvieito/PythonKit
   cd ../
   
-  echo "true" > downloaded-secondary-deps.txt
+  echo "true" > "progress/downloaded-secondary-deps.txt"
 else
   echo "Using cached secondary dependencies"
 fi
 
+# Build LLDB bindings
+
+# Build PythonKit
 # if not using cached Swift, search for and conditionally delete build products of PythonKit
+# having a different Swift version may affect compilation
