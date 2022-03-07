@@ -11,16 +11,12 @@ public func JupyterKernel_registerSwiftKernel() {
   let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
-  // Loads PythonKit library at runtime instead of fixing the broken reference
-  // in the JupyterKernel library. This removes the patchelf dependency,
-  // saving ~10 seconds on initial load.
   let pythonScript = """
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
   
   if __name__ == "__main__":
     with sys_pipes():
-      PyDLL("/opt/swift/lib/libPythonKit.so")
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
