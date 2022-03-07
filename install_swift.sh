@@ -137,6 +137,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   
   cd ../
+  # Uncomment to debug Swift-Colab
   swift validate.swift
   
   cd /opt/swift
@@ -162,13 +163,6 @@ Removing existing PythonKit build products."
   fi
   
   swift build -c release -Xswiftc -Onone
-#   ls ./.build/release
-#   pythonkit_library_link="/opt/swift/lib/libPythonKit.a"
-  
-#   if [[ ! -L $pythonkit_library_link ]]; then
-#     echo "Adding symbolic link to PythonKit binary"
-#     ln -s "$(pwd)/.build/release/libPythonKit.a" $pythonkit_library_link
-#   fi
 
   cd /opt/swift
   echo $version > "progress/pythonkit-compiler-version"
@@ -222,6 +216,7 @@ let validation_test: @convention(c) () -> Void =
   loadSymbol(name: "validation_test")
 validation_test()
 '
+  # Uncomment to debug Swift-Colab
   echo "$validate2" > validate2.swift
   swift validate2.swift
   
@@ -241,7 +236,6 @@ if [[ $replacing_python_kernel == true ]]; then
 import Foundation
 
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
-print(libJupyterKernel)
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
 
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
