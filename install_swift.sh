@@ -136,6 +136,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   cp "$(pwd)/liblldb_process.so" "/opt/swift/lib/llblldb_process.so"
   
   cd ../
+  cat "/opt/swift/lib/llblldb_process.so"
   swift validate.swift
   
   cd /opt/swift
