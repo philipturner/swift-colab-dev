@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [[ ! -d "/opt/swift" ]]; then
-  mkdir "/opt/swift"
-  mkdir "/opt/swift/packages"
-  mkdir "/opt/swift/progress"
+if [[ ! -d /opt/swift ]]; then
+  mkdir /opt/swift
+  mkdir /opt/swift/packages
+  mkdir /opt/swift/progress
 fi
 
-cd "/opt/swift"
+cd /opt/swift
 
 # Extract program arguments
 
@@ -99,14 +99,12 @@ fi
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
-  # TODO: clone swift-colab here once the repo is stable
+  cp -r /content/swift-colab "swift-colab"
+
   # echo "Downloading Swift-Colab"
   # git clone --single-branch --branch release/latest \
   #   https://github.com/philipturner/swift-colab
   # echo "true" > "progress/downloaded-swift-colab.txt"
-  
-  cp -r /content/swift-colab swift-colab
-  echo $(ls /opt/swift/swift-colab)
 else
   echo "Using cached Swift-Colab"
 fi
