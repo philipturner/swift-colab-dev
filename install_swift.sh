@@ -96,9 +96,13 @@ else
   echo "Using cached secondary dependencies"
 fi
 
+# Download Swift-Colab
+
 if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
   echo "Downloading Swift-Colab"
-  # TODO: clone swift-colab here & rename once the repo is stable
+  
+  # TODO: clone swift-colab here once the repo is stable
+  #   echo "true" > "progress/downloaded-swift-colab.txt"
   cp -r /content/swift-colab swift-colab
   echo $(ls /opt/swift/swift-colab)
 else
@@ -108,9 +112,6 @@ fi
 # Build LLDB bindings
 
 # Build PythonKit
-
-
-
 # if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
 
 
