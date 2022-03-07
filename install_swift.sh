@@ -97,5 +97,4 @@ fi
 # Build LLDB bindings
 
 # Build PythonKit
-# if not using cached Swift, search for and conditionally delete build products of PythonKit
-# having a different Swift version may affect compilation
+# if previously compiled with a different Swift version, delete and re-compile PythonKit
