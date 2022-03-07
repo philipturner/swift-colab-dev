@@ -1,11 +1,11 @@
 import Foundation
 print("hello world 1")
 let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
-print(lldb_process)
+print(lldb_process as Any)
 
 func loadSymbol<T>(name: String) -> T {
   let address = dlsym(lldb_process, name)
-  print(address)
+  print(address as Any)
   return unsafeBitCast(address, to: T.self)
 }
 
