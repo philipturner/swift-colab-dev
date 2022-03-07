@@ -136,7 +136,9 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   cd ../
   echo $PATH
-  echo "" > test.swift
+  echo "
+import Foundation
+print(2)" > test.swift
   swift test.swift
   
   cd /opt/swift
