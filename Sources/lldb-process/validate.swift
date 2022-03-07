@@ -18,15 +18,15 @@ func loadSymbol<T>(name: String) -> T {
   return unsafeBitCast(address, to: T.self)
 }
 
-let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
-  loadSymbol(name: "func1")
+let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 =
+  loadSymbol(name: "validation_test")
 
 // For an unknown reason, it prints an error saying:
 //   ModuleNotFoundError: No module named 'lldb'
 // This error only happens on dev toolchains, maybe because the headers are for LLDB 10? 
 // Regardless, the error seems to cause no harm.
 print("Should see 'success output' logged. Ignore any 'ModuleNotFoundError'.")
-print(func1("success output"))
+print(validation_test("success output"))
 print("\(fileName): Debug checkpoint 3")
 
 print()
