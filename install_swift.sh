@@ -247,7 +247,7 @@ import Foundation
 //print(dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!)
 
 let LD_LIBRARY_PATH = String(cString: getenv("LD_LIBRARY_PATH")) as String
-precondition(putenv("LD_LIBRARY_PATH=/opt/swift/lib:\(LD_LIBRARY_PATH)") == 0)
+precondition(setenv("LD_LIBRARY_PATH", "/opt/swift/lib:\(LD_LIBRARY_PATH)", 1) == 0)
 
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print(libJupyterKernel)
