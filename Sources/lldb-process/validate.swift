@@ -4,7 +4,7 @@ let lldb = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GL
 print(lldb as Any)
 
 print("hello world 1")
-let lldb_process = dlopen("/opt/swift/lib/liblldb2_process.so", RTLD_LAZY | RTLD_GLOBAL)
+let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
 print(lldb_process as Any)
 
 func loadSymbol<T>(name: String) -> T {
