@@ -12,4 +12,4 @@ func loadSymbol<T>(name: String) -> T {
 let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
   loadSymbol(name: "func1")
 
-// print(func1("success output"))
+print(func1("success output"))
