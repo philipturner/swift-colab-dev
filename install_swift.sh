@@ -132,7 +132,9 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
-#   otool -o liblldb_process.so
+  echo $(readlink /opt/swift/toolchain/usr/lib/liblldb.so)
+#   patchelf --replace-needed 
+  
   echo $(ldd liblldb_process.so)
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
