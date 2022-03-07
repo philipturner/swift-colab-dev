@@ -113,9 +113,6 @@ fi
 
 # Build LLDB bindings
 
-clang_version=$(ls toolchain/usr/lib/clang)
-lldb_full_path="/opt/swift/toolchain/usr/lib/liblldb.so.${clang_version}git"
-
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/lldb-process
@@ -125,16 +122,14 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  # after debugging - can I change to lowercase lldb or another word entirely?
-#   lldb_link_path="/opt/swift/lib/libLLDB.so"
-#   ln -s $lldb_full_path $lldb_link_path
-#   cp /opt/swift/toolchain/usr/lib/liblldb.so.13.0.0git /opt/swift/toolchain/usr/lib/liblldb.so
-  
   clang++ -I../include -c ../lldb_process.cpp -fpic
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
-  echo $(readlink /opt/swift/toolchain/usr/lib/liblldb.so)
-#   patchelf --replace-needed $(readlink /opt/swift/toolchain/usr/lib/liblldb.so) \
-#     /opt/swift/toolchain/usr/lib/liblldb.so.13git liblldb_process.so
+  
+    
+  lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
+  lldb_link_target="$(readlink $lldb_link_path)"
+  patchelf --replace-needed $lldb_link_target \
+    "/opt/swift/toolchain/usr/lib/$lldb_link_target" liblldb_process.so
   
   echo $(ldd liblldb_process.so)
 
