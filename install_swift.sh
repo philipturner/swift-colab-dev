@@ -138,6 +138,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   if [[ ! -L $lldb_process_link ]]; then
     ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
   fi
+  
+  ln -s /opt/swift/lib/liblldb_process.so /opt/swift/lib/liblldb2_process.so
 
 #   if [[ -e $lldb_process_link ]]; then
 #     rm $lldb_process_link
