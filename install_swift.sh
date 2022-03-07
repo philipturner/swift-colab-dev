@@ -199,7 +199,8 @@ Removing existing JupyterKernel build products."
   pythonkit_lib="/opt/swift/lib/libPythonKit.so"
   
   mkdir build && cd build
-  swiftc -Onone $source_files "-L$pythonkit_products" "-I$pythonkit_products" \
+  swiftc -Onone $source_files \
+    "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
     -emit-module -emit-library -module-name "JupyterKernel"
   
   ls ./
