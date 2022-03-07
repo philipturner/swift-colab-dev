@@ -200,6 +200,7 @@ Removing existing JupyterKernel build products."
     -emit-module -emit-library -module-name "JupyterKernel"
   
   pythonkit_lib="/opt/swift/lib/libPythonKit.a"
+  ldd libJupyterKernel.so
 #   patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
