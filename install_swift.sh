@@ -120,9 +120,11 @@ lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 # Build PythonKit
 # TODO: if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
 
-if [[( ! -e "progress/pythonkit-compiler-version.txt" || 
-  -e "progress/pythonkit-compiler-version.txt") ]]; then
+if [[ ! -e "progress/pythonkit-compiler-version.txt" || 
+  $version != `cat "progress/pythonkit-compiler-version.txt"` ]]; then
   echo "Compiling PythonKit"
+  
+  echo $version > "progress/pythonkit-compiler-version.txt"
 else
   echo "Using cached PythonKit binary"
 fi
