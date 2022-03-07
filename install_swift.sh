@@ -196,7 +196,7 @@ Removing existing JupyterKernel build products."
   mkdir build && cd build
   pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
   swiftc -Onone $source_files \
-    "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
+    "-L$pythonkit_products" "-I$pythonkit_products" libPythonKit.a \
     -emit-module -emit-library -module-name "JupyterKernel"
   
   pythonkit_lib="/opt/swift/lib/libPythonKit.a"
