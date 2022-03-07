@@ -126,7 +126,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  # here, compile lldb_process
+  clang++ -I../include -c ../lldb_process.cpp
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
