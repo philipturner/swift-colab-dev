@@ -128,7 +128,8 @@ then
   cd "packages/PythonKit"
   
   if [[ -d .build ]]; then
-    echo "Previously compiled with a different Swift version. Removing existing PythonKit build products."
+    echo "Previously compiled with a different Swift version. \
+    Removing existing PythonKit build products."
     rm -r .build
   fi
   
@@ -145,10 +146,6 @@ then
 else
   echo "Using cached PythonKit binary"
 fi
-
-echo "aaaa bbbb cccc\
-  dddd"
-
 
 # Build JupyterKernel
 
