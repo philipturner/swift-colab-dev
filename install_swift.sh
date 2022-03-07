@@ -200,7 +200,7 @@ Removing existing JupyterKernel build products."
     -emit-module -emit-library -module-name "JupyterKernel"
   
   pythonkit_lib="/opt/swift/lib/libPythonKit.so"
-  patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
+#   patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
@@ -210,6 +210,7 @@ Removing existing JupyterKernel build products."
   
   validate2=$'
 import Foundation
+
 // Load PythonKit
 _ = dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
@@ -221,6 +222,7 @@ func loadSymbol<T>(name: String) -> T {
   return unsafeBitCast(address, to: T.self)
 }
 
+// Load validation_test
 let validation_test: @convention(c) () -> Void =
   loadSymbol(name: "validation_test")
 validation_test()
