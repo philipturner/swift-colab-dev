@@ -210,7 +210,7 @@ Removing existing JupyterKernel build products."
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
-    echo "Adding symbolic link to PythonKit binary"
+    echo "Adding symbolic link to JupyterKernel binary"
     ln -s "$(pwd)/libJupyterKernel.so" $jupyterkernel_lib
   fi
   
