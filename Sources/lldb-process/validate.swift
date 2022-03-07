@@ -17,5 +17,9 @@ func loadSymbol<T>(name: String) -> T {
 let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
   loadSymbol(name: "func1")
 
-print(func1("success output"))
+// For an unknown reason, it prints an error saying:
+//   ModuleNotFoundError: No module named 'lldb'
+// This error only happens on dev toolchains, maybe because the headers are for LLDB 10? 
+// Regardless, the error seems to cause no harm.
+print(func1("success output222"))
 print("hello world 2")
