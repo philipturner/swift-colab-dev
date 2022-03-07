@@ -131,7 +131,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   patchelf --replace-needed $lldb_link_target \
     "/opt/swift/toolchain/usr/lib/$lldb_link_target" liblldb_process.so
   
-  echo $(ldd liblldb_process.so)
+  echo $(objdump -p liblldb_process.so | grep 'NEEDED')
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
   ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
