@@ -245,6 +245,7 @@ let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
   funcAddress, to: (@convention(c) () -> Void).self)
 JupyterKernel_registerSwiftKernel()
+print(Bundle.main.executablePath)
 '
 
   echo "$register_kernel" > register_kernel.swift
