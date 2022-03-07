@@ -89,6 +89,8 @@ if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
   cd ../
   
   echo "true" > downloaded-secondary-deps.txt
+else
+  echo "Using cached secondary dependencies"
 fi
 
 # if not using cached Swift, search for and conditionally delete build products of PythonKit
