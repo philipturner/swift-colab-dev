@@ -3,7 +3,7 @@
 
 extern "C" {
 
-int func1(const char *input)
+int func1(char *input)
 {
   lldb::SBDebugger::Initialize();
   auto debugger = lldb::SBDebugger::Create();
