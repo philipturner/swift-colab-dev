@@ -2,6 +2,7 @@
 
 if [[ ! -d "/opt/swift" ]]; then
   mkdir "/opt/swift"
+  mkdir "/opt/swift/packages"
 fi
 
 cd "/opt/swift"
@@ -74,10 +75,18 @@ else
   echo $version > "swift-version.txt"
 fi
 
-# make another progress file for all the non-Swift dependencies:
-#
-# patchelf
-# wurlitzer
-# PythonKit - to avoid "already exists" errors in the output
+# Download secondary dependencies
 
-# if not using cached Swift, delete build products of PythonKit
+if [[ ! -e "downloaded-secondary-deps.txt" ]]; then
+  apt install patchelf
+  pip install wurlitzer
+  
+  cd "packages"
+  git clone --single-branch --branch -v0.2.1 \
+    https://github.com/pvieito/PythonKit
+  cd ../
+  
+  echo "true" > downloaded-secondary-deps.txt
+fi
+
+# if not using cached Swift, search for and conditionally delete build products of PythonKit
