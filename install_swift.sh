@@ -124,7 +124,7 @@ if [[ ! -e "progress/pythonkit-compiler-version.txt" ||
   $version != `cat "progress/pythonkit-compiler-version.txt"` ]]; then
   echo "Compiling PythonKit"
   
-  echo $version > "progress/pythonkit-compiler-version.txt"
+#   echo $version > "progress/pythonkit-compiler-version.txt"
 else
   echo "Using cached PythonKit binary"
 fi
