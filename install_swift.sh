@@ -2,7 +2,6 @@
 
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
-  mkdir /opt/swift/include
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
@@ -115,7 +114,7 @@ fi
 # Build LLDB bindings
 
 clang_version=$(ls toolchain/usr/lib/clang)
-lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
+lldb_full_path="/opt/swift/toolchain/usr/lib/liblldb.so.${clang_version}git"
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
@@ -127,7 +126,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   cd build
   
   clang++ -I../include -c ../lldb_process.cpp
-  clang++ -L../lib -shared -o lldb_process.so lldb_process.o -lLLDB
+  clang++ "-L/$lldb_full_path" -shared -o lldb_process.so lldb_process.o -lLLDB
   otool -o liblldb_process.so
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
