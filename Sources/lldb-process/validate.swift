@@ -2,16 +2,18 @@ import Foundation
 
 print("hello world")
 
-let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
-print(lldb_process)
+print(FileManager.default.contents(atPath: "/opt/swift/lib/liblldb_process.so") as Any)
 
-func loadSymbol<T>(name: String) -> T {
-  let address = dlsym(lldb_process, name)
-  print(address)
-  return unsafeBitCast(address, to: T.self)
-}
+// let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
+// print(lldb_process)
 
-let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
-  loadSymbol(name: "func1")
+// func loadSymbol<T>(name: String) -> T {
+//   let address = dlsym(lldb_process, name)
+//   print(address)
+//   return unsafeBitCast(address, to: T.self)
+// }
 
-print(func1("success output"))
+// let func1: @convention(c) (UnsafePointer<CChar>) -> Int32 =
+//   loadSymbol(name: "func1")
+
+// print(func1("success output"))
