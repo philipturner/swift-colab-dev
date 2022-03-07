@@ -103,10 +103,11 @@ fi
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
   cp -r /content/swift-colab "swift-colab"
 
-  # echo "Downloading Swift-Colab"
-  # git clone --single-branch --branch release/latest \
-  #   https://github.com/philipturner/swift-colab
-  # echo "true" > "progress/downloaded-swift-colab"
+  # Don't uncomment this until Swift-Colab 2.0 is stable
+#   echo "Downloading Swift-Colab"
+#   git clone --single-branch --branch release/latest \
+#     https://github.com/philipturner/swift-colab
+#   echo "true" > "progress/downloaded-swift-colab"
 else
   echo "Using cached Swift-Colab"
 fi
