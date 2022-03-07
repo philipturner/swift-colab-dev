@@ -123,12 +123,15 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   fi
   cd build
   
-  clang++ -I../include -c ../lldb_process.cpp -fpic
-  clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
+  clang++ -c ../lldb_process.cpp -fpic
+  clang++  -shared -o liblldb_process.so lldb_process.o 
+  
+#   clang++ -I../include -c ../lldb_process.cpp -fpic
+#   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so lldb_process.o -llldb
   
   lldb_link_path="/opt/swift/toolchain/usr/lib/liblldb.so"
   lldb_link_target="$(readlink $lldb_link_path)"
-  patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
+#   patchelf --replace-needed $lldb_link_target $lldb_link_path liblldb_process.so
 
   if [[ -e "/opt/swift/lib/llblldb_process.so" ]]; then
     rm "/opt/swift/lib/llblldb_process.so"
