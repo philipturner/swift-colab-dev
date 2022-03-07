@@ -112,7 +112,9 @@ fi
 # Build LLDB bindings
 
 clang_version=$(ls toolchain/usr/lib/clang)
-echo "22${clang_version}22"
+lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
+
+echo $(cat lldb_path)
 
 # Build PythonKit
 # TODO: if previously compiled with a different Swift version, delete and re-compile PythonKit's build products
