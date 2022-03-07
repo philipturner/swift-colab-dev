@@ -210,6 +210,8 @@ Removing existing JupyterKernel build products."
   
   validate2=$'
 import Foundation
+// Load PythonKit
+_ = dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
 print("Should not be \'nil\':", libJupyterKernel as Any)
 
@@ -241,9 +243,13 @@ replacing_python_kernel=true
 if [[ $replacing_python_kernel == true ]]; then
   register_kernel='
 import Foundation
+
+// Load PythonKit
+_ = dlopen("/opt/swift/lib/libPythonKit.so", RTLD_LAZY | RTLD_GLOBAL)!
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
 
+// Extract registerSwiftKernel
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
   funcAddress, to: (@convention(c) () -> Void).self)
 JupyterKernel_registerSwiftKernel()
