@@ -1,5 +1,5 @@
 #include <stdio.h>
-// #include <LLDB/LLDB.h>
+#include <LLDB/LLDB.h>
 
 extern "C" {
 
