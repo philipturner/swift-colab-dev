@@ -2,7 +2,7 @@ import Foundation
 
 print("hello world")
 
-print(FileManager.default.contents(atPath: "/opt/swift/lib/liblldb_process.so") as Any)
+// print(FileManager.default.contents(atPath: "/opt/swift/lib/liblldb_process.so") as Any)
 
 // let lldb_process = dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)
 // print(lldb_process)
