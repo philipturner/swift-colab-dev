@@ -12,6 +12,8 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
   // try calling dlopen on PythonKit in this script to eliminate need for patchelf
+  // hard-code RTLD flags - better yet - insert them into the script using 
+  // string substitution from this Swift file
   let pythonScript = """
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
