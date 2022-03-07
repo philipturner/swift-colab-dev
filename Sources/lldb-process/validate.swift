@@ -1,5 +1,6 @@
 import Foundation
 print("hello world 0")
+// For some reason, this always crashes when using a symbolic link at /opt/swift/lib
 let lldb = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GLOBAL)
 print(lldb as Any)
 
