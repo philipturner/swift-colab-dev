@@ -124,7 +124,7 @@ IN="bla@some.com john@home.com"
 # why is `tr` needed?
 mails=$(echo $IN)
 
-for addr in $mails
+for addr in $IN
 do
     echo "> [$addr]"
 done
