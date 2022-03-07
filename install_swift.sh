@@ -191,6 +191,19 @@ Removing existing JupyterKernel build products."
   fi
   cp -r swift-colab/Sources/JupyterKernel packages/JupyterKernel
   
+  cd packages/JupyterKernel
+  source_file_paths=()
+  
+  # Only searches one level of recursion
+  for subpath in $(ls ./)
+  do
+    if [[ -e subpath ]]; then
+      # Do I need whitespace from parentheses?
+      source_file_paths+=( $subpath )
+  done
+  
+  echo $source_file_paths
+  
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
 #   echo $version > "progress/jupyterkernel-compiler-version"
