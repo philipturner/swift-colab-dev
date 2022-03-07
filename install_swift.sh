@@ -225,8 +225,8 @@ validation_test()
 '
   echo "$validate2" > validate2.swift
   
-  export LD_LIBRARY_PATH="/opt/swift/lib:$LD_LIBRARY_PATH"
-  swift validate2.swift
+#   export LD_LIBRARY_PATH="/opt/swift/lib:$LD_LIBRARY_PATH"
+#   swift validate2.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
