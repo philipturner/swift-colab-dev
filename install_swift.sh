@@ -87,7 +87,6 @@ if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
 
   # TODO: remove wurlitzer dependency once Swift-Colab 2.0 is stable
   # to reduce load times
-  apt install patchelf # this takes 10 seconds to download. Try a workaround for it too.
   pip install wurlitzer
   
   cd "packages"
@@ -103,6 +102,8 @@ fi
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
+  # Retain this as something commented out when Swift-Colab 2.0
+  # is stable, for easier debugging
   rm -r swift-colab
   cp -r /content/swift-colab "swift-colab"
 
@@ -202,7 +203,6 @@ Removing existing JupyterKernel build products."
   
   pythonkit_lib="/opt/swift/lib/libPythonKit.a"
   ldd libJupyterKernel.so
-#   patchelf --replace-needed "libPythonKit.so" $pythonkit_lib "libJupyterKernel.so"
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
