@@ -85,6 +85,8 @@ export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
   echo "Downloading secondary dependencies"
 
+  # TODO: remove wurlitzer dependency once Swift-Colab 2.0 is stable
+  # to reduce load times
   apt install patchelf
   pip install wurlitzer
   
