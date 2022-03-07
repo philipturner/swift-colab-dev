@@ -197,13 +197,14 @@ Removing existing JupyterKernel build products."
   # Only searches one level of recursion
   for subpath in $(ls ./)
   do
+    echo $subpath
     if [[ -e subpath ]]; then
       # Do I need whitespace from parentheses?
       source_file_paths+=( $subpath )
     fi
   done
   
-  echo $source_file_paths
+  echo "$source_file_paths"
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
