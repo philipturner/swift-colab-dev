@@ -120,11 +120,7 @@ lldb_path="toolchain/usr/lib/liblldb.so.${clang_version}git"
 
 # Build JupyterKernel
 
-IN="bla@some.com john@home.com"
-# why is `tr` needed?
-mails=$(echo $IN)
-
-for addr in $(ls /opt/swift/swift-colab)
-do
-    echo "> [$addr]"
-done
+# for addr in $(ls /opt/swift/swift-colab)
+# do
+#     echo "> [$addr]"
+# done
