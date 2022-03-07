@@ -129,11 +129,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   # here, compile lldb_process
 
   lldb_process_library_link="/opt/swift/lib/llblldb_process.so"
-  
-  if [[ ! -L $lldb_process_library_link ]]; then
-    echo "Adding symbolic link to Swift LLDB bindings"
-#     ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
-  fi
+  ln -s "$(pwd)/liblldb_process.so" $lldb_process_library_link
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
