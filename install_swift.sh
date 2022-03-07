@@ -210,7 +210,7 @@ Removing existing JupyterKernel build products."
   
   echo "$source_file_paths"
   echo $(ls -R ./)
-  echo $(find /dir/ -name 'pattern' -print)
+  echo $(find ./ -name '*.swift' -print)
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
