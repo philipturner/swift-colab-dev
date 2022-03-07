@@ -88,8 +88,8 @@ if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
   pip install wurlitzer
   
   cd "packages"
-  git clone --single-branch --branch v0.2.1 \
-    https://github.com/pvieito/PythonKit
+  git clone --single-branch --branch swift-colab-dev \
+    https://github.com/philipturner/PythonKit
   cd ../
   
   echo "true" > "progress/downloaded-secondary-deps"
