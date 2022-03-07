@@ -99,10 +99,12 @@ fi
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab.txt" ]]; then
-  echo "Downloading Swift-Colab"
-  
   # TODO: clone swift-colab here once the repo is stable
-  #   echo "true" > "progress/downloaded-swift-colab.txt"
+  # echo "Downloading Swift-Colab"
+  # git clone --single-branch --branch release/latest \
+  #   https://github.com/philipturner/swift-colab
+  # echo "true" > "progress/downloaded-swift-colab.txt"
+  
   cp -r /content/swift-colab swift-colab
   echo $(ls /opt/swift/swift-colab)
 else
