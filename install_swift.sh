@@ -186,8 +186,11 @@ then
   if [[ -d packages/JupyterKernel ]]; then
     rm -r packages/JupyterKernel
   fi
+  cp -r swift-colab/Sources/JupyterKernel packages/JupyterKernel
   
-  cp swift-colab/Sources/JupyterKernel packages/JupyterKernel
+  cd /opt/swift
+  # Don't uncomment this until Swift-Colab 2.0 is stable
+#   echo $version > "progress/jupyterkernel-compiler-version"
 else
   echo "Using cached JupyterKernel library"
 fi
