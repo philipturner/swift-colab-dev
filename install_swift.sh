@@ -127,7 +127,7 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   clang++ -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so \
     lldb_process.o -llldb
   
-  lldb_process_link=/opt/swift/lib/liblldb_process.so
+  lldb_process_link="/opt/swift/lib/liblldb_process.so"
   if [[ ! -L $lldb_process_link ]]; then
     ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
   fi
@@ -183,16 +183,26 @@ if [[ ! -e "progress/jupyterkernel-compiler-version" ||
 then
   echo "Compiling JupyterKernel"
   
-  if [[ -d packages/JupyterKernel ]]; then
+  jupyterkernel_path="packages/JupyterKernel"
+  if [[ -d $jupyterkernel_path]]; then
     echo "\
 Previously compiled with a different Swift version. \
 Removing existing JupyterKernel build products."
-    rm -r packages/JupyterKernel
+    rm -r $jupyterkernel_path
   fi
-  cp -r swift-colab/Sources/JupyterKernel packages/JupyterKernel
+  cp -r "swift-colab/Sources/JupyterKernel" $jupyterkernel_path
   
-  cd packages/JupyterKernel
-  source_file_paths=$(find $(pwd) -name '*.swift' -print)
+  cd $jupyterkernel_path
+  source_files=$(find $(pwd) -name '*.swift' -print)
+  
+  pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
+  pythonkit_lib="/opt/swift/lib/libPythonKit.so"
+  
+  mkdir build && cd build
+  swiftc -Onone source_files "-L$pythonkit_products" "-I$pythonkit_products" \
+    -emit-module -emit-library -module-name "JupyterKernel"
+  
+  ls ./
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
