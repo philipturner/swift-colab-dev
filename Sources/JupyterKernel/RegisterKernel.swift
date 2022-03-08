@@ -38,6 +38,6 @@ public func JupyterKernel_registerSwiftKernel() {
   try? fm.removeItem(atPath: kernelSpecPath)
   
   let attributes: [FileAttributeKey: Any] = [
-    .hfsTypeCode: 0o755
+    .posixPermissions: NSNumber(0o755)
   ]
 }
