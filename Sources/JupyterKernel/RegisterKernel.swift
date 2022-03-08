@@ -2,6 +2,7 @@ import Foundation
 import PythonKit
 
 fileprivate let ipykernel_launcher = Python.import("ipykernel_launcher")
+fileprivate let KernelSpecManager = Python.import("jupyter_client").kernelspec.KernelSpecManager
 
 @_cdecl("JupyterKernel_registerSwiftKernel")
 public func JupyterKernel_registerSwiftKernel() {
@@ -48,6 +49,8 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
   
+  // Does this even do anything? Can I avoid it since I'm just overwriting the Python kernel?
   fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
   try! fm.setAttributes([.posixPermissions: NSNumber(0o755)], ofItemAtPath: kernelSpecPath)
+  KernelSpecManager().install_kernel_spec(kernelSpecPath, "swift")
 }
