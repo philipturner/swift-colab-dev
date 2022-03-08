@@ -30,10 +30,14 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelJSONDict: [String: Any] = [
     "argv": [
       Bundle.main.executablePath,
-      swiftKernelPath,
-      
+      swiftKernelPath
+    ]
   ]
            
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
+  
+  let attributes: [FileAttributeKey: Any] = [
+    hfsTypeCode: 0o755
+  ]
 }
