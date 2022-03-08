@@ -27,8 +27,7 @@ public func JupyterKernel_createSwiftKernel() {
 }
 
 fileprivate func activateSwiftKernel() {
-  // TODO: remove this notice
-  print("=== Creating Swift kernel ===")
+  print("=== Activating Swift kernel ===")
   
   // Jupyter sends us SIGINT when the user requests execution interruption.
   // Here, we block all threads from receiving the SIGINT, so that we can
@@ -39,6 +38,8 @@ fileprivate func activateSwiftKernel() {
 }
 
 fileprivate func activatePythonKernel() {
+  print("=== Activating Python kernel ===")
+  
   // Original Python script:
   /*
   """Entry point for launching an IPython kernel.
