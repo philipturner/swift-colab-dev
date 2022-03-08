@@ -60,6 +60,7 @@ fileprivate func activatePythonKernel() {
       from ipykernel import kernelapp as app
       app.launch_new_instance()
   */
+  
   let sys = Python.import("sys")
   
   if sys.path[0] == PythonObject("") {
