@@ -27,7 +27,7 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // sys.argv = Bundle.main.executablePath
   
-  let kernelSpecDict: [String: Any] = [
+  let kernelSpecDict: [String: Encodable] = [
     "argv": [
       Bundle.main.executablePath,
       swiftKernelPath
