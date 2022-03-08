@@ -82,21 +82,17 @@ export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
 # Download secondary dependencies
 
-if [[ ! -e "progress/downloaded-secondary-deps" ]]; then
-  echo "Downloading secondary dependencies"
-
-  # TODO: remove wurlitzer dependency once Swift-Colab 2.0 is stable
-  # to reduce load times
-  pip install wurlitzer
+if [[ ! -e "progress/downloaded-pythonkit" ]]; then
+  echo "Downloading PythonKit"
   
   cd "packages"
   git clone --single-branch --branch swift-colab-dev \
     https://github.com/philipturner/PythonKit
   cd ../
   
-  echo "true" > "progress/downloaded-secondary-deps"
+  echo "true" > "progress/downloaded-pythonkit"
 else
-  echo "Using cached secondary dependencies"
+  echo "Using cached PythonKit download"
 fi
 
 # Download Swift-Colab
