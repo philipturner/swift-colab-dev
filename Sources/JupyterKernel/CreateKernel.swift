@@ -5,6 +5,15 @@ fileprivate let ipykernel = Python.import("ipykernel")
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
+  let progressPath = "/opt/swift/progress/runtime_time"
+  let progressData = FileManager.default.contents(atPath: progressPath)
+  var isCurrentlySwift = false
+  
+  if let progressData = progressData,
+     let progressString = String(data: progressData, using: .utf8) {
+    
+  }
+  
   activateSwiftKernel()
   
   activatePythonKernel()
