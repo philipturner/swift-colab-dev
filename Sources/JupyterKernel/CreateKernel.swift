@@ -10,11 +10,11 @@ public func JupyterKernel_createSwiftKernel() {
   
   var currentRuntime = "python"
   if let runtimeData = fm.contents(atPath: runtimePath) {
-    currentRuntime = String(data: runtimeData, using: .utf8)
+    currentRuntime = String(data: runtimeData, using: .utf8)!
   }
   
   let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
-  fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8))
+  fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
