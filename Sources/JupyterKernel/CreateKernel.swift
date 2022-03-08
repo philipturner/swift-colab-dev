@@ -62,13 +62,13 @@ fileprivate func activatePythonKernel() {
       app.launch_new_instance()
   */
   
-  let sys = Python.import("sys")
+//   let sys = Python.import("sys")
   
-  if sys.path[0] == PythonObject("") {
-    sys.path[0] = Python.None
-  }
+//   if sys.path[0] == PythonObject("") {
+//     sys.path[0] = Python.None
+//   }
   
-  let app = Python.import("ipykernel.kernelapp")
-  app.launch_new_instance()
+//   let app = Python.import("ipykernel.kernelapp")
+//   app.launch_new_instance()
 }
 
