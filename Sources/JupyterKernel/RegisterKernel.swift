@@ -41,21 +41,14 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // TODO: condense this into a one-liner after debugging
   let attributes: [FileAttributeKey: Any] = [
-    .posixPermissions: [2]//NSNumber(0o755)
+    .posixPermissions: NSNumber(0o755)
   ]
   
   do {
-    let encoder = JSONEncoder()
-    encoder.outputFormatting = .prettyPrinted
-    
-    // TODO: condense this into a one-liner after debugging
-    let kernelSpecData = kernelSpec.data(using: .utf8)!
-    fm.createFile(atPath: kernelSpecPath, contents: kernelSpecData)
-    
-    try! fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
-    print("finished")
+    fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
+    try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
   } catch  {
-    print("Error in RegisterKernel: \(error.localizedDescription)")
-    fatalError("Could not continue")
+    fatalError(
+      "Error in JupyterKernel_registerSwiftKernel: \(error.localizedDescription)")
   }
 }
