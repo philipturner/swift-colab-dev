@@ -18,8 +18,8 @@ public func JupyterKernel_registerSwiftKernel() {
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
   
-  with sys_pipes():
-    PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
+  # with sys_pipes():
+  PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
   let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
