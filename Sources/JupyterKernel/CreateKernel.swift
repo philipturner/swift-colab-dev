@@ -40,48 +40,15 @@ fileprivate func activateSwiftKernel() {
 fileprivate func activatePythonKernel() {
   print("=== Activating Python kernel ===")
   
-  // Original Python script:
-  /*
-  """Entry point for launching an IPython kernel.
-
-  This is separate from the ipykernel package so we can avoid doing imports until
-  after removing the cwd from sys.path.
-  """
-
-  import sys
-
-  if __name__ == '__main__':
-      # Remove the CWD from sys.path while we load stuff.
-      # This is added back by InteractiveShellApp.init_path()
-      if sys.path[0] == '':
-          del sys.path[0]
-          # changing to:
-          sys.path[0] = None
-
-      from ipykernel import kernelapp as app
-      app.launch_new_instance()
-  */
-  
+  // Remove the CWD from sys.path while we load stuff.
+  // This is added back by InteractiveShellApp.init_path()
   PyRun_SimpleString("""
   import sys
+  if sys.path[0] == '':
+    del sys.path[0]
   
-  if __name__ == '__main__':
-      # Remove the CWD from sys.path while we load stuff.
-      # This is added back by InteractiveShellApp.init_path()
-      if sys.path[0] == '':
-          del sys.path[0]
-  
-      from ipykernel import kernelapp as app
-      app.launch_new_instance()          
+  from ipykernel import kernelapp as app
+  app.launch_new_instance()          
   """)
-  
-//   let sys = Python.import("sys")
-  
-//   if sys.path[0] == PythonObject("") {
-//     sys.path[0] = Python.None
-//   }
-  
-//   let app = Python.import("ipykernel.kernelapp")
-//   app.launch_new_instance()
 }
 
