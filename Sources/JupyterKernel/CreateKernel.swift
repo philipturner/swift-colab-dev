@@ -16,16 +16,14 @@ public func JupyterKernel_createSwiftKernel() {
   let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
   fm.createFile(atPath: progressPath, contents: nextRuntime.data(using: .utf8))
   
+  // Until there is a built-in alternative, switch back into Python mode on the next
+  // runtime restart. This makes debugging a lot easier and decreases the chance my
+  // main account will be kicked off of Colab for excessive restarts/downloads.
   if nextRuntime == "swift" {
-  activateSwiftKernel()
+    activateSwiftKernel()
   } else {
-    // Until there is a built-in alternative, switch back into Python mode on the next
-    // runtime restart. This makes debugging a lot easier and decreases the chance my
-    // main account will be kicked off of Colab for excessive restarts/downloads.
     activatePythonKernel()
   }
-  
-  
 }
 
 fileprivate func activateSwiftKernel() {
