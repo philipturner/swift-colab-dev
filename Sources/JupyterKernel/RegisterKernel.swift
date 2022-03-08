@@ -30,7 +30,7 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelSpec = """
   {
     "argv": [
-      \(Bundle.main.executablePath),
+      \(Bundle.main.executablePath!),
       \(swiftKernelPath)
     ]
   }
@@ -39,14 +39,13 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
   
-  // TODO: condense this into a one-liner after debugging
-  let attributes: [FileAttributeKey: Any] = [
-    .posixPermissions: NSNumber(0o755)
-  ]
+  fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
   
   do {
-    fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
-    try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
+    try fm.setAttributes(
+      [.posixPermissions: NSNumber(0o755)],
+      ofItemAtPath: kernelSpecPath
+    )
   } catch  {
     fatalError(
       "Error in JupyterKernel_registerSwiftKernel: \(error.localizedDescription)")
