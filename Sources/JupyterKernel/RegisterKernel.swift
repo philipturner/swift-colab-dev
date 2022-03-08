@@ -14,19 +14,30 @@ public func JupyterKernel_registerSwiftKernel() {
   // Create Swift kernel script
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
-  let pythonScript = """
-  #!/usr/bin/python3
-  from ctypes import PyDLL
-  from wurlitzer import sys_pipes
+  let swiftScript = """
+  #!/opt/swift/toolchain/usr/bin/swift
+  import GLibc
   
-  if __name__ == "__main__":
-    with sys_pipes():
-      PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
+  let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
+  let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_createSwiftKernel")!
+  
+  let JupyterKernel_createSwiftKernel = unsafeBitCast(
+    funcAddress, to: (@convention(c) () -> Void).self)
+  JupyterKernel_createSwiftKernel()
   """
+//   let pythonScript = """
+//   #!/usr/bin/python3
+//   from ctypes import PyDLL
+//   from wurlitzer import sys_pipes
   
-  let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
+//   if __name__ == "__main__":
+//     with sys_pipes():
+//       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
+//   """
+  
+  let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.swift"
   try? fm.removeItem(atPath: swiftKernelPath)
-  fm.createFile(atPath: swiftKernelPath, contents: pythonScript.data(using: .utf8)!)
+  fm.createFile(atPath: swiftKernelPath, contents: swiftScript.data(using: .utf8)!)
   
   // Create kernel spec
   
