@@ -235,8 +235,8 @@ if [[ $replacing_python_kernel == true ]]; then
   register_kernel='
 import Foundation
 
-let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
-let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")//!
+let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
+let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
 
 let JupyterKernel_registerSwiftKernel = unsafeBitCast(
   funcAddress, to: (@convention(c) () -> Void).self)
