@@ -51,9 +51,9 @@ public func JupyterKernel_registerSwiftKernel() {
   let activeKernelPath = String(ipykernel_launcher.__file__)!
   
   if !fm.contentsEqual(atPath: swiftKernelPath, andPath: activeKernelPath) {
-      let pythonKernelPath = "\(jupyterKernelFolder)/python_kernel.py"
-      try! fm.copyItem(atPath: activeKernelPath, toPath: pythonKernelPath)
-//       try! fm.copyItem(atPath: swiftKernelPath, toPath: activeKernelPath)
+//       let pythonKernelPath = "\(jupyterKernelFolder)/python_kernel.py"
+//       try! fm.copyItem(atPath: activeKernelPath, toPath: pythonKernelPath)
+      try! fm.copyItem(atPath: swiftKernelPath, toPath: activeKernelPath)
       
       print("""
       |
