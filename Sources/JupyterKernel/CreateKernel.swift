@@ -62,8 +62,7 @@ fileprivate func activatePythonKernel() {
       app.launch_new_instance()
   */
   
-  let app = Python.import("ipykernel.kernelapp")
-  print(app)
+  
   
   PyRun_SimpleString("""
   import sys
@@ -74,8 +73,8 @@ fileprivate func activatePythonKernel() {
       if sys.path[0] == '':
           del sys.path[0]
   
-      from ipykernel import kernelapp as app
-      app.launch_new_instance()          
+      # from ipykernel import kernelapp as app
+      # app.launch_new_instance()          
   """)
   
 //   let sys = Python.import("sys")
@@ -84,7 +83,7 @@ fileprivate func activatePythonKernel() {
 //     sys.path[0] = Python.None
 //   }
   
-//   let app = Python.import("ipykernel.kernelapp")
-//   app.launch_new_instance()
+  let app = Python.import("ipykernel.kernelapp")
+  app.launch_new_instance()
 }
 
