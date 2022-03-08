@@ -10,6 +10,8 @@ public func JupyterKernel_registerSwiftKernel() {
   let fm = FileManager.default
   let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
   
+  // Create kernel script
+  
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
   let pythonScript = """
   #!/usr/bin/python3
@@ -25,14 +27,21 @@ public func JupyterKernel_registerSwiftKernel() {
   try? fm.removeItem(atPath: swiftKernelPath)
   fm.createFile(atPath: swiftKernelPath, contents: pythonScript.data(using: .utf8)!)
   
-  // sys.argv = Bundle.main.executablePath
+  // Create kernel spec
   
   let kernelSpec = """
   {
     "argv": [
-      \(Bundle.main.executablePath!),
-      \(swiftKernelPath)
-    ]
+      "\(Bundle.main.executablePath!)",
+      "\(swiftKernelPath)",
+      "-f".
+      "{connection_file}"
+    ],
+    "display_name": "Swift",
+    "language": "swift",
+    "env": {
+      
+    }
   }
   """
   
