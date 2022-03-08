@@ -34,7 +34,11 @@ fileprivate func activateSwiftKernel() {
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
-  // TODO: launch kernel
+  let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
+  // We pass the kernel name as a command-line arg, since Jupyter gives those
+  // highest priority (in particular overriding any system-wide config).
+  IPKernelApp.launch_instance(
+    argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=__main__.SwiftKernel"])
 }
 
 // The original Python kernel. There is no way to get it run besides
