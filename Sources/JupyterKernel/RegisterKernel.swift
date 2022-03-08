@@ -37,12 +37,20 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
   
+  
+  
   // TODO: condense this into a one-liner after debugging
   let attributes: [FileAttributeKey: Any] = [
     .posixPermissions: NSNumber(0o755)
   ]
   
   do {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .prettyPrinted
+    
+    let kernelSpecData = try encoder.encode(kernelSpecDict)
+    fm.createFile(atPath: kernelSpecPath, contents: kernelSpecData)
+    
     try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
   } catch  {
     print("Error in RegisterKernel: \(error.localizedDescription)")
