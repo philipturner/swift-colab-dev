@@ -12,6 +12,7 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
   let pythonScript = """
+  #!/usr/bin/python3
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
   
@@ -26,7 +27,12 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // sys.argv = Bundle.main.executablePath
   
-  let kernel_json
+  let kernelJSONDict: [String: Any] = [
+    "argv": [
+      Bundle.main.executablePath,
+      swiftKernelPath,
+      
+  ]
            
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
