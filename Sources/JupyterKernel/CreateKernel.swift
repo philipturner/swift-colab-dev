@@ -1,7 +1,7 @@
 import Foundation
 
 fileprivate let signal = Python.import("signal")
-fileprivate let ipykernel = Python.import("ipykernel")
+fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
