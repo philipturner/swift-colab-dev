@@ -20,12 +20,14 @@ public func JupyterKernel_registerSwiftKernel() {
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
-  let swift_kernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
-  try? fm.removeItem(atPath: swift_kernelPath)
-  fm.createFile(atPath: swift_kernelPath, contents: pythonScript.data(using: .utf8)!)
+  let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
+  try? fm.removeItem(atPath: swiftKernelPath)
+  fm.createFile(atPath: swiftKernelPath, contents: pythonScript.data(using: .utf8)!)
   
   // sys.argv = Bundle.main.executablePath
+  
+  let kernel_json
            
-  let kernelPath = "\(jupyterKernelFolder)/kernel.json"
-  try? fm.removeItem(atPath: kernelPath)
+  let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
+  try? fm.removeItem(atPath: kernelSpecPath)
 }
