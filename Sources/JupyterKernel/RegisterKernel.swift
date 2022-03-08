@@ -40,14 +40,5 @@ public func JupyterKernel_registerSwiftKernel() {
   try? fm.removeItem(atPath: kernelSpecPath)
   
   fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
-  
-  do {
-    try fm.setAttributes(
-      [.posixPermissions: NSNumber(0o755)],
-      ofItemAtPath: kernelSpecPath
-    )
-  } catch  {
-    fatalError(
-      "Error in JupyterKernel_registerSwiftKernel: \(error.localizedDescription)")
-  }
+  try! fm.setAttributes([.posixPermissions: NSNumber(0o755)], ofItemAtPath: kernelSpecPath)
 }
