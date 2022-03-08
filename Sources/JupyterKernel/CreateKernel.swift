@@ -6,15 +6,15 @@ fileprivate let ipykernel = Python.import("ipykernel")
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
-  let progressPath = "/opt/swift/progress/runtime_type"
+  let runtimePath = "/opt/swift/progress/runtime_type"
   
   var currentRuntime = "python"
-  if let progressData = fm.contents(atPath: progressPath) {
-    currentRuntime = String(data: progressData, using: .utf8)
+  if let runtimeData = fm.contents(atPath: runtimePath) {
+    currentRuntime = String(data: runtimeData, using: .utf8)
   }
   
   let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
-  fm.createFile(atPath: progressPath, contents: nextRuntime.data(using: .utf8))
+  fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8))
   
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
@@ -41,27 +41,26 @@ fileprivate func activateSwiftKernel() {
 
 fileprivate func activatePythonKernel() {
   /*
-"""Entry point for launching an IPython kernel.
+  """Entry point for launching an IPython kernel.
 
-This is separate from the ipykernel package so we can avoid doing imports until
-after removing the cwd from sys.path.
-"""
+  This is separate from the ipykernel package so we can avoid doing imports until
+  after removing the cwd from sys.path.
+  """
 
-import sys
+  import sys
 
-if __name__ == '__main__':
-    # Remove the CWD from sys.path while we load stuff.
-    # This is added back by InteractiveShellApp.init_path()
-    if sys.path[0] == '':
-        del sys.path[0]
-        # changing to:
-        sys.path[0] = None
+  if __name__ == '__main__':
+      # Remove the CWD from sys.path while we load stuff.
+      # This is added back by InteractiveShellApp.init_path()
+      if sys.path[0] == '':
+          del sys.path[0]
+          # changing to:
+          sys.path[0] = None
 
-    from ipykernel import kernelapp as app
-    app.launch_new_instance()
+      from ipykernel import kernelapp as app
+      app.launch_new_instance()
 
 
-*/
-
+  */
 }
 
