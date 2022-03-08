@@ -6,7 +6,7 @@ fileprivate let ipykernel = Python.import("ipykernel")
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
-  let progressPath = "/opt/swift/progress/runtime_time"
+  let progressPath = "/opt/swift/progress/runtime_type"
   
   var currentRuntime = "python"
   if let progressData = fm.contents(atPath: progressPath) {
