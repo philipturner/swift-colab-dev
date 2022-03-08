@@ -80,20 +80,20 @@ fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
-# Download secondary dependencies
+# # Download secondary dependencies
 
-if [[ ! -e "progress/downloaded-pythonkit" ]]; then
-  echo "Downloading PythonKit"
+# if [[ ! -e "progress/downloaded-pythonkit" ]]; then
+#   echo "Downloading PythonKit"
   
-  cd "packages"
-  git clone --single-branch --branch swift-colab-dev \
-    https://github.com/philipturner/PythonKit
-  cd ../
+#   cd "packages"
+#   git clone --single-branch --branch swift-colab-dev \
+#     https://github.com/philipturner/PythonKit
+#   cd ../
   
-  echo "true" > "progress/downloaded-pythonkit"
-else
-  echo "Using cached PythonKit download"
-fi
+#   echo "true" > "progress/downloaded-pythonkit"
+# else
+#   echo "Using cached PythonKit download"
+# fi
 
 # Download Swift-Colab
 
@@ -143,28 +143,28 @@ else
   echo "Using cached Swift LLDB bindings"
 fi
 
-# Build PythonKit
+# # Build PythonKit
 
-if [[ ! -e "progress/pythonkit-compiler-version" || 
-  $version != `cat "progress/pythonkit-compiler-version"` ]]
-then
-  echo "Compiling PythonKit"
-  cd "packages/PythonKit"
+# if [[ ! -e "progress/pythonkit-compiler-version" || 
+#   $version != `cat "progress/pythonkit-compiler-version"` ]]
+# then
+#   echo "Compiling PythonKit"
+#   cd "packages/PythonKit"
   
-  if [[ -d .build ]]; then
-    echo "\
-Previously compiled with a different Swift version. \
-Removing existing PythonKit build products."
-    rm -r .build
-  fi
+#   if [[ -d .build ]]; then
+#     echo "\
+# Previously compiled with a different Swift version. \
+# Removing existing PythonKit build products."
+#     rm -r .build
+#   fi
   
-  swift build -c release -Xswiftc -Onone
+#   swift build -c release -Xswiftc -Onone
 
-  cd /opt/swift
-  echo $version > "progress/pythonkit-compiler-version"
-else
-  echo "Using cached PythonKit binary"
-fi
+#   cd /opt/swift
+#   echo $version > "progress/pythonkit-compiler-version"
+# else
+#   echo "Using cached PythonKit binary"
+# fi
 
 # Build JupyterKernel
 
@@ -188,8 +188,9 @@ Removing existing JupyterKernel build products."
   mkdir build && cd build
   pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
   swiftc -Onone $source_files \
-    "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
     -emit-module -emit-library -module-name "JupyterKernel"
+    
+  #    "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
