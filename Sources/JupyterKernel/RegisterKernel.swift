@@ -11,7 +11,7 @@ public func JupyterKernel_registerSwiftKernel() {
   let fm = FileManager.default
   let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
   
-  // Create kernel script
+  // Create Swift kernel script
   
   // TODO: remove `if __name__ == "__main__":` if it isn't necesssary
   let pythonScript = """
@@ -53,4 +53,23 @@ public func JupyterKernel_registerSwiftKernel() {
   fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
 //   try! fm.setAttributes([.posixPermissions: NSNumber(0o755)], ofItemAtPath: kernelSpecPath)
   KernelSpecManager().install_kernel_spec(jupyterKernelFolder, "swift")
+  
+  // Overwrite Python kernel script
+  
+  let pythonKernelPath = String(ipykernel_launcher.__file__)!
+  
+  if !fm.contentsEqual(atPath: swiftKernelPath, andPath: pythonKernelPath) {
+      try! fm.copyItem(atPath: swiftKernelPath, toPath: pythonKernelPath)
+      
+      print("""
+      |
+      ===----------------------------------------------------------------------------------------===
+      === Swift-Colab overwrote the Python kernel with Swift, but Colab is still in Python mode. ===
+      === To enter Swift mode, go to Runtime > Restart runtime (NOT Factory reset runtime).      ===
+      ===----------------------------------------------------------------------------------------===
+      |
+      """)
+  } else {
+      print("=== Swift Jupyter kernel was already registered ===")
+  }
 }
