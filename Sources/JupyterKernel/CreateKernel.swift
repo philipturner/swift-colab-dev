@@ -10,7 +10,7 @@ public func JupyterKernel_createSwiftKernel() {
   
   var currentRuntime = "python"
   if let runtimeData = fm.contents(atPath: runtimePath) {
-    currentRuntime = String(data: runtimeData, using: .utf8)!
+    currentRuntime = String(data: runtimeData, encoding: .utf8)!
   }
   
   let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
