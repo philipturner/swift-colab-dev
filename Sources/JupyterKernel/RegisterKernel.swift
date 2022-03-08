@@ -27,17 +27,17 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // sys.argv = Bundle.main.executablePath
   
-  let kernelSpecDict: [String: Encodable] = [
+  let kernelSpec = """
+  {
     "argv": [
-      Bundle.main.executablePath,
-      swiftKernelPath
+      \(Bundle.main.executablePath),
+      \(swiftKernelPath)
     ]
-  ]
-           
+  }
+  """
+  
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
-  
-  
   
   // TODO: condense this into a one-liner after debugging
   let attributes: [FileAttributeKey: Any] = [
@@ -48,7 +48,8 @@ public func JupyterKernel_registerSwiftKernel() {
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     
-    let kernelSpecData = try encoder.encode(kernelSpecDict)
+    // TODO: condense this into a one-liner after debugging
+    let kernelSpecData = kernelSpec.data(using: .utf8)!
     fm.createFile(atPath: kernelSpecPath, contents: kernelSpecData)
     
     try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
