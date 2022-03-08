@@ -1,5 +1,4 @@
 import Foundation
-import PythonKit
 
 fileprivate let signal = Python.import("signal")
 fileprivate let ipykernel = Python.import("ipykernel")
