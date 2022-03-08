@@ -38,8 +38,8 @@ fileprivate func activateSwiftKernel() {
   // TODO: launch kernel
 }
 
-
 fileprivate func activatePythonKernel() {
+  // Original Python script:
   /*
   """Entry point for launching an IPython kernel.
 
@@ -59,8 +59,14 @@ fileprivate func activatePythonKernel() {
 
       from ipykernel import kernelapp as app
       app.launch_new_instance()
-
-
   */
+  let sys = Python.import("sys")
+  
+  if sys.path[0] == PythonObject("") {
+    sys.path[0] = Python.None
+  }
+  
+  let app = Python.import("ipykernel.kernelapp")
+  app.launch_new_instance()
 }
 
