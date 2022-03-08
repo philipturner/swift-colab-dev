@@ -4,13 +4,6 @@ fileprivate let signal = Python.import("signal")
 fileprivate let ipykernel = Python.import("ipykernel")
 fileprivate let ipykernel_launcher = Python.import("ipykernel_launcher")
 
-fileprivate func resetToPythonKernel() {
-  let fm = FileManager.default
-  let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
-  
-  let pythonKernelPath = String(ipykernel_launcher.__file__)!
-}
-
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   // TODO: remove this notice
@@ -26,5 +19,7 @@ public func JupyterKernel_createSwiftKernel() {
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
   // main account will be kicked off of Colab for excessive restarts/downloads.
-  resetToPythonKernel()
+  let activeKernelPath = String(ipykernel_launcher.__file__)!
+  let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
+  try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
 }
