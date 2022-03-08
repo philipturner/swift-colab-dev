@@ -21,7 +21,7 @@ public func JupyterKernel_createSwiftKernel() {
   // main account will be kicked off of Colab for excessive restarts/downloads.
   print("=== Overwriting Swift kernel with Python kernel ===")
   
-  let activeKernelPath = String(ipykernel_launcher.__file__)!
-  let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
-  try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
+//   let activeKernelPath = String(ipykernel_launcher.__file__)!
+//   let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
+//   try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
 }
