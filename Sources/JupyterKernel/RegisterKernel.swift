@@ -27,7 +27,7 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // sys.argv = Bundle.main.executablePath
   
-  let kernelJSONDict: [String: Any] = [
+  let kernelSpecDict: [String: Any] = [
     "argv": [
       Bundle.main.executablePath,
       swiftKernelPath
@@ -37,7 +37,15 @@ public func JupyterKernel_registerSwiftKernel() {
   let kernelSpecPath = "\(jupyterKernelFolder)/kernel.json"
   try? fm.removeItem(atPath: kernelSpecPath)
   
+  // TODO: condense this into a one-liner after debugging
   let attributes: [FileAttributeKey: Any] = [
     .posixPermissions: NSNumber(0o755)
   ]
+  
+  do {
+    try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
+  } catch  {
+    print("Error in RegisterKernel: \(error.localizedDescription)")
+    fatalError("Could not continue")
+  }
 }
