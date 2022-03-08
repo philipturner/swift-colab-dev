@@ -62,6 +62,9 @@ fileprivate func activatePythonKernel() {
       app.launch_new_instance()
   */
   
+  let app = Python.import("ipykernel.kernelapp")
+  print(app)
+  
   PyRun_SimpleString("""
   import sys
   
