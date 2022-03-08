@@ -37,6 +37,9 @@ fileprivate func activateSwiftKernel() {
   // TODO: launch kernel
 }
 
+// The original Python kernel. There is no way to get it run besides
+// passing a string into the Python interpreter. No component of the
+// string can be extracted into Swift.
 fileprivate func activatePythonKernel() {
   print("=== Activating Python kernel ===")
   
