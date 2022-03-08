@@ -48,6 +48,7 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // Overwrite Python kernel script
   
+  #if false
   let pythonKernelPath = String(ipykernel_launcher.__file__)!
   
   if !fm.contentsEqual(atPath: swiftKernelPath, andPath: pythonKernelPath) {
@@ -64,4 +65,5 @@ public func JupyterKernel_registerSwiftKernel() {
   } else {
       print("=== Swift Jupyter kernel was already registered ===")
   }
+  #endif
 }
