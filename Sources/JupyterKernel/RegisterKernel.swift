@@ -52,5 +52,5 @@ public func JupyterKernel_registerSwiftKernel() {
   // Does this even do anything? Can I avoid it since I'm just overwriting the Python kernel?
   fm.createFile(atPath: kernelSpecPath, contents: kernelSpec.data(using: .utf8)!)
   try! fm.setAttributes([.posixPermissions: NSNumber(0o755)], ofItemAtPath: kernelSpecPath)
-  KernelSpecManager().install_kernel_spec(kernelSpecPath, "swift")
+  KernelSpecManager().install_kernel_spec(jupyterKernelFolder, "swift")
 }
