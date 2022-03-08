@@ -40,6 +40,8 @@ if __name__ == '__main__':
     # This is added back by InteractiveShellApp.init_path()
     if sys.path[0] == '':
         del sys.path[0]
+        # changing to:
+        sys.path[0] = None
 
     from ipykernel import kernelapp as app
     app.launch_new_instance()
