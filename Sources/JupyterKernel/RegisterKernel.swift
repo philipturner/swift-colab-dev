@@ -41,7 +41,7 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // TODO: condense this into a one-liner after debugging
   let attributes: [FileAttributeKey: Any] = [
-    .posixPermissions: NSNumber(0o755)
+    .posixPermissions: [2]//NSNumber(0o755)
   ]
   
   do {
