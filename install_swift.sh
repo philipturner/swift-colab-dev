@@ -80,21 +80,6 @@ fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
-# # Download secondary dependencies
-
-# if [[ ! -e "progress/downloaded-pythonkit" ]]; then
-#   echo "Downloading PythonKit"
-  
-#   cd "packages"
-#   git clone --single-branch --branch swift-colab-dev \
-#     https://github.com/philipturner/PythonKit
-#   cd ../
-  
-#   echo "true" > "progress/downloaded-pythonkit"
-# else
-#   echo "Using cached PythonKit download"
-# fi
-
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
@@ -143,29 +128,6 @@ else
   echo "Using cached Swift LLDB bindings"
 fi
 
-# # Build PythonKit
-
-# if [[ ! -e "progress/pythonkit-compiler-version" || 
-#   $version != `cat "progress/pythonkit-compiler-version"` ]]
-# then
-#   echo "Compiling PythonKit"
-#   cd "packages/PythonKit"
-  
-#   if [[ -d .build ]]; then
-#     echo "\
-# Previously compiled with a different Swift version. \
-# Removing existing PythonKit build products."
-#     rm -r .build
-#   fi
-  
-#   swift build -c release -Xswiftc -Onone
-
-#   cd /opt/swift
-#   echo $version > "progress/pythonkit-compiler-version"
-# else
-#   echo "Using cached PythonKit binary"
-# fi
-
 # Build JupyterKernel
 
 if [[ ! -e "progress/jupyterkernel-compiler-version" ||
@@ -189,34 +151,12 @@ Removing existing JupyterKernel build products."
   pythonkit_products="/opt/swift/packages/PythonKit/.build/release"
   swiftc -Onone $source_files \
     -emit-module -emit-library -module-name "JupyterKernel"
-    
-  #    "-L$pythonkit_products" "-I$pythonkit_products" -lPythonKit \
   
   jupyterkernel_lib="/opt/swift/lib/libJupyterKernel.so"
   if [[ ! -L $jupyterkernel_lib ]]; then
     echo "Adding symbolic link to JupyterKernel binary"
     ln -s "$(pwd)/libJupyterKernel.so" $jupyterkernel_lib
   fi
-  
-  validate2=$'
-import Foundation
-
-let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)
-print("Should not be \'nil\':", libJupyterKernel as Any)
-
-func loadSymbol<T>(name: String) -> T {
-  let address = dlsym(libJupyterKernel, name)
-  print("Should not be \'nil\':", address as Any)
-  return unsafeBitCast(address, to: T.self)
-}
-
-let validation_test: @convention(c) () -> Void =
-  loadSymbol(name: "validation_test")
-validation_test()
-'
-  # Uncomment to debug Swift-Colab
-#   echo "$validate2" > validate2.swift
-#   swift validate2.swift
   
   cd /opt/swift
   # Don't uncomment this until Swift-Colab 2.0 is stable
