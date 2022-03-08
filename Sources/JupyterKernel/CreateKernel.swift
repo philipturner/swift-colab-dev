@@ -12,7 +12,7 @@ public func JupyterKernel_createSwiftKernel() {
   // Jupyter sends us SIGINT when the user requests execution interruption.
   // Here, we block all threads from receiving the SIGINT, so that we can
   // handle it in a specific handler thread.
-  signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
+//   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
   // TODO: launch kernel
   
@@ -21,7 +21,7 @@ public func JupyterKernel_createSwiftKernel() {
   // main account will be kicked off of Colab for excessive restarts/downloads.
   print("=== Overwriting Swift kernel with Python kernel ===")
   
-//   let activeKernelPath = String(ipykernel_launcher.__file__)!
-//   let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
-//   try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
+  let activeKernelPath = String(ipykernel_launcher.__file__)!
+  let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
+  try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
 }
