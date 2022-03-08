@@ -5,18 +5,27 @@ fileprivate let ipykernel = Python.import("ipykernel")
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
+  let fm = FileManager.default
   let progressPath = "/opt/swift/progress/runtime_time"
-  let progressData = FileManager.default.contents(atPath: progressPath)
-  var isCurrentlySwift = false
   
-  if let progressData = progressData,
-     let progressString = String(data: progressData, using: .utf8) {
-    
+  var currentRuntime = "python"
+  if let progressData = fm.contents(atPath: progressPath) {
+    currentRuntime = String(data: progressData, using: .utf8)
   }
   
-  activateSwiftKernel()
+  let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
+  fm.createFile(atPath: progressPath, contents: nextRuntime.data(using: .utf8))
   
-  activatePythonKernel()
+  if nextRuntime == "swift" {
+  activateSwiftKernel()
+  } else {
+    // Until there is a built-in alternative, switch back into Python mode on the next
+    // runtime restart. This makes debugging a lot easier and decreases the chance my
+    // main account will be kicked off of Colab for excessive restarts/downloads.
+    activatePythonKernel()
+  }
+  
+  
 }
 
 fileprivate func activateSwiftKernel() {
@@ -31,9 +40,7 @@ fileprivate func activateSwiftKernel() {
   // TODO: launch kernel
 }
 
-// Until there is a built-in alternative, switch back into Python mode on the next
-  // runtime restart. This makes debugging a lot easier and decreases the chance my
-  // main account will be kicked off of Colab for excessive restarts/downloads.
+
 fileprivate func activatePythonKernel() {
   /*
 """Entry point for launching an IPython kernel.
