@@ -19,6 +19,8 @@ public func JupyterKernel_createSwiftKernel() {
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
   // main account will be kicked off of Colab for excessive restarts/downloads.
+  print("=== Overwriting Swift kernel with Python kernel ===")
+  
   let activeKernelPath = String(ipykernel_launcher.__file__)!
   let pythonKernelPath = "/opt/swift/packages/JupyterKernel/python_kernel.py"
   try! FileManager.default.copyItem(atPath: pythonKernelPath, toPath: activeKernelPath)
