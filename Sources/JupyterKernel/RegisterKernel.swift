@@ -52,7 +52,7 @@ public func JupyterKernel_registerSwiftKernel() {
     let kernelSpecData = kernelSpec.data(using: .utf8)!
     fm.createFile(atPath: kernelSpecPath, contents: kernelSpecData)
     
-    try fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
+    try! fm.setAttributes(attributes, ofItemAtPath: kernelSpecPath)
     print("finished")
   } catch  {
     print("Error in RegisterKernel: \(error.localizedDescription)")
