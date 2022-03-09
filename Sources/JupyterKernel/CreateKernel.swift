@@ -10,6 +10,8 @@ public func JupyterKernel_createSwiftKernel(_ __name__Ref: OpaquePointer) {
 //   assert(__name__ == "__main__")
 //   assert(__name__ == Python.__name__)
   
+  // use PyRun_SimpleString to assert what "__name__" is
+  
   let fm = FileManager.default
   let runtimePath = "/opt/swift/runtime_type"
   
