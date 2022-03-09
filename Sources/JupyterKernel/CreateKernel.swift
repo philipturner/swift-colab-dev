@@ -64,20 +64,8 @@ fileprivate func activateSwiftKernel() {
   // Jupyter sends us SIGINT when the user requests execution interruption.
   // Here, we block all threads from receiving the SIGINT, so that we can
   // handle it in a specific handler thread.
-  do {
-    var mask = sigset_t(SIGINT)
-    var previous = sigset_t(0)
-    
-    let err = pthread_sigmask(SIG_BLOCK, &mask, &previous)
-    precondition(err == 0, """
-      Could not block all threads from receiving SIGINT. \
-      Received error code \(err) from pthread_sigmask.
-    """)
-    
-                              
-//     signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
-  }
-  
+  let signal = Python.import("signal")
+  signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
   // Must create this from a Python script declaration. Using the built-in
   // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
