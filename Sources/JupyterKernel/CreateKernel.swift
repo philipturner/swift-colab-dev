@@ -50,6 +50,16 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
     "file_extension": ".swift",
     "version": ""
   ]
+  
+  SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
+    let `self` = params[0]
+    return [
+      "status": "ok",
+      "execution_count": `self`.execution_count,
+      "payload": [],
+      "user_expressions": [:],
+    ]
+  }
 }
 
 fileprivate func activateSwiftKernel() {
