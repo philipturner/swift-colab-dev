@@ -41,7 +41,7 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   
   // How many of these members are actually necessary?
   SwiftKernel.implementation = "swift"
-//   SwiftKernel.implementation_version = "2.0"
+  SwiftKernel.implementation_version = "2.0"
 //   SwiftKernel.banner = ""
   
   SwiftKernel.language_info = [
