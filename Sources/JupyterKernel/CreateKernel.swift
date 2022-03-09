@@ -8,7 +8,7 @@ public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
   let runtimePath = "/opt/swift/runtime_type"
   
-  let runtimeData = fm.contents(atPath: runtimePath)
+  let runtimeData = fm.contents(atPath: runtimePath)!
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!
   
   // --- uncomment in development mode
