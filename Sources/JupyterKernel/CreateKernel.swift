@@ -11,7 +11,7 @@ public func JupyterKernel_createSwiftKernel() {
   print(__name__)
   print(__name__ == "__main__")
   from ipykernel.kernelbase import Kernel
-  class MyClass(Kernel):
+  class SwiftKernel(Kernel):
       pass
   
   print(MyClass)
