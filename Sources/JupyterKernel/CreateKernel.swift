@@ -5,13 +5,8 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
-  print("separator 0")
+//   print("separator 0")
   PyRun_SimpleString("""
-  print("separator 1")
-  print(__name__)
-  print(__main__)
-  print("separator 2")
-  
   """)
   
 //   print(Python.__name__)
