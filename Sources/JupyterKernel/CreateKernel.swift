@@ -9,35 +9,16 @@ public func JupyterKernel_createSwiftKernel() {
   PyRun_SimpleString("""
   print("separator 1")
   print(__name__)
-  print(__name__ == "__main__")
-  from ipykernel.kernelbase import Kernel
-  class SwiftKernel(Kernel):
-      pass
-  
-  print(SwiftKernel)
+  print(__main__)
   print("separator 2")
+  
   """)
   
-  let MyClass2 = PythonClass(
-    "MyClass2",
-    superclasses: [Python.object],
-    members: [
-      "implementation": "swift",
-    ]
-  ).pythonObject
-  
-  print(MyClass2)
+  print(Python.__name__)
+  print(Python.__main__)
   print("separator 3")
-  
-  let MyClass3 = PythonClass(
-    "MyClass3",
-    superclasses: [Kernel],
-    members: [
-      "implementation": "swift",
-    ]
-  ).pythonObject
-  
-  print(MyClass3)
+  Python.__main__.HelloWorldExample = PythonObject(2)
+  print(Python.__main__.HelloWorldExample)
   print("separator 4")
   
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
