@@ -77,9 +77,6 @@ else
   mv "$release-ubuntu18.04" "toolchain"
   
   echo $version > "progress/swift-version"
-  
-  # Remove when done debugging
-  pip install wurlitzer
 fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
