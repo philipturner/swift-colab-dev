@@ -67,8 +67,8 @@ fileprivate func activateSwiftKernel() {
   // Description happens to be <class 'traitlets.traitlets.SwiftKernel'>
   // instead of <class '__main__.SwiftKernel'> (what is expected)
   var description = String(describing: SwiftKernel)
-  description.dropFirst("<class '".count)
-  description.dropLast("'>".count)
+  description.removeFirst("<class '".count)
+  description.removeLast("'>".count)
   print(description)
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
