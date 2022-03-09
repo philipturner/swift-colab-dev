@@ -11,6 +11,10 @@ public func JupyterKernel_createSwiftKernel() {
   let runtimeData = fm.contents(atPath: runtimePath)!
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
+  if currentRuntime == "swift" {
+    fatalError("Intentional debug fatal error in CreateKernel.swift")
+  }
+  
   // --- uncomment in development mode
   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? "swift" : "python3"
   // --- uncomment in release mode
