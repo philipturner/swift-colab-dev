@@ -20,9 +20,19 @@ public func JupyterKernel_createSwiftKernel() {
   ).pythonObject
   
   print(MyClass().mem1)
+  let evenOlderInstance = MyClass()
   
   MyClass.mem2 = PythonObject("val2")
   print(MyClass().mem2)
+  let oldInstance = MyClass()
+  print(evenOlderInstance.mem1)
+  
+  MyClass.firstMethod = PythonInstanceMethod { (`self`: PythonObject) in
+    print(`self`.mem1, `self`.mem2)
+    return Python.None
+  }.pythonObject
+  MyClass().firstMethod()
+  oldInstance.firstMethod()
   
   if currentRuntime == "swift" {
     print("Debug checkpoint (Swift) in CreateKernel.swift")
