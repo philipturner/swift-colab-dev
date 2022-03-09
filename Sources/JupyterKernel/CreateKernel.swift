@@ -39,10 +39,9 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
   preservedSwiftKernelRef = SwiftKernel
   
-  // How many of these members are actually necessary?
   SwiftKernel.implementation = "swift"
-  SwiftKernel.implementation_version = "2.0"
-//   SwiftKernel.banner = ""
+  SwiftKernel.implementation_version = "0.1"
+  SwiftKernel.banner = ""
   
   SwiftKernel.language_info = [
     "name": "swift",
