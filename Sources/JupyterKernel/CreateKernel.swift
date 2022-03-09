@@ -5,7 +5,7 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel(_ __name__Ref: OpaquePointer) {
-  let __name__ = PythonObject(__name__Ref as OwnedPyObjectPointer)
+  let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
   print(__name__)
   assert(__name__ == "__main__")
   assert(__name__ == Python.__name__)
