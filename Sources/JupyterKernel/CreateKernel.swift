@@ -5,25 +5,6 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
-//   print("separator 0")
-  PyRun_SimpleString("""
-  
-  """)
-  
-//   print(Python.__name__)
-//   print(Python.__main__)
-//   print("separator 3")
-//   Python.__main__.HelloWorldExample = PythonObject(2)
-//   print(Python.__main__.HelloWorldExample)
-//   print("separator 4")
-  
-//   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
-//   print(__name__)
-//   assert(__name__ == "__main__")
-//   assert(__name__ == Python.__name__)
-  
-  // use PyRun_SimpleString to assert what "__name__" is
-  
   let fm = FileManager.default
   let runtimePath = "/opt/swift/runtime_type"
   
@@ -70,41 +51,45 @@ fileprivate func activateSwiftKernel() {
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
-  // Initialize the Swift kernel
-  let SwiftKernel = PythonClass(
-    "SwiftKernel",
-    superclasses: [Kernel],
-    members: [
-      // How many of these members are actually necessary?
-      "implementation": "swift",
-      "implementation_version": "2.0",
-      "banner": "",
+  PyRun_SimpleString("""
+  
+  """)
+  
+//   // Initialize the Swift kernel
+//   let SwiftKernel = PythonClass(
+//     "SwiftKernel",
+//     superclasses: [Kernel],
+//     members: [
+//       // How many of these members are actually necessary?
+//       "implementation": "swift",
+//       "implementation_version": "2.0",
+//       "banner": "",
 
-      "language_info": [
-        "name": "swift",
-        "mimetype": "text/x-swift",
-        "file_extension": ".swift",
-        "version": ""
-      ],
+//       "language_info": [
+//         "name": "swift",
+//         "mimetype": "text/x-swift",
+//         "file_extension": ".swift",
+//         "version": ""
+//       ],
     
-//       "__init__": PythonInstanceMethod { (params: [PythonObject]) in
-//         let `self` = params[0]
-//         let kwargs = params[1]
-//         Kernel.__init__(`self`, kwargs)
+// //       "__init__": PythonInstanceMethod { (params: [PythonObject]) in
+// //         let `self` = params[0]
+// //         let kwargs = params[1]
+// //         Kernel.__init__(`self`, kwargs)
 
-//         return Python.None
-//       }
-    ]
-  ).pythonObject
+// //         return Python.None
+// //       }
+//     ]
+//   ).pythonObject
   
   // Description happens to be <class 'traitlets.traitlets.SwiftKernel'>
   // instead of <class '__main__.SwiftKernel'> (what is expected)
-  var description = String(describing: SwiftKernel)
-  description.removeFirst("<class '".count)
-  description.removeLast("'>".count)
-  print(Python.__name__)
-  print(String(Python.__name__))
-  print(description)
+//   var description = String(describing: SwiftKernel)
+//   description.removeFirst("<class '".count)
+//   description.removeLast("'>".count)
+//   print(Python.__name__)
+//   print(String(Python.__name__))
+//   print(description)
 //   assert(description == "__main__.SwiftKernel")
 //   assert(description == "traitlets.traitlets.SwiftKernel")
   
