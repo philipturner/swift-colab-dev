@@ -8,17 +8,17 @@ public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
   let runtimePath = "/opt/swift/progress/runtime_type"
   
-  // uncomment in development mode
+  // --- uncomment in development mode
   var currentRuntime = "python"
-  // uncomment in release mode
+  // --- uncomment in release mode
 //   var currentRuntime = "swift"
   if let runtimeData = fm.contents(atPath: runtimePath) {
     currentRuntime = String(data: runtimeData, encoding: .utf8)!
   }
   
-  // uncomment in development mode
+  // --- uncomment in development mode
   let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
-  // uncomment in release mode
+  // --- uncomment in release mode
 //   let nextRuntime = (currentRuntime == "python") ? "python" : "swift"
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
