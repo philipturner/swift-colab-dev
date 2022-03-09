@@ -6,6 +6,7 @@ if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
+  echo "" > /opt/swift/runtime_type
 fi
 
 cd /opt/swift
