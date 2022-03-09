@@ -63,7 +63,13 @@ fileprivate func activateSwiftKernel() {
   
   // Initialize the Swift kernel
   _ = SwiftKernel
-  print(String(describing: SwiftKernel))
+  
+  // Description happens to be <class 'traitlets.traitlets.SwiftKernel'>
+  // instead of <class '__main__.SwiftKernel'> (what is expected)
+  var description = String(describing: SwiftKernel)
+  description.dropFirst("<class '".count)
+  description.dropLast("'>".count)
+  print(description)
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
