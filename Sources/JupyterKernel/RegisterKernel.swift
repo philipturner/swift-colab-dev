@@ -19,6 +19,7 @@ public func JupyterKernel_registerSwiftKernel() {
       print(__name__ == "__main__")
       assert(__name__ == "__main__")
       print("hello world 2")
+      PyDLL(__name__).JupyterKernel_createSwiftKernel()
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
