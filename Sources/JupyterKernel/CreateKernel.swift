@@ -14,7 +14,7 @@ public func JupyterKernel_createSwiftKernel() {
   // --- uncomment in development mode
   let nextRuntime = (currentRuntime != "swift") ? "swift" : "python3"
   // --- uncomment in release mode
-//   let nextRuntime = (currentRuntime == "python3") ? "python3" : "swift"
+//   let nextRuntime = ["python3", "python"].contains(nextRuntime) ? "python3" : "swift"
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
   // Until there is a built-in alternative, switch back into Python mode on the next
