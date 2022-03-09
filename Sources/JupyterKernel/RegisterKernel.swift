@@ -11,7 +11,7 @@ public func JupyterKernel_registerSwiftKernel() {
   let jupyterKernelFolder = "/opt/swift/packages/JupyterKernel"
   
   let pythonScript = """
-  from ctypes import *
+  from ctypes import PyDLL
   if __name__ == "__main__":
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
