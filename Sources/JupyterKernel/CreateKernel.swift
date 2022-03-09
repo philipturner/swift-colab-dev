@@ -6,18 +6,13 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
-  let runtimePath = "/opt/swift/progress/runtime_type"
+  let runtimePath = "/opt/swift/runtime_type"
+  
+  let runtimeData = fm.contents(atPath: runtimePath)
+  let currentRuntime = String(data: runtimeData, encoding: .utf8)!
   
   // --- uncomment in development mode
-  var currentRuntime = "python"
-  // --- uncomment in release mode
-//   var currentRuntime = "swift"
-  if let runtimeData = fm.contents(atPath: runtimePath) {
-    currentRuntime = String(data: runtimeData, encoding: .utf8)!
-  }
-  
-  // --- uncomment in development mode
-  let nextRuntime = (currentRuntime == "python") ? "swift" : "python"
+  let nextRuntime = (currentRuntime != "swift") ? "swift" : "python"
   // --- uncomment in release mode
 //   let nextRuntime = (currentRuntime == "python") ? "python" : "swift"
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
