@@ -11,6 +11,19 @@ public func JupyterKernel_createSwiftKernel() {
   let runtimeData = fm.contents(atPath: runtimePath)!
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
+  let MyClass = PythonClass(
+    "MyClass",
+    superclasses: [Python.object],
+    members: [
+      "mem1": "val1
+    ]
+  ).pythonObject
+  
+  print(MyClass().mem1)
+  
+  MyClass.mem2 = PythonObject("val2")
+  print(MyClass().mem2)
+  
   if currentRuntime == "swift" {
     print("Debug checkpoint (Swift) in CreateKernel.swift")
   } else if currentRuntime == "python3" {
