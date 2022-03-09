@@ -24,7 +24,7 @@ public func JupyterKernel_createSwiftKernel() {
       pass
   
   print(1, SwiftKernel)     
-  func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass()
+  func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
   func.argtypes = [c_void_p]
   func(c_void_p(id(SwiftKernel)))
   """)
