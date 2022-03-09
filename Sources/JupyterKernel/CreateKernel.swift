@@ -28,6 +28,17 @@ public func JupyterKernel_createSwiftKernel() {
   print(MyClass2)
   print("separator 3")
   
+  let MyClass3 = PythonClass(
+    "MyClass3",
+    superclasses: [Kernel],
+    members: [
+      "implementation": "swift",
+    ]
+  ).pythonObject
+  
+  print(MyClass3)
+  print("separator 4")
+  
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
 //   print(__name__)
 //   assert(__name__ == "__main__")
