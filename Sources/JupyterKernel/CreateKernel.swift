@@ -14,7 +14,7 @@ public func JupyterKernel_createSwiftKernel() {
   class SwiftKernel(Kernel):
       pass
   
-  print(MyClass)
+  print(SwiftKernel)
   print("separator 2")
   """)
   
