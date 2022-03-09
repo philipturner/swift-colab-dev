@@ -5,6 +5,10 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
+  PyRun_SimpleString("""
+  print(__name__)
+  print(__name__ == "__main__")
+  """)
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
 //   print(__name__)
 //   assert(__name__ == "__main__")
