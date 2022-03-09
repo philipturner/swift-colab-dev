@@ -42,12 +42,12 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   SwiftKernel.implementation_version = "2.0"
   SwiftKernel.banner = ""
   
-//   "language_info": [
-//         "name": "swift",
-//         "mimetype": "text/x-swift",
-//         "file_extension": ".swift",
-//         "version": ""
-//       ],
+  SwiftKernel.language_info = [
+    "name": "swift",
+    "mimetype": "text/x-swift",
+    "file_extension": ".swift",
+    "version": ""
+  ]
 }
 
 fileprivate func activateSwiftKernel() {
@@ -70,27 +70,7 @@ fileprivate func activateSwiftKernel() {
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
   """)
   
-//       // How many of these members are actually necessary?
-//       "implementation": "swift",
-//       "implementation_version": "2.0",
-//       "banner": "",
-
-//       "language_info": [
-//         "name": "swift",
-//         "mimetype": "text/x-swift",
-//         "file_extension": ".swift",
-//         "version": ""
-//       ],
-    
-// //       "__init__": PythonInstanceMethod { (params: [PythonObject]) in
-// //         let `self` = params[0]
-// //         let kwargs = params[1]
-// //         Kernel.__init__(`self`, kwargs)
-
-// //         return Python.None
-// //       }
-//     ]
-//   ).pythonObject
+  print(preservedSwiftKernelRef)
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
@@ -102,7 +82,7 @@ fileprivate func activateSwiftKernel() {
 }
 
 // The original Python kernel. There is no way to get it run besides
-// passing a string into the Python interpreter. No component of the
+// passing a string into the Python interpreter. No component of this
 // string can be extracted into Swift.
 fileprivate func activatePythonKernel() {
   print("=== Activating Python kernel ===")
@@ -110,11 +90,10 @@ fileprivate func activatePythonKernel() {
   // Remove the CWD from sys.path while we load stuff.
   // This is added back by InteractiveShellApp.init_path()
   PyRun_SimpleString("""
-  import sys
+  import sys; from ipykernel import kernelapp as app
   if sys.path[0] == '':
     del sys.path[0]
   
-  from ipykernel import kernelapp as app
   app.launch_new_instance()          
   """)
 }
