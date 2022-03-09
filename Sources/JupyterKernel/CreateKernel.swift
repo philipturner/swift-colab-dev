@@ -21,7 +21,7 @@ public func JupyterKernel_createSwiftKernel() {
     superclasses: [Python.object],
     members: [
       "implementation": "swift",
-    ] as PythonClass.Members
+    ]
   ).pythonObject
   
   print(MyClass2)
