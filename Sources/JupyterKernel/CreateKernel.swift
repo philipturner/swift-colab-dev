@@ -47,6 +47,8 @@ fileprivate let SwiftKernel = PythonClass(
       let `self` = params[0]
       let kwargs = params[1]
       Kernel.__init__(`self`, kwargs)
+      
+      return Python.None
     }
   ]
 )
