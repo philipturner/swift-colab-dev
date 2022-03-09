@@ -9,7 +9,7 @@ public func JupyterKernel_createSwiftKernel() {
   let runtimePath = "/opt/swift/runtime_type"
   
   let runtimeData = fm.contents(atPath: runtimePath)!
-  let currentRuntime = String(data: runtimeData, encoding: .utf8)!
+  let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
   // --- uncomment in development mode
   let nextRuntime = (currentRuntime != "swift") ? "swift" : "python3"
