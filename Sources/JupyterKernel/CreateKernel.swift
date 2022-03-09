@@ -59,7 +59,7 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
       "payload": [],
       "user_expressions": [:],
     ]
-  }
+  }.pythonObject
 }
 
 fileprivate func activateSwiftKernel() {
