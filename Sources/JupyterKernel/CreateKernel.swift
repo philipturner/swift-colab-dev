@@ -12,7 +12,11 @@ public func JupyterKernel_createSwiftKernel() {
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
   if currentRuntime == "swift" {
-    fatalError("Intentional debug fatal error in CreateKernel.swift")
+    print("Debug checkpoint (Swift) in CreateKernel.swift")
+  } else if currentRuntime == "python3" {
+    print("Debug checkpoint (Python) in CreateKernel.swift")
+  } else {
+    print("Debug checkpoint (Unknown) in CreateKernel.swift")
   }
   
   // --- uncomment in development mode
