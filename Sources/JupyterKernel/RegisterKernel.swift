@@ -13,6 +13,7 @@ public func JupyterKernel_registerSwiftKernel() {
   let pythonScript = """
   from ctypes import PyDLL
   if __name__ == "__main__":
+    print(__name__)
     PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
