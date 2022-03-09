@@ -65,8 +65,8 @@ fileprivate func activateSwiftKernel() {
   // Here, we block all threads from receiving the SIGINT, so that we can
   // handle it in a specific handler thread.
   do {
-    var mask = SIGINT
-    var previous = sigset_t()
+    var mask = sigset_t(SIGINT)
+    var previous = sigset_t(0)
     
     let err = pthread_sigmask(SIG_BLOCK, &mask, &previous)
     precondition(err == 0, """
