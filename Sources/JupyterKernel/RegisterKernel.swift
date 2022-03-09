@@ -14,15 +14,15 @@ public func JupyterKernel_registerSwiftKernel() {
   from ctypes import PyDLL
   from wurlitzer import sys_pipes
   
-  if __name__ == "__main__":
-      print("hello world 1")
-      print(__name__)
-      print(__name__ == "__main__")
-      assert(__name__ == "__main__")
-      print("hello world 2")
+  # if __name__ == "__main__":
+  print("hello world 1")
+  print(__name__)
+  print(__name__ == "__main__")
+  assert(__name__ == "__main__")
+  print("hello world 2")
   
-      PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
-      # PyDLL(__name__).JupyterKernel_createSwiftKernel()
+  PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
+  # PyDLL(__name__).JupyterKernel_createSwiftKernel()
   """
   
   let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
