@@ -37,7 +37,17 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
   preservedSwiftKernelRef = SwiftKernel
   
+  // How many of these members are actually necessary?
+  SwiftKernel.implementation = "swift"
+  SwiftKernel.implementation_version = "2.0"
+  SwiftKernel.banner = ""
   
+//   "language_info": [
+//         "name": "swift",
+//         "mimetype": "text/x-swift",
+//         "file_extension": ".swift",
+//         "version": ""
+//       ],
 }
 
 fileprivate func activateSwiftKernel() {
@@ -60,15 +70,6 @@ fileprivate func activateSwiftKernel() {
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
   """)
   
-//   PyRun_SimpleString("""
-  
-//   """)
-  
-//   // Initialize the Swift kernel
-//   let SwiftKernel = PythonClass(
-//     "SwiftKernel",
-//     superclasses: [Kernel],
-//     members: [
 //       // How many of these members are actually necessary?
 //       "implementation": "swift",
 //       "implementation_version": "2.0",
