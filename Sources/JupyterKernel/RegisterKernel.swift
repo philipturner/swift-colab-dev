@@ -23,7 +23,9 @@ public func JupyterKernel_registerSwiftKernel() {
 
       func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel
       func.argtypes = [c_void_p]
-      func(c_void_p(id(__name__)))
+      myobj = None
+      func(c_void_p(id(myobj)))
+      print(myobj)
       # PyDLL(__name__).JupyterKernel_createSwiftKernel()
       print(__name__)
   """
