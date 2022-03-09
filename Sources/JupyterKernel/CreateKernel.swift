@@ -63,7 +63,7 @@ fileprivate func activateSwiftKernel() {
   
   // Initialize the Swift kernel
   _ = SwiftKernel
-  print(String(SwiftKernel))
+  print(String(describing: SwiftKernel))
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
