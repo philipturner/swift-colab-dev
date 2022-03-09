@@ -17,10 +17,11 @@ public func JupyterKernel_createSwiftKernel() {
   """)
   
   let MyClass2 = PythonClass(
-  "MyClass2",
+    "MyClass2",
     superclasses: [Python.object],
     members: [
       "implementation": "swift",
+    ]
   ).pythonObject
   
   print(MyClass2)
