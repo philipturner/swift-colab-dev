@@ -69,6 +69,8 @@ fileprivate func activateSwiftKernel() {
   var description = String(describing: SwiftKernel)
   description.removeFirst("<class '".count)
   description.removeLast("'>".count)
+  print(Python.__name__)
+  print(String(Python.__name__))
   print(description)
   
   description = "__main__.SwiftKernel"
