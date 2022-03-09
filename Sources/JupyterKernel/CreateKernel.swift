@@ -27,13 +27,23 @@ public func JupyterKernel_createSwiftKernel() {
   }
 }
 
-// fileprivate let SwiftKernel = PythonClass(
-//   "SwiftKernel",
-//   superclasses: [Kernel],
-//   members: [
+fileprivate let SwiftKernel = PythonClass(
+  "SwiftKernel",
+  superclasses: [Kernel],
+  members: [
+    // How many of these members are actually necessary?
+    "implementation": "swift",
+    "implementation_version": "0.1".
+    "banner": "",
     
-//   ]
-// )
+    "language_info": [
+      "name": "swift",
+      "mimetype": "text/x-swift",
+      "file_extension": ".swift",
+      "version": ""
+    ],
+  ]
+)
 
 fileprivate func activateSwiftKernel() {
   print("=== Activating Swift kernel ===")
@@ -44,7 +54,7 @@ fileprivate func activateSwiftKernel() {
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
   // Initialize the Swift kernel
-//   _ = SwiftKernel
+  _ = SwiftKernel
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
