@@ -51,15 +51,15 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
 //     "version": ""
 //   ]
   
-//   SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
-//     let `self` = params[0]
-//     return [
-//       "status": "ok",
-//       "execution_count": `self`.execution_count,
-//       "payload": [],
-//       "user_expressions": [:],
-//     ]
-//   }.pythonObject
+  SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
+    let `self` = params[0]
+    return [
+      "status": "ok",
+      "execution_count": `self`.execution_count,
+      "payload": [],
+      "user_expressions": [:],
+    ]
+  }.pythonObject
 }
 
 fileprivate func activateSwiftKernel() {
@@ -87,45 +87,35 @@ fileprivate func activateSwiftKernel() {
           'version': '',
       }
   
-      def __init__(self, **kwargs):
-          super().__init__(**kwargs)
-      
-      def do_execute(self, code, silent, store_history=True,
-                     user_expressions=None, allow_stdin=False):
-          return {
-              "status": "ok",
-              "execution_count": self.execution_count,
-              "payload": [],
-              "user_expressions": {},
-          }
-  
-      def do_complete(self, code, cursor_pos):
-          return {
-              "status": "ok",
-              "matches": [],
-              "cursor_start": 0,
-              "cursor_end": 0
-          }
+     def __init__(self, **kwargs):
+         super().__init__(**kwargs)
+     
+   #   def do_execute(self, code, silent, store_history=True,
+   #                  user_expressions=None, allow_stdin=False):
+   #       return {
+   #           "status": "ok",
+   #           "execution_count": self.execution_count,
+   #           "payload": [],
+   #           "user_expressions": {},
+   #       }
+   #  
+   #   def do_complete(self, code, cursor_pos):
+   #       return {
+   #           "status": "ok",
+   #           "matches": [],
+   #           "cursor_start": 0,
+   #           "cursor_end": 0
+   #       }
   
   func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
-                     
-  # from ipykernel.kernelapp import IPKernelApp
-  # We pass the kernel name as a command-line arg, since Jupyter gives those
-  # highest priority (in particular overriding any system-wide config).
-  # IPKernelApp.launch_instance(
-  #     argv=sys.argv + ["--IPKernelApp.kernel_class=__main__.SwiftKernel"])
   """)
-  
-  print(preservedSwiftKernelRef as Any)
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
   // highest priority (in particular overriding any system-wide config).
   IPKernelApp.launch_instance(
     argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=__main__.SwiftKernel"])
-  
-//   print(SwiftKernel)
 }
 
 // The original Python kernel. There is no way to get it run besides
