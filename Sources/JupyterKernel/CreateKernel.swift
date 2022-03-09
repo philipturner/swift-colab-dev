@@ -10,7 +10,8 @@ public func JupyterKernel_createSwiftKernel() {
   print("separator 1")
   print(__name__)
   print(__name__ == "__main__")
-  class MyClass(object):
+  from ipykernel.kernelbase import Kernel
+  class MyClass(Kernel):
       pass
   
   print(MyClass)
