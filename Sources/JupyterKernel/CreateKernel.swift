@@ -70,6 +70,25 @@ fileprivate func activateSwiftKernel() {
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
+  /*
+     #   def do_execute(self, code, silent, store_history=True,
+   #                  user_expressions=None, allow_stdin=False):
+   #       return {
+   #           "status": "ok",
+   #           "execution_count": self.execution_count,
+   #           "payload": [],
+   #           "user_expressions": {},
+   #       }
+   #  
+   #   def do_complete(self, code, cursor_pos):
+   #       return {
+   #           "status": "ok",
+   #           "matches": [],
+   #           "cursor_start": 0,
+   #           "cursor_end": 0
+   #       }
+  */
+  
   // Must create this from a Python script declaration. Using the built-in
   // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
   // instead of `__main__.SwiftKernel`.
@@ -89,23 +108,6 @@ fileprivate func activateSwiftKernel() {
   
      def __init__(self, **kwargs):
          super().__init__(**kwargs)
-     
-   #   def do_execute(self, code, silent, store_history=True,
-   #                  user_expressions=None, allow_stdin=False):
-   #       return {
-   #           "status": "ok",
-   #           "execution_count": self.execution_count,
-   #           "payload": [],
-   #           "user_expressions": {},
-   #       }
-   #  
-   #   def do_complete(self, code, cursor_pos):
-   #       return {
-   #           "status": "ok",
-   #           "matches": [],
-   #           "cursor_start": 0,
-   #           "cursor_end": 0
-   #       }
   
   func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
