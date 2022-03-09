@@ -39,17 +39,17 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
   preservedSwiftKernelRef = SwiftKernel
   
-//   // How many of these members are actually necessary?
-//   SwiftKernel.implementation = "swift"
-//   SwiftKernel.implementation_version = "2.0"
-//   SwiftKernel.banner = ""
+  // How many of these members are actually necessary?
+  SwiftKernel.implementation = "swift"
+  SwiftKernel.implementation_version = "2.0"
+  SwiftKernel.banner = ""
   
-//   SwiftKernel.language_info = [
-//     "name": "swift",
-//     "mimetype": "text/x-swift",
-//     "file_extension": ".swift",
-//     "version": ""
-//   ]
+  SwiftKernel.language_info = [
+    "name": "swift",
+    "mimetype": "text/x-swift",
+    "file_extension": ".swift",
+    "version": ""
+  ]
   
   SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
     let `self` = params[0]
@@ -71,31 +71,7 @@ fileprivate func activateSwiftKernel() {
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
   /*
-     #   def do_execute(self, code, silent, store_history=True,
-   #                  user_expressions=None, allow_stdin=False):
-   #       return {
-   #           "status": "ok",
-   #           "execution_count": self.execution_count,
-   #           "payload": [],
-   #           "user_expressions": {},
-   #       }
-   #  
-   #   def do_complete(self, code, cursor_pos):
-   #       return {
-   #           "status": "ok",
-   #           "matches": [],
-   #           "cursor_start": 0,
-   #           "cursor_end": 0
-   #       }
-  */
-  
-  // Must create this from a Python script declaration. Using the built-in
-  // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
-  // instead of `__main__.SwiftKernel`.
-  PyRun_SimpleString("""
-  from ctypes import *; from ipykernel.kernelbase import Kernel
-  class SwiftKernel(Kernel):
-      implementation = 'SwiftKernel'
+        implementation = 'SwiftKernel'
       implementation_version = '0.1'
       banner = ''
 
@@ -105,7 +81,14 @@ fileprivate func activateSwiftKernel() {
           'file_extension': '.swift',
           'version': '',
       }
-        
+  */
+  
+  // Must create this from a Python script declaration. Using the built-in
+  // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
+  // instead of `__main__.SwiftKernel`.
+  PyRun_SimpleString("""
+  from ctypes import *; from ipykernel.kernelbase import Kernel
+  class SwiftKernel(Kernel):
       def __init__(self, **kwargs):
           super().__init__(**kwargs)
    
