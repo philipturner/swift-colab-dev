@@ -96,6 +96,8 @@ fileprivate func activateSwiftKernel() {
   // highest priority (in particular overriding any system-wide config).
   IPKernelApp.launch_instance(
     argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=\(description)"])
+  
+  print(SwiftKernel)
 }
 
 // The original Python kernel. There is no way to get it run besides
