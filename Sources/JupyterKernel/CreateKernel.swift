@@ -15,6 +15,16 @@ public func JupyterKernel_createSwiftKernel() {
   print(MyClass)
   print("separator 2")
   """)
+  
+  let MyClass2 = PythonClass(
+  "MyClass2",
+    superclasses: [Python.object],
+    members: [
+      "implementation": "swift",
+  ).pythonObject
+  
+  print(MyClass2)
+  
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
 //   print(__name__)
 //   assert(__name__ == "__main__")
@@ -70,20 +80,20 @@ fileprivate func activateSwiftKernel() {
   
   // Initialize the Swift kernel
   let SwiftKernel = PythonClass(
-  "SwiftKernel",
-  superclasses: [Kernel],
-  members: [
-    // How many of these members are actually necessary?
-    "implementation": "swift",
-    "implementation_version": "2.0",
-    "banner": "",
-    
-    "language_info": [
-      "name": "swift",
-      "mimetype": "text/x-swift",
-      "file_extension": ".swift",
-      "version": ""
-    ],
+    "SwiftKernel",
+    superclasses: [Kernel],
+    members: [
+      // How many of these members are actually necessary?
+      "implementation": "swift",
+      "implementation_version": "2.0",
+      "banner": "",
+
+      "language_info": [
+        "name": "swift",
+        "mimetype": "text/x-swift",
+        "file_extension": ".swift",
+        "version": ""
+      ],
     
 //       "__init__": PythonInstanceMethod { (params: [PythonObject]) in
 //         let `self` = params[0]
