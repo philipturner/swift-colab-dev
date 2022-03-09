@@ -20,9 +20,9 @@ public func JupyterKernel_registerSwiftKernel() {
       print(__name__ == "__main__")
       assert(__name__ == "__main__")
       print("hello world 2")
-      with sys_pipes():
-        PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
-        PyDLL(__name__).JupyterKernel_createSwiftKernel()
+  
+      PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
+      PyDLL(__name__).JupyterKernel_createSwiftKernel()
   """
   
   let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
