@@ -17,20 +17,6 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
 
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
-  // first try class declaration. Then, try type creation.
-  PyRun_SimpleString("""
-  from ctypes import *; from ipykernel.kernelbase import Kernel
-  class SwiftKernel(Kernel):
-      pass
-  
-  print(3, SwiftKernel)     
-  func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
-  func.argtypes = [c_void_p]
-  func(c_void_p(id(SwiftKernel)))
-  """)
-   
-  
-  
   let fm = FileManager.default
   let runtimePath = "/opt/swift/runtime_type"
   
@@ -68,10 +54,11 @@ public func JupyterKernel_createSwiftKernel() {
     print("Debug checkpoint (Unknown) in CreateKernel.swift")
   }
   
-  // --- uncomment in development mode
-  let nextRuntime = ["python3", "python"].contains(currentRuntime) ? "swift" : "python3"
-  // --- uncomment in release mode
-//   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? "python3" : "swift"
+  let isDevelopment = true // whether to automatically alternate between runtimes
+  let runtime1 = isDevelopment ? "swift" : "python3"
+  let runtime2 = isDevelopment ? "python3" : "swift"
+  
+  let nextRuntime = ["python3", "python"].contains(currentRuntime) ? runtime1 : runtime2
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
   // Until there is a built-in alternative, switch back into Python mode on the next
@@ -91,6 +78,18 @@ fileprivate func activateSwiftKernel() {
   // Here, we block all threads from receiving the SIGINT, so that we can
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
+  
+  // Must create this from a Python script declaration. Using the built-in
+  // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
+  // instead of `__main__.SwiftKernel`.
+  PyRun_SimpleString("""
+  from ctypes import *; from ipykernel.kernelbase import Kernel
+  class SwiftKernel(Kernel):
+      pass
+      
+  func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
+  func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
+  """)
   
 //   PyRun_SimpleString("""
   
