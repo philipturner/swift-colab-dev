@@ -86,6 +86,8 @@ fileprivate func activateSwiftKernel() {
   print(Python.__name__)
   print(String(Python.__name__))
   print(description)
+  assert(description == "__main__.SwiftKernel")
+  assert(description == "traitlets.traitlets.SwiftKernel")
   
 //   description = "__main__.SwiftKernel"
   
