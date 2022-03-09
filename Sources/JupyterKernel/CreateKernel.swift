@@ -42,6 +42,12 @@ fileprivate let SwiftKernel = PythonClass(
       "file_extension": ".swift",
       "version": ""
     ],
+    
+    "__init__": PythonInstanceMethod { (params: [PythonObject]) in
+      let `self` = params[0]
+      let kwargs = params[1]
+      Kernel.__init__(`self`, kwargs)
+    }
   ]
 )
 
