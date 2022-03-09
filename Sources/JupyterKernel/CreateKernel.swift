@@ -101,7 +101,7 @@ fileprivate func activateSwiftKernel() {
 //   IPKernelApp.launch_instance(
 //     argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=SwiftKernel"])
   
-  print(SwiftKernel)
+//   print(SwiftKernel)
 }
 
 // The original Python kernel. There is no way to get it run besides
