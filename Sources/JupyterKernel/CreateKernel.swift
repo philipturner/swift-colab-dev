@@ -20,7 +20,7 @@ public func JupyterKernel_createSwiftKernel() {
   // first try class declaration. Then, try type creation.
   PyRun_SimpleString("""
   from ctypes import *; from ipykernel.kernelbase import Kernel
-  SwiftKernel = type("SwiftKernel", (object, Kernel), {})
+  SwiftKernel = type("SwiftKernel", (Kernel, object), {})
   
   print(3, SwiftKernel)     
   func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
