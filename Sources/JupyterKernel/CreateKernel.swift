@@ -58,6 +58,13 @@ public func JupyterKernel_createSwiftKernel() {
   }
 }
 
+fileprivate var preservedSwiftKernelRef: PythonObject?
+
+@_cdecl("JupyterKernel_constructSwiftKernelClass")
+public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
+  let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
+  print(SwiftKernel)
+}
 
 fileprivate func activateSwiftKernel() {
   print("=== Activating Swift kernel ===")
