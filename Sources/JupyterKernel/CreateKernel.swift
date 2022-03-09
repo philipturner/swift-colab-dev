@@ -11,7 +11,9 @@ public func JupyterKernel_createSwiftKernel() {
   let runtimeData = fm.contents(atPath: runtimePath)!
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
-  let isDevelopment = true // whether to automatically alternate between runtimes
+  // Whether to automatically alternate between runtimes
+  // Written as a closure call to suppress compiler warnings
+  let isDevelopment = { true }()
   let runtime1 = isDevelopment ? "swift" : "python3"
   let runtime2 = isDevelopment ? "python3" : "swift"
   
@@ -70,7 +72,7 @@ fileprivate func activateSwiftKernel() {
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
   """)
   
-  print(preservedSwiftKernelRef)
+  print(preservedSwiftKernelRef as Any)
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
