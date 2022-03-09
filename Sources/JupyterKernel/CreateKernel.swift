@@ -3,18 +3,6 @@ import Foundation
 fileprivate let signal = Python.import("signal")
 fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
-/// Move this downward after debugging
-
-fileprivate var preservedSwiftKernelRef: PythonObject?
-
-@_cdecl("JupyterKernel_constructSwiftKernelClass")
-public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
-  let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
-  print(4, SwiftKernel)
-}
-
-/// [End section to move]
-
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
@@ -69,6 +57,18 @@ public func JupyterKernel_createSwiftKernel() {
   } else {
     activateSwiftKernel()
   }
+}
+
+// A stored reference to the SwiftKernel type object, used as a workaround
+// for the fact that it must be initialized in Python code.
+fileprivate var preservedSwiftKernelRef: PythonObject!
+
+@_cdecl("JupyterKernel_constructSwiftKernelClass")
+public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
+  let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
+  preservedSwiftKernelRef = SwiftKernel
+  
+  
 }
 
 fileprivate func activateSwiftKernel() {
