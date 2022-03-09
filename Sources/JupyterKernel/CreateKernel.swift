@@ -14,12 +14,12 @@ public func JupyterKernel_createSwiftKernel() {
   
   """)
   
-  print(Python.__name__)
-  print(Python.__main__)
-  print("separator 3")
-  Python.__main__.HelloWorldExample = PythonObject(2)
-  print(Python.__main__.HelloWorldExample)
-  print("separator 4")
+//   print(Python.__name__)
+//   print(Python.__main__)
+//   print("separator 3")
+//   Python.__main__.HelloWorldExample = PythonObject(2)
+//   print(Python.__main__.HelloWorldExample)
+//   print("separator 4")
   
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
 //   print(__name__)
