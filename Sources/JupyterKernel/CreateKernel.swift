@@ -86,8 +86,8 @@ fileprivate func activateSwiftKernel() {
   print(Python.__name__)
   print(String(Python.__name__))
   print(description)
-  assert(description == "__main__.SwiftKernel")
-//   assert(description == "traitlets.traitlets.SwiftKernel")
+//   assert(description == "__main__.SwiftKernel")
+  assert(description == "traitlets.traitlets.SwiftKernel")
   
 //   description = "__main__.SwiftKernel"
   
@@ -95,7 +95,7 @@ fileprivate func activateSwiftKernel() {
   // We pass the kernel name as a command-line arg, since Jupyter gives those
   // highest priority (in particular overriding any system-wide config).
   IPKernelApp.launch_instance(
-    argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=\(description)"])
+    argv: CommandLine.arguments + ["--IPKernelApp.kernel_class=SwiftKernel"])
   
   print(SwiftKernel)
 }
