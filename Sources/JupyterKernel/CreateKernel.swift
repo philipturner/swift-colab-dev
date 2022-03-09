@@ -4,8 +4,8 @@ fileprivate let signal = Python.import("signal")
 fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
-public func JupyterKernel_createSwiftKernel(_ __name__Ref: OwnedPyObjectPointer) {
-  let __name__ = PythonObject(__name__Ref)
+public func JupyterKernel_createSwiftKernel(_ __name__Ref: OpaquePointer) {
+  let __name__ = PythonObject(__name__Ref as OwnedPyObjectPointer)
   print(__name__)
   assert(__name__ == "__main__")
   assert(__name__ == Python.__name__)
