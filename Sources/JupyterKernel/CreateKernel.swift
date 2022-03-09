@@ -15,7 +15,7 @@ public func JupyterKernel_createSwiftKernel() {
     "MyClass",
     superclasses: [Python.object],
     members: [
-      "mem1": "val1
+      "mem1": "val1"
     ]
   ).pythonObject
   
