@@ -41,8 +41,8 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   
   // How many of these members are actually necessary?
   SwiftKernel.implementation = "swift"
-  SwiftKernel.implementation_version = "2.0"
-  SwiftKernel.banner = ""
+//   SwiftKernel.implementation_version = "2.0"
+//   SwiftKernel.banner = ""
   
   SwiftKernel.language_info = [
     "name": "swift",
@@ -69,19 +69,6 @@ fileprivate func activateSwiftKernel() {
   // Here, we block all threads from receiving the SIGINT, so that we can
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
-  
-  /*
-        implementation = 'SwiftKernel'
-      implementation_version = '0.1'
-      banner = ''
-
-      language_info = {
-          'name': 'swift',
-          'mimetype': 'text/x-swift',
-          'file_extension': '.swift',
-          'version': '',
-      }
-  */
   
   // Must create this from a Python script declaration. Using the built-in
   // `type(_:_:_:)` method makes it `traitlets.traitlets.SwiftKernel`
