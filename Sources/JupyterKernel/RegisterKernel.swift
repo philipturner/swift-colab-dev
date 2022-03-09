@@ -21,13 +21,7 @@ public func JupyterKernel_registerSwiftKernel() {
       assert(__name__ == "__main__")
       print("hello world 2")
 
-      func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel
-      func.argtypes = [c_void_p]
-      myobj = None
-      func(c_void_p(id(myobj)))
-      print(myobj)
-      # PyDLL(__name__).JupyterKernel_createSwiftKernel()
-      print(__name__)
+      PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
   """
   
   let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
