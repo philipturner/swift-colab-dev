@@ -96,8 +96,8 @@ fileprivate func activateSwiftKernel() {
               "cursor_end": 0
           }
   
-  //func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
-  //func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
+  # func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
+  # func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
                      
   from ipykernel.kernelapp import IPKernelApp
   # We pass the kernel name as a command-line arg, since Jupyter gives those
