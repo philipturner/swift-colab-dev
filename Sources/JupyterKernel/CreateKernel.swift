@@ -7,6 +7,7 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 public func JupyterKernel_createSwiftKernel() {
 //   print("separator 0")
   PyRun_SimpleString("""
+  
   """)
   
 //   print(Python.__name__)
