@@ -42,7 +42,17 @@ public func JupyterKernel_createSwiftKernel() {
   }
 }
 
-fileprivate let SwiftKernel = PythonClass(
+
+fileprivate func activateSwiftKernel() {
+  print("=== Activating Swift kernel ===")
+  
+  // Jupyter sends us SIGINT when the user requests execution interruption.
+  // Here, we block all threads from receiving the SIGINT, so that we can
+  // handle it in a specific handler thread.
+  signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
+  
+  // Initialize the Swift kernel
+  let SwiftKernel = PythonClass(
   "SwiftKernel",
   superclasses: [Kernel],
   members: [
@@ -58,26 +68,15 @@ fileprivate let SwiftKernel = PythonClass(
       "version": ""
     ],
     
-//     "__init__": PythonInstanceMethod { (params: [PythonObject]) in
-//       let `self` = params[0]
-//       let kwargs = params[1]
-//       Kernel.__init__(`self`, kwargs)
-      
-//       return Python.None
-//     }
-  ]
-).pythonObject
+//       "__init__": PythonInstanceMethod { (params: [PythonObject]) in
+//         let `self` = params[0]
+//         let kwargs = params[1]
+//         Kernel.__init__(`self`, kwargs)
 
-fileprivate func activateSwiftKernel() {
-  print("=== Activating Swift kernel ===")
-  
-  // Jupyter sends us SIGINT when the user requests execution interruption.
-  // Here, we block all threads from receiving the SIGINT, so that we can
-  // handle it in a specific handler thread.
-  signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
-  
-  // Initialize the Swift kernel
-  _ = SwiftKernel
+//         return Python.None
+//       }
+    ]
+  ).pythonObject
   
   // Description happens to be <class 'traitlets.traitlets.SwiftKernel'>
   // instead of <class '__main__.SwiftKernel'> (what is expected)
