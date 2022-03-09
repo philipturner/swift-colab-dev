@@ -17,6 +17,13 @@ public func JupyterKernel_createSwiftKernel() {
 //   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? "python3" : "swift"
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
+  print("=== current runtime (begin) ===")
+  print(currentRuntime)
+  print(currentRuntime == "")
+  print(currentRuntime == "swift")
+  print(currentRuntime == "python3")
+  print("=== current runtime (end) ===")
+  
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
   // main account will be kicked off of Colab for excessive restarts/downloads.
