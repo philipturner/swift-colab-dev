@@ -11,37 +11,6 @@ public func JupyterKernel_createSwiftKernel() {
   let runtimeData = fm.contents(atPath: runtimePath)!
   let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
   
-  let MyClass = PythonClass(
-    "MyClass",
-    superclasses: [Python.object],
-    members: [
-      "mem1": "val1"
-    ]
-  ).pythonObject
-  
-  print(MyClass().mem1)
-  let evenOlderInstance = MyClass()
-  
-  MyClass.mem2 = PythonObject("val2")
-  print(MyClass().mem2)
-  let oldInstance = MyClass()
-  print(evenOlderInstance.mem1)
-  
-  MyClass.firstMethod = PythonInstanceMethod { (`self`: PythonObject) in
-    print(`self`.mem1, `self`.mem2)
-    return Python.None
-  }.pythonObject
-  MyClass().firstMethod()
-  oldInstance.firstMethod()
-  
-  if currentRuntime == "swift" {
-    print("Debug checkpoint (Swift) in CreateKernel.swift")
-  } else if currentRuntime == "python3" {
-    print("Debug checkpoint (Python) in CreateKernel.swift")
-  } else {
-    print("Debug checkpoint (Unknown) in CreateKernel.swift")
-  }
-  
   let isDevelopment = true // whether to automatically alternate between runtimes
   let runtime1 = isDevelopment ? "swift" : "python3"
   let runtime2 = isDevelopment ? "python3" : "swift"
