@@ -51,7 +51,7 @@ fileprivate let SwiftKernel = PythonClass(
 //       return Python.None
 //     }
   ]
-)
+).pythonObject
 
 fileprivate func activateSwiftKernel() {
   print("=== Activating Swift kernel ===")
