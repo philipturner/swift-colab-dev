@@ -25,13 +25,6 @@ public func JupyterKernel_createSwiftKernel() {
 //   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? "python3" : "swift"
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
   
-  print("=== current runtime (begin) ===")
-  print(currentRuntime)
-  print(currentRuntime == "")
-  print(currentRuntime == "swift")
-  print(currentRuntime == "python3")
-  print("=== current runtime (end) ===")
-  
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
   // main account will be kicked off of Colab for excessive restarts/downloads.
@@ -51,9 +44,9 @@ fileprivate func activateSwiftKernel() {
   // handle it in a specific handler thread.
   signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGINT])
   
-  PyRun_SimpleString("""
+//   PyRun_SimpleString("""
   
-  """)
+//   """)
   
 //   // Initialize the Swift kernel
 //   let SwiftKernel = PythonClass(
@@ -81,19 +74,6 @@ fileprivate func activateSwiftKernel() {
 // //       }
 //     ]
 //   ).pythonObject
-  
-  // Description happens to be <class 'traitlets.traitlets.SwiftKernel'>
-  // instead of <class '__main__.SwiftKernel'> (what is expected)
-//   var description = String(describing: SwiftKernel)
-//   description.removeFirst("<class '".count)
-//   description.removeLast("'>".count)
-//   print(Python.__name__)
-//   print(String(Python.__name__))
-//   print(description)
-//   assert(description == "__main__.SwiftKernel")
-//   assert(description == "traitlets.traitlets.SwiftKernel")
-  
-//   description = "__main__.SwiftKernel"
   
   let IPKernelApp = Python.import("ipykernel.kernelapp").IPKernelApp
   // We pass the kernel name as a command-line arg, since Jupyter gives those
