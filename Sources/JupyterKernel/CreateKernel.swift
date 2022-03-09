@@ -4,7 +4,12 @@ fileprivate let signal = Python.import("signal")
 fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 
 @_cdecl("JupyterKernel_createSwiftKernel")
-public func JupyterKernel_createSwiftKernel() {
+public func JupyterKernel_createSwiftKernel(_ __name__Ref: OwnedPyObjectPointer) {
+  let __name__ = PythonObject(__name__Ref)
+  print(__name__)
+  assert(__name__ == "__main__")
+  assert(__name__ == Python.__name__)
+  
   let fm = FileManager.default
   let runtimePath = "/opt/swift/runtime_type"
   
