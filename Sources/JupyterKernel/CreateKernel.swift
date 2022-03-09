@@ -105,10 +105,10 @@ fileprivate func activateSwiftKernel() {
           'file_extension': '.swift',
           'version': '',
       }
-  
-     def __init__(self, **kwargs):
-         super().__init__(**kwargs)
-  
+        
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+   
   func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
   func.argtypes = [c_void_p]; func(c_void_p(id(SwiftKernel)))
   """)
