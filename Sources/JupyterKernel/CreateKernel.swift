@@ -33,7 +33,7 @@ fileprivate let SwiftKernel = PythonClass(
   members: [
     // How many of these members are actually necessary?
     "implementation": "swift",
-    "implementation_version": "0.1".
+    "implementation_version": "2.0".
     "banner": "",
     
     "language_info": [
