@@ -22,7 +22,7 @@ public func JupyterKernel_registerSwiftKernel() {
       print("hello world 2")
   
       PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_createSwiftKernel()
-      PyDLL(__name__).JupyterKernel_createSwiftKernel()
+      # PyDLL(__name__).JupyterKernel_createSwiftKernel()
   """
   
   let swiftKernelPath = "\(jupyterKernelFolder)/swift_kernel.py"
