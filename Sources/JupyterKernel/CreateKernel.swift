@@ -43,13 +43,13 @@ fileprivate let SwiftKernel = PythonClass(
       "version": ""
     ],
     
-    "__init__": PythonInstanceMethod { (params: [PythonObject]) in
-      let `self` = params[0]
-      let kwargs = params[1]
-      Kernel.__init__(`self`, kwargs)
+//     "__init__": PythonInstanceMethod { (params: [PythonObject]) in
+//       let `self` = params[0]
+//       let kwargs = params[1]
+//       Kernel.__init__(`self`, kwargs)
       
-      return Python.None
-    }
+//       return Python.None
+//     }
   ]
 )
 
