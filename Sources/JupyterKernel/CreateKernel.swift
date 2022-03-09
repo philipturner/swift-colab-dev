@@ -10,7 +10,7 @@ fileprivate var preservedSwiftKernelRef: PythonObject?
 @_cdecl("JupyterKernel_constructSwiftKernelClass")
 public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   let SwiftKernel = PythonObject(OwnedPyObjectPointer(classObj))
-  print(2, SwiftKernel)
+  print(4, SwiftKernel)
 }
 
 /// [End section to move]
@@ -20,10 +20,9 @@ public func JupyterKernel_createSwiftKernel() {
   // first try class declaration. Then, try type creation.
   PyRun_SimpleString("""
   from ctypes import *; from ipykernel.kernelbase import Kernel
-  class SwiftKernel(Kernel):
-      pass
+  SwiftKernel = type("SwiftKernel", (object, Kernel), ())
   
-  print(1, SwiftKernel)     
+  print(3, SwiftKernel)     
   func = PyDLL("/opt/swift/lib/libJupyterKernel.so").JupyterKernel_constructSwiftKernelClass
   func.argtypes = [c_void_p]
   func(c_void_p(id(SwiftKernel)))
