@@ -6,8 +6,14 @@ fileprivate let Kernel = Python.import("ipykernel.kernelbase").Kernel
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   PyRun_SimpleString("""
+  print("separator 1")
   print(__name__)
   print(__name__ == "__main__")
+  class MyClass(object):
+      pass
+  
+  print(MyClass)
+  print("separator 2")
   """)
 //   let __name__ = PythonObject(OwnedPyObjectPointer(__name__Ref))
 //   print(__name__)
