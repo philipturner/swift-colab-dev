@@ -8,7 +8,7 @@ extern "C" {
 
 void initialize_debugger()
 {
-  //lldb::SBDebugger::Initialize();
+  lldb::SBDebugger::Initialize();
   //*debugger = lldb::SBDebugger::Create();
 }
 
