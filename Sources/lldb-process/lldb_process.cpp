@@ -7,7 +7,7 @@ lldb::SBDebugger debugger;
 extern "C" {
 
 // merge into init_repl_process eventually
-void initialize_debugger(const char *swift_module_search_path) {
+void initialize_debugger(const char *swift_module_search_path, const char **envp) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
 
