@@ -7,10 +7,11 @@ lldb::SBDebugger debugger;
 extern "C" {
 
 // merge into init_repl_process eventually
-void initialize_debugger()
+void initialize_debugger(const char *input)
 {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
+  puts(input);
 }
 
 int validation_test(char *input)
