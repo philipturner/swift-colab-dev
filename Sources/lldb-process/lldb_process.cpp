@@ -6,6 +6,7 @@ lldb::SBDebugger debugger;
 
 extern "C" {
 
+// merge into init_repl_process eventually
 void initialize_debugger()
 {
   lldb::SBDebugger::Initialize();
