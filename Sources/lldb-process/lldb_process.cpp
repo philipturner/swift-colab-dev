@@ -10,7 +10,7 @@ extern "C" {
 // swift_module_search_path_command = 
 // "settings append target.swift-module-search-paths \(swift_module_search_path)" 
 int init_repl_process(const char *swift_module_search_path_command, 
-                      const char **env,
+                      const char **repl_env,
                       const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
@@ -24,6 +24,9 @@ int init_repl_process(const char *swift_module_search_path_command,
   // disabling scripting could decrease startup time if the debugger needs to
   // "load the Python scripting stuff".
   debugger.SetScriptLanguage(lldb::eScriptLanguageNone);
+  
+  char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
+  auto target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
   
   return 0;
 }
