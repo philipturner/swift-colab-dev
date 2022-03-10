@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include <LLDB/LLDB.h>
 
 using namespace lldb;
