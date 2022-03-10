@@ -54,7 +54,7 @@ int init_repl_process(const char *swift_module_search_path_command,
 }
 
 int execute(const char *code, char **description) {
-  SBValue result;
+  auto result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
   
   if (errorType == eErrorTypeInvalid) {
