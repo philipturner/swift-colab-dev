@@ -7,20 +7,19 @@ lldb::SBDebugger debugger;
 
 extern "C" {
 
-int init_repl_process(const char *swift_module_search_path, 
+// swift_module_search_path_command = 
+// "settings append target.swift-module-search-paths \(swift_module_search_path)" 
+int init_repl_process(const char *swift_module_search_path_command, 
                       const char **env,
                       const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
   debugger.SetAsync(false);
   
-  if (swift_module_search_path) {
-    puts(swift_module_search_path);
+  if (swift_module_search_path_command) {
+    debugger.HandleCommand(swift_module_search_path_command)
   }
-  puts(strcat((char *)env[0], (char *)env[1]));
-  puts(env[0]);
-  puts(env[1]);
-  puts(cwd);
+  
   return 0;
 }
 
