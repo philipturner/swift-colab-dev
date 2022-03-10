@@ -1,9 +1,9 @@
 import Foundation
 
 struct KernelContext {
-  var debuggerInitialized = false
+  static var debuggerInitialized = false
   
-  let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
+  static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
     LLDBProcessLibrary.loadSymbol(name: "validation_test")
 }
 
