@@ -31,5 +31,5 @@ func initSwift() throws {
   let os = Python.import("os")
   let sys = Python.import("sys")
   let script_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
-  print(String(script_dir)!)
+  precondition(false, String(script_dir)!)
 }
