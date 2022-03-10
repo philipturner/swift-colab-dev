@@ -20,6 +20,20 @@ fileprivate struct CEnvironment {
     }
     envp = OpaquePointer(envPointer)
   }
+  
+  func validate() {
+    var envArray: [String] = []
+    for (key, value) in ProcessInfo.processInfo.environment {
+      environmentArray.append("\(key)=\(value)")
+    }
+    typealias ConstEnvPointerType = UnsafeMutablePointer<UnsafePointer<CChar>?>
+    let envPointer = ConstEnvPointerType(envp)
+    var envArray2: [String] = []
+    for i in 0..<envArray.count {
+      envArray2.append(String(cString: envPointer[i]))
+    }
+    assert(envArray == envArray2, "Did not match: \(envArray) and \(envArray2)")
+  }
 }
 
 func initSwift() throws {
