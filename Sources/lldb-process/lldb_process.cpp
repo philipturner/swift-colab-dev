@@ -2,7 +2,7 @@
 #include <LLDB/LLDB.h>
 
 bool debuggerInitialized = false;
-lldb::SBDebugger *debugger = NULL;
+lldb::SBDebugger debugger;
 
 extern "C" {
 
