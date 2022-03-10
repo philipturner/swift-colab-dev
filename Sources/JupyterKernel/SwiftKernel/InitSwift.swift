@@ -12,9 +12,10 @@ fileprivate struct CEnvironment {
     let envPointer = EnvPointerType.allocate(capacity: envArray.count + 1)
     envPointer[envArray.count] = nil
     for i in 0..<envArray.count {
-      let strPointer = UnsafeMutablePointer<CChar>.allocate(capacity: envArray.count + 1)
-      _ = envArray[i].withCString {
-        memcpy(strPointer, $0, envArray.count + 1)
+      let originalStr = envArray[i]
+      let strPointer = UnsafeMutablePointer<CChar>.allocate(capacity: originalStr.count + 1)
+      _ = originalStr.withCString {
+        memcpy(strPointer, $0, originalStr.count + 1)
       }
       envPointer[i] = strPointer
     }
