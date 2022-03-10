@@ -8,8 +8,8 @@ extern "C" {
 
 void initialize_debugger()
 {
-  lldb::SBDebugger::Initialize();
-  *debugger = lldb::SBDebugger::Create();
+  //lldb::SBDebugger::Initialize();
+  //*debugger = lldb::SBDebugger::Create();
 }
 
 int validation_test(char *input)
