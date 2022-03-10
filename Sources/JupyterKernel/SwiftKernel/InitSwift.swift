@@ -12,7 +12,7 @@ fileprivate struct CEnvironment {
     let envPointer = EnvPointerType.allocate(capacity: envArray.count + 1)
     envPointer[envArray.count] = nil
     for i in 0..<envArray.count {
-      let strPointer = UnsafeMutablePointer<CChar>.allocate(envArray.count + 1)
+      let strPointer = UnsafeMutablePointer<CChar>.allocate(capacity: envArray.count + 1)
       envArray[i].withCString {
         memcpy(strPointer, $0, envArray.count + 1)
       }
@@ -26,7 +26,7 @@ fileprivate struct CEnvironment {
     for (key, value) in ProcessInfo.processInfo.environment {
       envArray.append("\(key)=\(value)")
     }
-    typealias ConstEnvPointerType = UnsafeMutablePointer<UnsafePointer<CChar>?>
+    typealias ConstEnvPointerType = UnsafeMutablePointer<UnsafePointer<CChar>>
     let envPointer = ConstEnvPointerType(envp)
     var envArray2: [String] = []
     for i in 0..<envArray.count {
