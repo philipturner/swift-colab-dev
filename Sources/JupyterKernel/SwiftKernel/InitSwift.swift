@@ -33,9 +33,12 @@ fileprivate struct CEnvironment {
       envArray2.append(String(cString: envPointer[i]))
     }
     assert(envArray == envArray2, "Did not match: \(envArray) and \(envArray2)")
+    print("Did match: \(envArray) and \(envArray2)")
   }
 }
 
 func initSwift() throws {
   KernelContext.initialize_debugger(nil)
+  let cEnvironment = CEnvironment()
+  cEnviroment.validate()
 }
