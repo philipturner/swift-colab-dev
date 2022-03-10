@@ -27,6 +27,6 @@ func initSwift() throws {
   let environment = ProcessInfo.processInfo.environment
   let cEnvironment = CEnvironment(environment: environment)
   
-  let err = KernelContext.init_repl_process(
+  _ = KernelContext.init_repl_process(
     nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
 }
