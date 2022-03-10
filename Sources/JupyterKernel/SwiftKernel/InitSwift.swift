@@ -11,7 +11,14 @@ fileprivate struct CEnvironment {
     typealias EnvPointerType = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>
     let envPointer = EnvPointer.allocate(capacity: envArray.count + 1)
     envPointer[envArray.count] = nil
-    envp = OpaquePointer(malloc(8))
+    for i in 0..<envArray.count {
+      let strPointer = UnsafeMutablePointer<CChar>.allocate(envArray.count + 1)
+      envArray[i].withCString {
+        memcpy(strPointer, $0, envArray.count + 1)
+      }
+      envPointer[i] = strPointer
+    }
+    envp = OpaquePointer(envPointer)
   }
 }
 
