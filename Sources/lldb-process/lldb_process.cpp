@@ -6,9 +6,9 @@ lldb::SBDebugger debugger;
 
 extern "C" {
 
-void init_repl_process(const char *swift_module_search_path, 
-                       const char **env,
-                       const char *cwd) {
+int init_repl_process(const char *swift_module_search_path, 
+                      const char **env,
+                      const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
   if (swift_module_search_path) {
@@ -17,6 +17,7 @@ void init_repl_process(const char *swift_module_search_path,
   puts(env[0]);
   puts(env[1]);
   puts(cwd);
+  return 0;
 }
 
 int validation_test(const char *input)
