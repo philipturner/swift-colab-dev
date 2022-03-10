@@ -24,12 +24,9 @@ fileprivate struct CEnvironment {
 }
 
 func initSwift() throws {
-  KernelContext.initialize_debugger(nil)
   let environment = ProcessInfo.processInfo.environment
   let cEnvironment = CEnvironment(environment: environment)
   
-  let os = Python.import("os")
-  let sys = Python.import("sys")
-  let script_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
-  precondition(false, String(script_dir)!)
+  KernelContext.initialize_debugger(
+    nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
 }
