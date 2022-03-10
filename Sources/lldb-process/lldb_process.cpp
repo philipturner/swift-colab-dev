@@ -27,6 +27,11 @@ int init_repl_process(const char *swift_module_search_path_command,
   
   const char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
   auto target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
+  auto main_bp = target.BreakpointCreateByName(
+    "repl_main", target.GetExecutable().GetFilename());
+  
+  // ASLR is forbidden on Docker, but it may not be forbidden on Colab. So, it
+  // will not be disabled until there is proof it crashes Swift-Colab.
   
   return 0;
 }
