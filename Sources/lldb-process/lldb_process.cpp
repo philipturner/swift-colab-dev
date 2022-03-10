@@ -2,8 +2,13 @@
 #include <string.h>
 #include <LLDB/LLDB.h>
 
-bool debuggerInitialized = false;
-lldb::SBDebugger debugger;
+using namespace lldb;
+SBDebugger debugger;
+SBTarget target;
+SBBreakpoint main_bp;
+SBProcess process;
+SBExpressionOptions expr_opts;
+SBThread main_thread;
 
 extern "C" {
 
@@ -12,8 +17,8 @@ extern "C" {
 int init_repl_process(const char *swift_module_search_path_command, 
                       const char **repl_env,
                       const char *cwd) {
-  lldb::SBDebugger::Initialize();
-  debugger = lldb::SBDebugger::Create();
+  SBDebugger::Initialize();
+  debugger = SBDebugger::Create();
   debugger.SetAsync(false);
   
   if (swift_module_search_path_command) {
@@ -23,19 +28,19 @@ int init_repl_process(const char *swift_module_search_path_command,
   // LLDB will not crash when using script because this isn't macOS. However,
   // disabling scripting could decrease startup time if the debugger needs to
   // "load the Python scripting stuff".
-  debugger.SetScriptLanguage(lldb::eScriptLanguageNone);
+  debugger.SetScriptLanguage(eScriptLanguageNone);
   
   const char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
-  auto target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
-  auto main_bp = target.BreakpointCreateByName(
+  target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
+  main_bp = target.BreakpointCreateByName(
     "repl_main", target.GetExecutable().GetFilename());
   
   // ASLR is forbidden on Docker, but it may not be forbidden on Colab. So, it
   // will not be disabled until there is proof it crashes Swift-Colab.
-  auto process = target.LaunchSimple(NULL, repl_env, cwd);
+  process = target.LaunchSimple(NULL, repl_env, cwd);
   
-  auto expr_opts = lldb::SBExpressionOptions();
-  auto swift_language = lldb::SBLanguageRuntime::GetLanguageTypeFromString("swift");
+  expr_opts = SBExpressionOptions();
+  auto swift_language = SBLanguageRuntime::GetLanguageTypeFromString("swift");
   expr_opts.SetLanguage(swift_language);
   expr_opts.SetREPLMode(true);
   expr_opts.SetUnwindOnError(false);
@@ -45,9 +50,7 @@ int init_repl_process(const char *swift_module_search_path_command,
   // computations.
   expr_opts.SetTimeoutInMicroSeconds(0);
   
-  auto main_thread = process.GetThreadAtIndex(0);
-  
-  puts("hello world");
+  main_thread = process.GetThreadAtIndex(0);
   return 0;
 }
 
