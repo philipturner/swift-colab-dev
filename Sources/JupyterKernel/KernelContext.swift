@@ -5,8 +5,8 @@ struct KernelContext {
   
   static var debuggerInitialized = false
   
-  static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
-    LLDBProcessLibrary.loadSymbol(name: "validation_test")
+//   static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
+//     LLDBProcessLibrary.loadSymbol(name: "validation_test")
   
   static let init_repl_process: @convention(c) (UnsafePointer<CChar>?, OpaquePointer, UnsafePointer<CChar>) -> Void = 
     LLDBProcessLibrary.loadSymbol(name: "init_repl_process")
