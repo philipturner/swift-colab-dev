@@ -32,7 +32,7 @@ fileprivate struct CEnvironment {
     for i in 0..<envArray.count {
       envArray2.append(String(cString: envPointer[i]))
     }
-    assert(envArray == envArray2, "Did not match: \(envArray) and \(envArray2)")
+    precondition(envArray == envArray2, "Did not match: \(envArray) and \(envArray2)")
     print("Did match: \(envArray) and \(envArray2)")
   }
 }
