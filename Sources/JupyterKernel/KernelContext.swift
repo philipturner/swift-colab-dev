@@ -8,8 +8,8 @@ struct KernelContext {
   static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
     LLDBProcessLibrary.loadSymbol(name: "validation_test")
   
-  static let initialize_debugger: @convention(c) (UnsafePointer<CChar>?, OpaquePointer, UnsafePointer<CChar>) -> Void = 
-    LLDBProcessLibrary.loadSymbol(name: "initialize_debugger")
+  static let init_repl_process: @convention(c) (UnsafePointer<CChar>?, OpaquePointer, UnsafePointer<CChar>) -> Void = 
+    LLDBProcessLibrary.loadSymbol(name: "init_repl_process")
 }
 
 fileprivate struct LLDBProcessLibrary {
