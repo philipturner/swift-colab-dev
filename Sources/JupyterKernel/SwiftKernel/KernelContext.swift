@@ -1,6 +1,8 @@
 import Foundation
 
 struct KernelContext {
+  static var kernel: PythonObject = Python.None
+  
   static var debuggerInitialized = false
   
   static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
