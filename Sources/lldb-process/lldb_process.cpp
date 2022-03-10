@@ -20,6 +20,11 @@ int init_repl_process(const char *swift_module_search_path_command,
     debugger.HandleCommand(swift_module_search_path_command);
   }
   
+  // LLDB will not crash when using script because this isn't macOS. However,
+  // disabling scripting could decrease startup time if the debugger needs to
+  // "load the Python scripting stuff".
+  debugger.SetScriptLanguage(lldb::eScriptLanguageNone);
+  
   return 0;
 }
 
