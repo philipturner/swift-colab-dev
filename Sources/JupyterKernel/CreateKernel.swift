@@ -48,10 +48,17 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
   ]
   
   SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
-    let `self` = params[0]
-    return [
+    let kernel = params[0]
+    let code = params[1]
+    var response: PythonObject?
+    
+    if Python.len(code) > 0 && !code.isspace() {
+      response = DoExecute(kernel: kernel, code: String(code)!)
+    }
+    
+    return response ?? [
       "status": "ok",
-      "execution_count": `self`.execution_count,
+      "execution_count": kernel.execution_count,
       "payload": [],
       "user_expressions": [:],
     ]
