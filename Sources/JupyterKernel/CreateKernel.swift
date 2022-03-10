@@ -52,7 +52,8 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
     let code = params[1]
     var response: PythonObject?
     
-    if Python.len(code) > 0 && !code.isspace() {
+    if Python.len(code) > 0 && 
+       Bool(code.isspace()) == false {
       response = doExecute(kernel: kernel, code: String(code)!)
     }
     
