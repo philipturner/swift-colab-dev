@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <LLDB/LLDB.h>
 
 bool debuggerInitialized = false;
@@ -11,7 +12,7 @@ int init_repl_process(const char *swift_module_search_path,
                       const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
-  debugger.setAsync(false);
+  debugger.SetAsync(false);
   
   if (swift_module_search_path) {
     puts(swift_module_search_path);
