@@ -14,7 +14,7 @@ void initialize_debugger(const char *input)
   puts(input);
 }
 
-int validation_test(char *input)
+int validation_test(const char *input)
 {
   lldb::SBDebugger::Initialize();
   auto debugger = lldb::SBDebugger::Create();
