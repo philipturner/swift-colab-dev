@@ -7,11 +7,10 @@ lldb::SBDebugger debugger;
 extern "C" {
 
 // merge into init_repl_process eventually
-void initialize_debugger(const char *input)
-{
+void initialize_debugger(const char *swift_module_search_path) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
-  puts(input);
+
 }
 
 int validation_test(const char *input)
