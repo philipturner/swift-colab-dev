@@ -17,7 +17,7 @@ int init_repl_process(const char *swift_module_search_path_command,
   debugger.SetAsync(false);
   
   if (swift_module_search_path_command) {
-    debugger.HandleCommand(swift_module_search_path_command)
+    debugger.HandleCommand(swift_module_search_path_command);
   }
   
   return 0;
