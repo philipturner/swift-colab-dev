@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <LLDB/LLDB.h>
 
+bool debuggerInitialized = false;
+SBDebugger *debugger;
+
 extern "C" {
 
 int validation_test(char *input)
