@@ -34,6 +34,19 @@ int init_repl_process(const char *swift_module_search_path_command,
   // will not be disabled until there is proof it crashes Swift-Colab.
   auto process = target.LaunchSimple(NULL, repl_env, cwd);
   
+  auto expr_opts = lldb::SBExpressionOptions();
+  auto swift_language = lldb::SBLanguageRuntime::GetLanguageTypeFromString("swift");
+  expr_opts.SetLanguage(swift_language);
+  expr_opts.SetREPLMode(true);
+  expr_opts.SetUnwindOnError(false);
+  expr_opts.SetGenerateDebugInfo(true);
+  
+  // Sets an infinite timeout so that users can run aribtrarily long
+  // computations.
+  expr_opts.SetTimeoutInMicroSeconds(0);
+  
+  auto main_thread = process.GetThreadAtIndex(0);
+  
   puts("hello world");
   return 0;
 }
