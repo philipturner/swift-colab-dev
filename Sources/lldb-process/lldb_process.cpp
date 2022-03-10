@@ -11,9 +11,12 @@ int init_repl_process(const char *swift_module_search_path,
                       const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
+  debugger.setAsync(false);
+  
   if (swift_module_search_path) {
     puts(swift_module_search_path);
   }
+  puts(strcat(env[0], env[1]));
   puts(env[0]);
   puts(env[1]);
   puts(cwd);
