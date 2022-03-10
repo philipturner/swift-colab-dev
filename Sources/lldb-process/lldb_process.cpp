@@ -12,7 +12,12 @@ void initialize_debugger(const char *swift_module_search_path,
                          const char *cwd) {
   lldb::SBDebugger::Initialize();
   debugger = lldb::SBDebugger::Create();
-
+  if (swift_module_search_path) {
+    puts(swift_module_search_path);
+  }
+  puts(env[0]);
+  puts(env[1]);
+  puts(cwd);
 }
 
 int validation_test(const char *input)
