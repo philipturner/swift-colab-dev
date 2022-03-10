@@ -2,14 +2,14 @@
 #include <LLDB/LLDB.h>
 
 bool debuggerInitialized = false;
-lldb::SBDebugger *debugger;
+lldb::SBDebugger *debugger = NULL;
 
 extern "C" {
 
 void initialize_debugger()
 {
   lldb::SBDebugger::Initialize();
-  debugger = lldb::SBDebugger::Create();
+  *debugger = lldb::SBDebugger::Create();
 }
 
 int validation_test(char *input)
