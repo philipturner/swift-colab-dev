@@ -25,7 +25,7 @@ int init_repl_process(const char *swift_module_search_path_command,
   // "load the Python scripting stuff".
   debugger.SetScriptLanguage(lldb::eScriptLanguageNone);
   
-  char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
+  const char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
   auto target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
   
   return 0;
