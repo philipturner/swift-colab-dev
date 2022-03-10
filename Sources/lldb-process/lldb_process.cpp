@@ -53,6 +53,22 @@ int init_repl_process(const char *swift_module_search_path_command,
   return 0;
 }
 
+int execute(const char *code, char **description) {
+  SBValue result;
+  auto errorType = result.GetError().GetType();
+  
+  if (errorType == eErrorTypeInvalid) {
+    // TODO: set output
+    return 0;
+  } else if (errorType == eErrorTypeGeneric) {
+    *result_description = NULL;
+    return 1;
+  } else {
+    // TODO: set output
+    return 2;
+  }
+}
+
 int validation_test(const char *input)
 {
   lldb::SBDebugger::Initialize();
