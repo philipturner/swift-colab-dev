@@ -6,10 +6,10 @@ fileprivate struct CEnvironment {
   init() {
     var envArray: [String] = []
     for (key, value) in ProcessInfo.processInfo.environment {
-      environmentArray.append("\(key)=\(value)")
+      envArray.append("\(key)=\(value)")
     }
     typealias EnvPointerType = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>
-    let envPointer = EnvPointer.allocate(capacity: envArray.count + 1)
+    let envPointer = EnvPointerType.allocate(capacity: envArray.count + 1)
     envPointer[envArray.count] = nil
     for i in 0..<envArray.count {
       let strPointer = UnsafeMutablePointer<CChar>.allocate(envArray.count + 1)
@@ -24,7 +24,7 @@ fileprivate struct CEnvironment {
   func validate() {
     var envArray: [String] = []
     for (key, value) in ProcessInfo.processInfo.environment {
-      environmentArray.append("\(key)=\(value)")
+      envArray.append("\(key)=\(value)")
     }
     typealias ConstEnvPointerType = UnsafeMutablePointer<UnsafePointer<CChar>?>
     let envPointer = ConstEnvPointerType(envp)
@@ -40,5 +40,5 @@ fileprivate struct CEnvironment {
 func initSwift() throws {
   KernelContext.initialize_debugger(nil)
   let cEnvironment = CEnvironment()
-  cEnviroment.validate()
+  cEnvironment.validate()
 }
