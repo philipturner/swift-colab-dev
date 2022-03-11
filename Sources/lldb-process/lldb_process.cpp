@@ -32,7 +32,7 @@ int read_byte_array(SBValue sbvalue,
   if (get_count_error.Fail()) {
     return 2;
   }
-  
+  // need to round up `count`.
   int64_t added_capacity = 8 + count;
   if (*output_size + added_capacity + 8 > *output_capacity) {
     
