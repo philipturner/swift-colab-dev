@@ -42,10 +42,10 @@ int init_repl_process(const char *swift_module_search_path_command,
   if (!main_bp.IsValid())
     return 3;
   
-  // ASLR is forbidden on Docker, but it may not be forbidden on Colab. So, it
-  // will not be disabled until there is proof it crashes Swift-Colab.
-  
-  
+  // Turn off "disable ASLR". This feature uses the "personality" syscall
+  // in a way that is forbidden by the default Docker security policy.
+  // Although Colab is not Docker, ASLR still prevents the Swift stdlib
+  // from loading.
   auto launch_info = target.GetLaunchInfo();
   auto launch_flags = launch_info.GetLaunchFlags();
   launch_info.SetLaunchFlags(launch_flags & ~eLaunchFlagDisableASLR);
