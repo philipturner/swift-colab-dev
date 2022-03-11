@@ -51,8 +51,9 @@ int init_repl_process(const char *swift_module_search_path_command,
   launch_info.SetLaunchFlags(launch_flags & ~eLaunchFlagDisableASLR);
   target.SetLaunchInfo(launch_info);
   
-  
   process = target.LaunchSimple(NULL, repl_env, cwd);
+  if (!process.IsValid())
+    return 4;
   
   expr_opts = SBExpressionOptions();
   auto swift_language = SBLanguageRuntime::GetLanguageTypeFromString("swift");
