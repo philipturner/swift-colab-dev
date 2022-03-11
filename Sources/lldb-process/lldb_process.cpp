@@ -50,6 +50,10 @@ int read_byte_array(SBValue sbvalue,
     *output = new_output;
   }
   
+  int64_t added_size = 
+    8 // 3rd-level header 
+    + (~7 & (count + 7)); // byte array's contents
+  
   // TODO: change new output_size by 8 + (~7 & (count + 7))
   // TODO: fill the last element in the buffer to I don't have to
   // worry about zeroing it out
