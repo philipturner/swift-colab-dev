@@ -24,11 +24,11 @@ fileprivate struct CEnvironment {
 }
 
 func initSwift() throws {
-  initReplProcess()
+  try initReplProcess()
   try initBitWidth()
 }
 
-fileprivate func initReplProcess() {
+fileprivate func initReplProcess() throws {
   var environment = ProcessInfo.processInfo.environment
   environment.removeValue(forKey: "REPL_SWIFT_PATH")
   
@@ -39,8 +39,11 @@ fileprivate func initReplProcess() {
   
   let cEnvironment = CEnvironment(environment: environment)
   
-  _ = KernelContext.init_repl_process(
+  let error = KernelContext.init_repl_process(
     nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
+  if error != 0 {
+    throw Exception("Got error code \(error) from 'init_repl_process'")
+  }
 }
 
 fileprivate func initBitWidth() throws {
