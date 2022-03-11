@@ -98,7 +98,14 @@ int execute(const char *code, char **description) {
 }
 
 int after_successful_execution(char ***messages) {
+  const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
+  auto result = target.EvaluateExpression(code, expr_opts);
+  auto errorType = result.GetError().GetType();
   
+  if (errorType != eErrorTypeInvalid) {
+    return 1;
+  }
+  return 0;
 }
 
 int get_stdout(char *dst, int *buffer_size) {
