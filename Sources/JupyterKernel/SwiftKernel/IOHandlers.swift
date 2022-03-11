@@ -27,6 +27,6 @@ let StdoutHandler = PythonClass(
   "StdoutHandler",
   superclasses: [threading.Thread],
   members: [
-    
+    :
   ]
 ).pythonObject
