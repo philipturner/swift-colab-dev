@@ -97,10 +97,13 @@ int execute(const char *code, char **description) {
   }
 }
 
+int after_successful_execution(char **messages) {
+  
+}
+
 int get_stdout(char *dst, int *buffer_size) {
   return int(process.GetSTDOUT(dst, size_t(buffer_size)));
 }
-  
 
 int validation_test(const char *input) {
   lldb::SBDebugger::Initialize();
