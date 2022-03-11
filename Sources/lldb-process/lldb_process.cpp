@@ -110,7 +110,7 @@ int execute(const char *code, char **description) {
 // Caller must deallocate `serialized_output`
 int after_successful_execution(int **serialized_output) {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
-  after_successful_execution_result = target.EvaluateExpression(code, expr_opts);
+  result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
   
   if (errorType != eErrorTypeInvalid) {
@@ -118,8 +118,10 @@ int after_successful_execution(int **serialized_output) {
     return 1;
   }
   
-  uint32_t num_display_messages = 
-  for (uint32_t display_message_id = 0; display_messa
+  // TODO: put read_byte_array into an external function
+  
+  uint32_t num_display_messages = result.GetNumChildren();
+  for (uint32_t display_message_id = 0; display
 }
 
 int get_stdout(char *dst, int *buffer_size) {
