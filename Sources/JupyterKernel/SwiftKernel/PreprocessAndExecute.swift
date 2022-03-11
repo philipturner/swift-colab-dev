@@ -1,11 +1,7 @@
 import Foundation
 
-fileprivate func preprocessLine(index lineIndex: Int, line: String) throws -> String {
-  return line
-}
-
 // TODO: test that this function works
-fileprivate func execute(code: String) throws -> ExecutionResult {
+func execute(code: String) throws -> ExecutionResult {
   var descriptionPtr: UnsafeMutablePointer<CChar>?
   let err = KernelContext.execute(code, &descriptionPtr)
   
@@ -23,3 +19,17 @@ fileprivate func execute(code: String) throws -> ExecutionResult {
     return SwiftError(description: description!)
   }
 }
+
+fileprivate func preprocess(code: String) throws -> String {
+  let lines = code.split("\n").map(String.init)
+  let preprocessedLines = try lines.indices.map { i in
+    return try preprocess_line(index: i, line: lines[i])
+  }
+  return preprocessedLines.joined(separator: "\n")
+}
+
+fileprivate func preprocessLine(index lineIndex: Int, line: String) throws -> String {
+  return line
+}
+
+
