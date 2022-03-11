@@ -108,7 +108,7 @@ int execute(const char *code, char **description) {
 // up to a multiple of 4 bytes
 //
 // Caller must deallocate `serialized_output`
-int after_successful_execution(int **serialized_output) {
+int after_successful_execution(uint32_t **serialized_output) {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
   result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
