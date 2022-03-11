@@ -53,6 +53,7 @@ fileprivate func getStdout() -> String {
   var stdout = Data()
   let bufferSize = 1 << 16
   let scratchBuffer = cachedScratchBuffer ?? .allocate(capacity: bufferSize + 1)
+  cachedScratchBuffer = scratchBuffer
   scratchBuffer[bufferSize] = 0
   while true {
     let stdoutSize = KernelContext.get_stdout(scratchBuffer, Int32(bufferSize))
