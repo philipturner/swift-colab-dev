@@ -46,10 +46,10 @@ int init_repl_process(const char *swift_module_search_path_command,
   // will not be disabled until there is proof it crashes Swift-Colab.
   
   
-  auto launch_info = target.GetLaunchInfo();
-  auto launch_flags = launch_info.GetLaunchFlags();
-  launch_info.SetLaunchFlags(launch_flags & ~eLaunchFlagDisableASLR);
-  target.SetLaunchInfo(launch_info);
+//   auto launch_info = target.GetLaunchInfo();
+//   auto launch_flags = launch_info.GetLaunchFlags();
+//   launch_info.SetLaunchFlags(launch_flags & ~eLaunchFlagDisableASLR);
+//   target.SetLaunchInfo(launch_info);
   
   process = target.LaunchSimple(NULL, repl_env, cwd);
   if (!process.IsValid())
