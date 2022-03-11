@@ -49,7 +49,7 @@ let StdoutHandler = PythonClass(
 
 var cachedScratchBuffer: UnsafeMutablePointer<CChar>?
 
-fileprivate func getAndSendStdout(handler: PythonObject) {
+fileprivate func getStdout() -> String {
   var stdout = ""
   let bufferSize = 1 << 16
   let scratchBuffer = cachedScratchBuffer ?? .allocate(capacity: bufferSize + 1)
@@ -63,4 +63,9 @@ fileprivate func getAndSendStdout(handler: PythonObject) {
       stdout.append(stringSegment)
     }
   }
+  return stdout
+}
+
+fileprivate func getAndSendStdout(handler: PythonObject) {
+  
 }
