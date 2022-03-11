@@ -111,20 +111,14 @@ int execute(const char *code, char **description) {
 int after_successful_execution(int **serialized_output) {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
   after_successful_execution_result = target.EvaluateExpression(code, expr_opts);
-  
   auto errorType = result.GetError().GetType();
+  
   if (errorType != eErrorTypeInvalid) {
+    serialized_output = NULL;
     return 1;
-  } else {
-    return 0;
   }
-}
-
-int get_after_successful_execution_display_message_range()
-
-// Caller must deallocate `byte_array`.
-int iterate_after_successful_execution(int *command, char **byte_array) {
-  return 0;
+  
+  
 }
 
 int get_stdout(char *dst, int *buffer_size) {
