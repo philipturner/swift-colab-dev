@@ -68,6 +68,7 @@ int execute(const char *code, char **description) {
     int desc_size = strlen(desc);
     char *owned_desc = malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
+    *description = owned_desc;
   }
   
   if (errorType == eErrorTypeInvalid) {
