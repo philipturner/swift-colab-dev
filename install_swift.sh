@@ -166,6 +166,20 @@ else
   echo "Using cached JupyterKernel library"
 fi
 
+# Copy "include" files to /opt/swift/include
+
+swift_colab_include="/opt/swift/swift-colab/Sources/include"
+
+for file in $(ls $swift_colab_include)
+do
+  src_path="$swift_colab_include/$file"
+  dst_path="/opt/swift/include/$file"
+  if [[ -e $dst_path ]]; then
+    rm $dst_path
+  fi
+  cp $src_path $dst_path
+done
+
 # Overwrite Python kernel
 
 replacing_python_kernel=true
