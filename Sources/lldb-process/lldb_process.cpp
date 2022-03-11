@@ -11,7 +11,7 @@ SBExpressionOptions expr_opts;
 SBThread main_thread;
 
 // Caller does not need to deallocate `data`.
-int read_byte_array(SBValue sbvalue, uint64_t *size, char **data) {
+int read_byte_array(SBValue sbvalue, uint64_t *output_size, uint64_t **output) {
   auto get_address_error = SBError();
   auto address = sbvalue
     .GetChildMemberWithName("address")
@@ -29,6 +29,13 @@ int read_byte_array(SBValue sbvalue, uint64_t *size, char **data) {
   if (get_count_error.Fail()) {
     return 2;
   }
+  
+  // If serialized_output is too small, double its capacity and copy
+      // the old data over. Leave an extra 8 bytes of padding for the next
+      // loop iteration to write its header.
+      
+      // Finally, copy over data from `read_byte_array`, as the caller does
+      // not own that data.
 }
 
 extern "C" {
@@ -148,13 +155,6 @@ int after_successful_execution(uint64_t **serialized_output) {
       auto byte_array = display_message.GetChildAtIndex(j);
       
       // TODO: put read_byte_array into an external function
-      
-      // If serialized_output is too small, double its capacity and copy
-      // the old data over. Leave an extra 8 bytes of padding for the next
-      // loop iteration to write its header.
-      
-      // Finally, copy over data from `read_byte_array`, as the caller does
-      // not own that data.
     }
   }
   
