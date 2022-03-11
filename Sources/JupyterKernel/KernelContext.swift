@@ -11,6 +11,11 @@ struct KernelContext {
   static let init_repl_process: @convention(c) (
     UnsafePointer<CChar>?, OpaquePointer, UnsafePointer<CChar>) -> Int32 = 
     LLDBProcessLibrary.loadSymbol(name: "init_repl_process")
+  
+  static let execute: @convention(c) (
+    UnsafePointer<CChar>?, 
+    UnsafeMutablePointer<UnsafeMutablePointer<CChar>>) -> Int32 =
+    LLDBProcessLibrary.loadSymbol(name: "execute")
 }
 
 fileprivate struct LLDBProcessLibrary {
