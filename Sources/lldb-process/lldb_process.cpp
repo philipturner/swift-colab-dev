@@ -33,7 +33,7 @@ int init_repl_process(const char *swift_module_search_path_command,
   debugger.SetScriptLanguage(eScriptLanguageNone);
   
   const char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
-  target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
+  target = debugger.CreateTarget(repl_swift);
   if (!target.IsValid())
     return 2;
   
