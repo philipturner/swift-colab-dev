@@ -99,6 +99,7 @@ int execute(const char *code, char **description) {
 
 int get_stdout(char *dst, int *buffer_size) {
   process.GetSTDOUT(dst, size_t(buffer_size));
+  return 0;
 }
   
 
