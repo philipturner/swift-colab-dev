@@ -46,6 +46,8 @@ int read_byte_array(SBValue sbvalue,
   }
   
   // TODO: change new output_size by 8 + (~7 & (count + 7))
+  // TODO: fill the last element in the buffer to I don't have to
+  // worry about zeroing it out
   
   
   // If serialized_output is too small, double its capacity and copy
