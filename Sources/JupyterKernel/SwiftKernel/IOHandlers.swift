@@ -8,7 +8,7 @@ let SIGINTHandler = PythonClass(
   members: [
     
   ]
-}.pythonObject
+).pythonObject
 
 
 let StdoutHandler = PythonClass(
@@ -17,4 +17,4 @@ let StdoutHandler = PythonClass(
   members: [
     
   ]
-}.pythonObject
+).pythonObject
