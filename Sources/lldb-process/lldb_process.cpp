@@ -99,11 +99,11 @@ int execute(const char *code, char **description) {
 
 // Output is in a serialized format, like so:
 // 1st level of recursion:
-// - first 4 bytes: header that says how many display messages
+// - first 4 bytes (UInt32): header that says how many display messages
 // 2nd level of recursion:
-// - first 4 bytes: header that says how many byte arrays
+// - first 4 bytes (UInt32): header that says how many byte arrays
 // 3rd level of recursion:
-// - first 4 bytes: header that says how long the byte array is
+// - first 4 bytes (UInt32): header that says how long the byte array is
 // - rest of line: data in the byte array, with allocated capacity rounded
 // up to a multiple of 4 bytes
 //
@@ -118,7 +118,8 @@ int after_successful_execution(int **serialized_output) {
     return 1;
   }
   
-  
+  uint32_t num_display_messages = 
+  for (uint32_t display_message_id = 0; display_messa
 }
 
 int get_stdout(char *dst, int *buffer_size) {
