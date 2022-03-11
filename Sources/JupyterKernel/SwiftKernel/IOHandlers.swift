@@ -47,26 +47,25 @@ let StdoutHandler = PythonClass(
   ]
 ).pythonObject
 
-var cachedScratchBuffer: UnsafeMutablePointer<CChar>?
+fileprivate var cachedScratchBuffer: UnsafeMutablePointer<CChar>?
 
 fileprivate func getStdout() -> String {
-  var stdout = ""
+  var stdout = Data()
   let bufferSize = 1 << 16
   let scratchBuffer = cachedScratchBuffer ?? .allocate(capacity: bufferSize + 1)
   scratchBuffer[bufferSize] = 0
   while true {
-    _ = KernelContext.get_stdout(scratchBuffer, Int32(bufferSize))
-    let stringSegment = String(cString: UnsafePointer(scratchBuffer))
-    if stringSegment.count == 0 {
+    let stdoutSize = KernelContext.get_stdout(scratchBuffer, Int32(bufferSize))
+    guard stdoutSize > 0 else {
       break
-    } else {
-      stdout.append(stringSegment)
     }
+    let stdoutSegment = Data(bytes: scratchBuffer, count: Int(stdoutSize))
+    stdout += stdoutSegment
   }
-  return stdout
+  return String(data: stdout, encoding: .utf8)
 }
 
-fileprivate func sendStdout() {
+fileprivate func sendStdout(handler: PythonObject, stdout: String) {
   let clearSequenceIndex = stdout.firstIndex(of: "\033[2J")
 }
 
