@@ -59,7 +59,8 @@ fileprivate func getStdout() -> String {
     guard stdoutSize > 0 else {
       break
     }
-    let stdoutSegment = Data(bytes: scratchBuffer, count: Int(stdoutSize))
+    let stdoutSegment = Data(
+      bytesNoCopy: scratchBuffer, count: Int(stdoutSize), deallocator: .none)
     stdout += stdoutSegment
   }
   return String(data: stdout, encoding: .utf8)
