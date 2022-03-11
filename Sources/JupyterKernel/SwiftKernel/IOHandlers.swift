@@ -47,6 +47,8 @@ let StdoutHandler = PythonClass(
   ]
 ).pythonObject
 
+var cachedScratchBuffer
+
 fileprivate func getAndSendStdout(handler: PythonObject) {
   var stdout = ""
   let scratchBuffer = UnsafeMutablePointer<CChar>.allocate(capacity: 1025)
