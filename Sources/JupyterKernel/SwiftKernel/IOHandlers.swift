@@ -67,5 +67,8 @@ fileprivate func getStdout() -> String {
 }
 
 fileprivate func getAndSendStdout(handler: PythonObject) {
-  
+  let stdout = getStdout()
+  if stdout.count > 0 {
+    handler.had_stdout = true
+  }
 }
