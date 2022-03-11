@@ -10,6 +10,8 @@ SBProcess process;
 SBExpressionOptions expr_opts;
 SBThread main_thread;
 
+SBResult after_successful_execution_result;
+
 extern "C" {
 
 // swift_module_search_path_command = 
@@ -99,14 +101,14 @@ int execute(const char *code, char **description) {
 
 int begin_after_successful_execution() {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
-  auto result = target.EvaluateExpression(code, expr_opts);
+  after_successful_execution_result = target.EvaluateExpression(code, expr_opts);
+  
   auto errorType = result.GetError().GetType();
   if (errorType != eErrorTypeInvalid) {
     return 1;
+  } else {
+    return 0;
   }
-  
-  
-  return 0;
 }
 
 // Caller must deallocate `byte_array`.
