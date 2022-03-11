@@ -56,8 +56,10 @@ int read_byte_array(SBValue sbvalue,
   int64_t current_size = *output_size;
   int64_t *data_stream = (int64_t*)((*output) + current_size);
   
-  // Zero out the last element in the buffer; everything else will
+  // Zero out the last 8 bytes in the buffer; everything else will
   // be written to at some point.
+  data_stream[added_size / 8 - 1] = 0;
+  data_stream[0] = count;
   
   // TODO: change new output_size by 8 + (~7 & (count + 7))
   // TODO: fill the last element in the buffer to I don't have to
