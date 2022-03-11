@@ -10,6 +10,17 @@ SBProcess process;
 SBExpressionOptions expr_opts;
 SBThread main_thread;
 
+int read_byte_array(SBValue sbvalue, char **data) {
+  auto get_address_error = SBError();
+  auto address = sbvalue
+    .GetChildMemberWithName("address")
+    .GetData()
+    .GetAddress(get_address_error, 0);
+  if (get_address_error.Fail()) {
+    return 1;
+  }
+}
+
 extern "C" {
 
 // swift_module_search_path_command = 
