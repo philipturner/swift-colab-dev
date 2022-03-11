@@ -55,7 +55,7 @@ fileprivate func getAndSendStdout(handler: PythonObject) {
   let scratchBuffer = cachedScratchBuffer ?? .allocate(capacity: bufferSize + 1)
   scratchBuffer[bufferSize] = 0
   while true {
-    _ = KernelContext.get_stdout(scratchBuffer, bufferSize)
+    _ = KernelContext.get_stdout(scratchBuffer, Int32(bufferSize))
     let stringSegment = String(cString: UnsafePointer(scratchBuffer))
     if stringSegment.count == 0 {
       break
