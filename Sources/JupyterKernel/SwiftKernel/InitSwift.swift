@@ -24,15 +24,17 @@ fileprivate struct CEnvironment {
 }
 
 func initSwift() throws {
-  
+  initReplProcess()
 }
 
-fileprivate func initReplProcess() throws {
+fileprivate func initReplProcess() {
   let environment = ProcessInfo.processInfo.environment
   let cEnvironment = CEnvironment(environment: environment)
   
-  let err = KernelContext.init_repl_process(
+  _ = KernelContext.init_repl_process(
     nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
 }
 
-fileprivate func initBitWidth
+fileprivate func initBitWidth() throws {
+
+}
