@@ -10,7 +10,7 @@ SBProcess process;
 SBExpressionOptions expr_opts;
 SBThread main_thread;
 
-SBResult after_successful_execution_result;
+SBValue after_successful_execution_result;
 
 extern "C" {
 
