@@ -12,7 +12,7 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
 // TODO: test that this function works
 func execute(code: String) -> ExecutionResult {
   var descriptionPtr: UnsafeMutablePointer<CChar>?
-  let err = KernelContext.execute(code, &descriptionPtr)
+  let error = KernelContext.execute(code, &descriptionPtr)
   
   var description: String?
   if let descriptionPtr = descriptionPtr {
@@ -20,9 +20,9 @@ func execute(code: String) -> ExecutionResult {
     free(descriptionPtr)
   }
   
-  if err == 0 {
+  if error == 0 {
     return SuccessWithValue(description: description!)
-  } else if err == 1 {
+  } else if error == 1 {
     return SuccessWithoutValue()
   } else {
     return SwiftError(description: description!)
