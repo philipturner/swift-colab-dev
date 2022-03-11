@@ -97,7 +97,7 @@ int execute(const char *code, char **description) {
   }
 }
 
-int after_successful_execution(char **messages) {
+int after_successful_execution(char ***messages) {
   
 }
 
