@@ -114,11 +114,9 @@ int after_successful_execution(int **serialized_output) {
   auto errorType = result.GetError().GetType();
   
   if (errorType != eErrorTypeInvalid) {
-    serialized_output = NULL;
+    *serialized_output = NULL;
     return 1;
   }
-  
-  // TODO: put read_byte_array into an external function
   
   uint32_t num_display_messages = result.GetNumChildren();
   for (uint32_t i = 0; i < num_display_messages; ++i) {
@@ -127,8 +125,13 @@ int after_successful_execution(int **serialized_output) {
     uint32_t num_byte_arrays = display_message.GetNumChildren();
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
       auto byte_array = display_message.GetChildAtIndex(j);
+      
+      // TODO: put read_byte_array into an external function
     }
   }
+  
+  *serialized_output = NULL;
+  return 0;
 }
 
 int get_stdout(char *dst, int *buffer_size) {
