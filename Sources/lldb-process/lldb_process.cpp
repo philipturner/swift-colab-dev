@@ -38,8 +38,11 @@ int read_byte_array(SBValue sbvalue,
     + (~7 & (count + 7)) // byte array's contents
     + 8; // potential next 2nd-level header
   if (*output_size + spare_capacity > *output_capacity) {
-    
+    uint64_t *new_output = 
   }
+  
+  // TODO: change new output_size by 8 + (~7 & (count + 7))
+  
   
   // If serialized_output is too small, double its capacity and copy
   // the old data over. Leave an extra 8 bytes of padding for the next
