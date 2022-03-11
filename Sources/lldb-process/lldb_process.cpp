@@ -32,7 +32,7 @@ int read_byte_array(SBValue sbvalue,
   if (get_count_error.Fail()) {
     return 2;
   }
-  // need to round up `count`.
+  
   int64_t needed_new_capacity = 
     8 // 3rd-level header 
     + (~7 & (count + 7)) // byte array's contents
@@ -43,6 +43,11 @@ int read_byte_array(SBValue sbvalue,
     while (needed_total_capacity > new_capacity) {
       new_capacity *= 2;
     }
+    
+    uint64_t *new_output = (uint64_t *)malloc(new_capacity);
+    memcpy(new_output, *output, *output_size);
+    free(*output);
+    *output = new_output;
   }
   
   // TODO: change new output_size by 8 + (~7 & (count + 7))
