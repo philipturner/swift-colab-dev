@@ -119,16 +119,16 @@ int execute(const char *code, char **description) {
 
 // Output is in a serialized format:
 // 1st level of recursion (the header that starts the output):
-// - first 4 bytes (UInt32): header that says how many display messages
+// - first 8 bytes (UInt64): header that says how many display messages
 // 2nd level of recursion:
-// - first 4 bytes (UInt32): header that says how many byte arrays
+// - first 8 bytes (UInt64): header that says how many byte arrays
 // 3rd level of recursion:
-// - first 4 bytes (UInt32): header that says how long the byte array is
+// - first 8 bytes (UInt64): header that says how long the byte array is
 // - rest of line: data in the byte array, with allocated capacity rounded
-// up to a multiple of 4 bytes
+// up to a multiple of 8 bytes
 //
 // Caller must deallocate `serialized_output`
-int after_successful_execution(uint32_t **serialized_output) {
+int after_successful_execution(uint64_t **serialized_output) {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
   auto result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
