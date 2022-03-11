@@ -121,7 +121,14 @@ int after_successful_execution(int **serialized_output) {
   // TODO: put read_byte_array into an external function
   
   uint32_t num_display_messages = result.GetNumChildren();
-  for (uint32_t display_message_id = 0; display
+  for (uint32_t i = 0; i < num_display_messages; ++i) {
+    auto display_message = result.GetChildAtIndex(i);
+    
+    uint32_t num_byte_arrays = display_message.GetNumChildren();
+    for (uint32_t j = 0; j < num_byte_arrays; ++j) {
+      auto byte_array = display_message.GetChildAtIndex(j);
+    }
+  }
 }
 
 int get_stdout(char *dst, int *buffer_size) {
