@@ -48,5 +48,10 @@ let StdoutHandler = PythonClass(
 ).pythonObject
 
 fileprivate func getAndSendStdout(handler: PythonObject) {
-  
+  var stdout_buffer = ""
+  let scratch_buffer = UnsafeMutablePointer<CChar>.allocate(1025)
+  scratch_buffer[1024] = 0
+  while true {
+    _ = KernelContext.get_stdout(scratch_buffer, 1024)
+  }
 }
