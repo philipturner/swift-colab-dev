@@ -43,7 +43,7 @@ public func JupyterKernel_registerSwiftKernel() {
     "display_name": "Swift",
     "language": "swift",
     "env": {
-      "LD_LIBRARY_PATH": "\(swiftToolchain)/usr/lib/swift/linux"
+      
     }
   }
   """
