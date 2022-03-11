@@ -66,6 +66,10 @@ fileprivate func getStdout() -> String {
   return stdout
 }
 
+fileprivate func sendStdout() {
+  let clearSequenceIndex = stdout.firstIndex(of: "\033[2J")
+}
+
 fileprivate func getAndSendStdout(handler: PythonObject) {
   let stdout = getStdout()
   if stdout.count > 0 {
