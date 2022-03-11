@@ -19,6 +19,15 @@ int read_byte_array(SBValue sbvalue, char **data) {
   if (get_address_error.Fail()) {
     return 1;
   }
+  
+  auto get_count_error = SBError();
+  auto count_data = sbvalue
+    .GetChildMemberWithName("count")
+    .GetData();
+  int64_t = count_data.GetSignedInt64(get_count_error, 0);
+  if (get_count_error.Fail()) {
+    return 2;
+  }
 }
 
 extern "C" {
