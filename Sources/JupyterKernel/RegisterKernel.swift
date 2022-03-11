@@ -30,6 +30,7 @@ public func JupyterKernel_registerSwiftKernel() {
       "SWIFT_PACKAGE_PATH": "\(swiftToolchain)/usr/bin/swift-package"
   */
   
+  // TODO: remove LD_LIBRARY_PATH if it is not needed
   let swiftToolchain = "/opt/swift/toolchain"
   let kernelSpec = """
   {
@@ -42,8 +43,7 @@ public func JupyterKernel_registerSwiftKernel() {
     "display_name": "Swift",
     "language": "swift",
     "env": {
-      "LD_LIBRARY_PATH": "\(swiftToolchain)/usr/lib/swift/linux",
-      "REPL_SWIFT_PATH": "\(swiftToolchain)/usr/bin/repl_swift"
+      "LD_LIBRARY_PATH": "\(swiftToolchain)/usr/lib/swift/linux"
     }
   }
   """
