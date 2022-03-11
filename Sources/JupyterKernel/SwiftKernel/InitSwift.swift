@@ -2,16 +2,19 @@ import Foundation
 
 fileprivate struct CEnvironment {
   var envp: OpaquePointer
+  var arraySize: Int
   
   init(environment: [String: String]) {
     var envArray: [String] = []
     for (key, value) in environment {
       envArray.append("\(key)=\(value)")
     }
+    arraySize = envArray.count
+    
     typealias EnvPointerType = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>
-    let envPointer = EnvPointerType.allocate(capacity: envArray.count + 1)
-    envPointer[envArray.count] = nil
-    for i in 0..<envArray.count {
+    let envPointer = EnvPointerType.allocate(capacity: arraySize + 1)
+    envPointer[arraySize] = nil
+    for i in 0..<arraySize {
       let originalStr = envArray[i]
       let strPointer = UnsafeMutablePointer<CChar>.allocate(capacity: originalStr.count + 1)
       _ = originalStr.withCString {
@@ -20,6 +23,15 @@ fileprivate struct CEnvironment {
       envPointer[i] = strPointer
     }
     envp = OpaquePointer(envPointer)
+  }
+  
+  func deinitialize() {
+    typealias EnvPointerType = UnsafeMutablePointer<UnsafeMutablePointer<CChar>>
+    let envPointer = EnvPointerType(envp)
+    for i in 0..<arraySize {
+      envPointer[i].deallocate()
+    }
+    free(envPointer)
   }
 }
 
@@ -31,6 +43,7 @@ func initSwift() throws {
 fileprivate func initReplProcess() throws {
   let environment = ProcessInfo.processInfo.environment
   let cEnvironment = CEnvironment(environment: environment)
+  defer { cEnvironment.deinitialize() }
   
   let error = KernelContext.init_repl_process(
     nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
