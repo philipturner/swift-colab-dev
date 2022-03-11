@@ -23,7 +23,6 @@ let SIGINTHandler = PythonClass(
   ]
 ).pythonObject
 
-
 let StdoutHandler = PythonClass(
   "StdoutHandler",
   superclasses: [threading.Thread],
