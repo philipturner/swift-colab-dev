@@ -14,7 +14,7 @@ SBThread main_thread;
 int read_byte_array(SBValue sbvalue, 
                     uint64_t *output_size, 
                     uint64_t *output_capacity, 
-                    uint64_t **output) {
+                    void **output) {
   auto get_address_error = SBError();
   auto address = sbvalue
     .GetChildMemberWithName("address")
@@ -44,7 +44,7 @@ int read_byte_array(SBValue sbvalue,
       new_capacity *= 2;
     }
     
-    uint64_t *new_output = (uint64_t *)malloc(new_capacity);
+    void *new_output = malloc(new_capacity);
     memcpy(new_output, *output, *output_size);
     free(*output);
     *output = new_output;
@@ -53,10 +53,16 @@ int read_byte_array(SBValue sbvalue,
   int64_t added_size = 
     8 // 3rd-level header 
     + (~7 & (count + 7)); // byte array's contents
+  int64_t current_size = *output_size;
+  int64_t *data_stream = (int64_t*)((*output) + current_size);
+  
+  // Zero out the last element in the buffer; everything else will
+  // be written to at some point.
   
   // TODO: change new output_size by 8 + (~7 & (count + 7))
   // TODO: fill the last element in the buffer to I don't have to
   // worry about zeroing it out
+  // TODO: change *output_size to reflect the added size
   
   
   // If serialized_output is too small, double its capacity and copy
