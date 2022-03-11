@@ -61,18 +61,13 @@ int read_byte_array(SBValue sbvalue,
   data_stream[added_size / 8 - 1] = 0;
   data_stream[0] = count;
   
-  // TODO: change new output_size by 8 + (~7 & (count + 7))
-  // TODO: fill the last element in the buffer to I don't have to
-  // worry about zeroing it out
-  // TODO: change *output_size to reflect the added size
+  if (count > 0) {
+    
+  }
   
-  
-  // If serialized_output is too small, double its capacity and copy
-  // the old data over. Leave an extra 8 bytes of padding for the next
-  // loop iteration to write its header.
-
-  // Finally, copy over data from `read_byte_array`, as the caller does
-  // not own that data.
+  // Update `output_size` to reflect the added data.
+  *output_size = current_size + added_size;
+  return 0;
 }
 
 extern "C" {
