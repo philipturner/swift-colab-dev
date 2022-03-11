@@ -26,7 +26,7 @@ struct PreprocessorError: ExecutionResultError {
     var exception: PreprocessorException
     
     var description: String {
-        exception.errorDescription
+        String(describing: exception)
     }
 }
 
