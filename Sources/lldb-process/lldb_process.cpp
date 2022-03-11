@@ -57,14 +57,23 @@ int execute(const char *code, char **description) {
   auto result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
   
+  if (errorType == eErrorTypeGeneric) {
+    *description = NULL;
+  } else {
+    SBStream stream;
+    result.GetDescription(stream);
+    const char *desc = stream.GetData();
+    
+    int string_size = strlen(desc);
+    char *string_ptr = malloc(string_size * sizeof(char));
+    
+  }
+  
   if (errorType == eErrorTypeInvalid) {
-    // TODO: set output
     return 0;
   } else if (errorType == eErrorTypeGeneric) {
-    *result_description = NULL;
     return 1;
   } else {
-    // TODO: set output
     return 2;
   }
 }
