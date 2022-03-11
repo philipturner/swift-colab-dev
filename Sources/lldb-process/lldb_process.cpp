@@ -148,6 +148,13 @@ int after_successful_execution(uint64_t **serialized_output) {
       auto byte_array = display_message.GetChildAtIndex(j);
       
       // TODO: put read_byte_array into an external function
+      
+      // If serialized_output is too small, double its capacity and copy
+      // the old data over. Leave an extra 8 bytes of padding for the next
+      // loop iteration to write its header.
+      
+      // Finally, copy over data from `read_byte_array`, as the caller does
+      // not own that data.
     }
   }
   
