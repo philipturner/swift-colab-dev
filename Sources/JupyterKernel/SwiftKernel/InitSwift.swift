@@ -30,12 +30,12 @@ func initSwift() throws {
 
 fileprivate func initReplProcess() {
   var environment = ProcessInfo.processInfo.environment
-  assert(!environment.keys.contains("REPL_SWIFT_PATH"))
-  let scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
-  environment["PYTHONPATH"] = String(scriptDir)!
+    assert(!environment.keys.contains("REPL_SWIFT_PATH"))
   
   let os = Python.import("os")
   let sys = Python.import("sys")
+  let scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
+  environment["PYTHONPATH"] = String(scriptDir)!
   
   let cEnvironment = CEnvironment(environment: environment)
   
