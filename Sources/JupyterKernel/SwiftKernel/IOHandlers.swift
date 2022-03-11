@@ -34,5 +34,20 @@ let StdoutHandler = PythonClass(
       `self`.had_stdout = false
       return Python.None
     },
+    
+    "run": PythonInstanceMethod { (`self`: PythonObject) in
+       while true {
+         if Bool(`self`.stop_event.wait(0.1)) == true {
+           break
+         }
+         getAndSendStdout(handler: `self`)
+       }
+       getAndSendStdout(handler: `self`)
+       return Python.None
+    }
   ]
 ).pythonObject
+
+fileprivate func getAndSendStdout(handler: PythonObject) {
+  
+}
