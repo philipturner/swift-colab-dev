@@ -66,7 +66,7 @@ fileprivate func getStdout() -> String {
   return String(data: stdout, encoding: .utf8)
 }
 
-fileprivate func sendStdout(handler: PythonObject, stdout: String) {
+fileprivate func sendStdout(_ stdout: SubString) {
   let kernel = KernelContext.kernel
   if let clearSequenceRange = stdout.firstIndex(of: "\033[2J") {
     
@@ -82,5 +82,6 @@ fileprivate func getAndSendStdout(handler: PythonObject) {
   let stdout = getStdout()
   if stdout.count > 0 {
     handler.had_stdout = true
+    sendStdout(stdout[...])
   }
 }
