@@ -23,7 +23,6 @@ fileprivate struct CEnvironment {
   }
 }
 
-// Initializes Swift so that it's ready to start executing user code.
 func initSwift() throws {
   let environment = ProcessInfo.processInfo.environment
   let cEnvironment = CEnvironment(environment: environment)
