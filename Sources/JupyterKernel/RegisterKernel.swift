@@ -22,6 +22,14 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // Create kernel spec
   
+  /*
+  "PYTHONPATH": "\(swiftToolchain)/usr/lib/python3/dist-packages",
+      "LD_LIBRARY_PATH": "\(swiftToolchain)/usr/lib/swift/linux",
+      "REPL_SWIFT_PATH": "\(swiftToolchain)/usr/bin/repl_swift",
+      "SWIFT_BUILD_PATH": "\(swiftToolchain)/usr/bin/swift-build",
+      "SWIFT_PACKAGE_PATH": "\(swiftToolchain)/usr/bin/swift-package"
+  */
+  
   let swiftToolchain = "/opt/swift/toolchain"
   let kernelSpec = """
   {
@@ -34,11 +42,8 @@ public func JupyterKernel_registerSwiftKernel() {
     "display_name": "Swift",
     "language": "swift",
     "env": {
-      "PYTHONPATH": "\(swiftToolchain)/usr/lib/python3/dist-packages",
       "LD_LIBRARY_PATH": "\(swiftToolchain)/usr/lib/swift/linux",
-      "REPL_SWIFT_PATH": "\(swiftToolchain)/usr/bin/repl_swift",
-      "SWIFT_BUILD_PATH": "\(swiftToolchain)/usr/bin/swift-build",
-      "SWIFT_PACKAGE_PATH": "\(swiftToolchain)/usr/bin/swift-package"
+      "REPL_SWIFT_PATH": "\(swiftToolchain)/usr/bin/repl_swift"
     }
   }
   """
