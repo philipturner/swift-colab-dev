@@ -19,6 +19,8 @@ int init_repl_process(const char *swift_module_search_path_command,
                       const char *cwd) {
   SBDebugger::Initialize();
   debugger = SBDebugger::Create();
+  if (!debugger.IsValid())
+    return 1;
   debugger.SetAsync(false);
   
   if (swift_module_search_path_command) {
@@ -32,8 +34,13 @@ int init_repl_process(const char *swift_module_search_path_command,
   
   const char *repl_swift = "/opt/swift/toolchain/usr/bin/repl_swift";
   target = debugger.CreateTargetWithFileAndArch(repl_swift, "");
+  if (!target.IsValid())
+    return 2;
+  
   main_bp = target.BreakpointCreateByName(
     "repl_main", target.GetExecutable().GetFilename());
+  if (!main_bp.IsValid())
+    return 3;
   
   // ASLR is forbidden on Docker, but it may not be forbidden on Colab. So, it
   // will not be disabled until there is proof it crashes Swift-Colab.
