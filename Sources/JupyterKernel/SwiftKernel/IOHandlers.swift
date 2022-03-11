@@ -28,6 +28,11 @@ let StdoutHandler = PythonClass(
   "StdoutHandler",
   superclasses: [threading.Thread],
   members: [
-    :
+    "__init__": PythonInstanceMethod { (`self`: PythonObject) in
+      threading.Thread.__init__(`self`)
+      `self`.stop_event = threading.Event()
+      `self`.had_stdout = false
+      return Python.None
+    },
   ]
 ).pythonObject
