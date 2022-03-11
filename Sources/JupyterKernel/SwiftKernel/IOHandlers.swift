@@ -17,7 +17,7 @@ let SIGINTHandler = PythonClass(
         signal.sigwait([signal.SIGINT])
         KernelContext.kernel.process.SendAsyncInterrupt()
       }
-      //return Python.None
+      // Do not need to return anything because this is an infinite loop
     }
   ]
 ).pythonObject
