@@ -11,7 +11,10 @@ SBExpressionOptions expr_opts;
 SBThread main_thread;
 
 // Caller does not need to deallocate `data`.
-int read_byte_array(SBValue sbvalue, uint64_t *output_size, uint64_t **output) {
+int read_byte_array(SBValue sbvalue, 
+                    uint64_t *output_size, 
+                    uint64_t *output_capacity, 
+                    uint64_t **output) {
   auto get_address_error = SBError();
   auto address = sbvalue
     .GetChildMemberWithName("address")
