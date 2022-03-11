@@ -49,5 +49,4 @@ fileprivate func initBitWidth() throws {
   }
   precondition(result.description.contains("64"), 
     "Int.bitWidth returned \(result.description) when '64' was expected.")
-  print(result.description)
 }
