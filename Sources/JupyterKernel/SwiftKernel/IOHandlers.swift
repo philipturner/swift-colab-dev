@@ -68,8 +68,12 @@ fileprivate func getStdout() -> String {
 
 fileprivate func sendStdout(_ stdout: String) {
   let kernel = KernelContext.kernel
-  if let clearSequenceRange = stdout.range(of: "\033[2J") {
-    
+  if let range = stdout.range(of: "\033[2J") {
+    sendStdout(String(stdout[..<range.lowerBound]))
+    kernel.send_response(kernel.iopub_socket, "clear_output", [
+      "wait": false
+    ])
+    sendStdout(String(stdout[range.upperBound...]))
   } else {
     kernel.send_response(kernel.iopub_socket, "stream", [
       "name": "stdout",
