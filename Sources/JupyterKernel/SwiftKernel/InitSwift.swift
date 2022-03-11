@@ -39,7 +39,7 @@ fileprivate func initReplProcess() {
 fileprivate func initBitWidth() throws {
   let result = execute(code: "Int.bitWidth")
   guard let result = result as? SuccessWithValue else {
-    throw Exception("Expected value from Int.bitWidth, but got: \(result.description)")
+    throw Exception("Expected value from Int.bitWidth, but got: \(String(reflecting: result))")
   }
   precondition(result.description.contains("64"), 
     "Int.bitWidth returned \(result.description) when '64' was expected.")
