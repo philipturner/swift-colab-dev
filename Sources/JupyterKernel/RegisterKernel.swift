@@ -22,7 +22,6 @@ public func JupyterKernel_registerSwiftKernel() {
   
   // Create kernel spec
   
-  let swiftToolchain = "/opt/swift/toolchain"
   let kernelSpec = """
   {
     "argv": [
