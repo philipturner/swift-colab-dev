@@ -97,14 +97,20 @@ int execute(const char *code, char **description) {
   }
 }
 
-int after_successful_execution(char ***messages) {
+int begin_after_successful_execution() {
   const char *code = "JupyterKernel.communicator.triggerAfterSuccessfulExecution()";
   auto result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
-  
   if (errorType != eErrorTypeInvalid) {
     return 1;
   }
+  
+  
+  return 0;
+}
+
+// Caller must deallocate `byte_array`.
+int iterate_after_successful_execution(int *command, char **byte_array) {
   return 0;
 }
 
