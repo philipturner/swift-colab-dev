@@ -38,7 +38,6 @@ fileprivate func initReplProcess() {
   environment["PYTHONPATH"] = String(scriptDir)!
   
   let cEnvironment = CEnvironment(environment: environment)
-  assert(FileManager.default.currentDirectoryPath == String(os.getcwd())!)
   
   _ = KernelContext.init_repl_process(
     nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
