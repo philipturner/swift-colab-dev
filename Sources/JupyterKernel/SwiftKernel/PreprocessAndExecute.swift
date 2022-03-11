@@ -21,15 +21,13 @@ func execute(code: String) throws -> ExecutionResult {
 }
 
 fileprivate func preprocess(code: String) throws -> String {
-  let lines = code.split("\n").map(String.init)
+  let lines = code.split(separator: "\n").map(String.init)
   let preprocessedLines = try lines.indices.map { i in
-    return try preprocess_line(index: i, line: lines[i])
+    return try preprocessLine(lines[i], index: i)
   }
   return preprocessedLines.joined(separator: "\n")
 }
 
-fileprivate func preprocessLine(index lineIndex: Int, line: String) throws -> String {
+fileprivate func preprocessLine(_ line: String, index lineIndex: Int) throws -> String {
   return line
 }
-
-
