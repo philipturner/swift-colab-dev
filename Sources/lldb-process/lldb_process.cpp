@@ -53,6 +53,7 @@ int init_repl_process(const char *swift_module_search_path_command,
   return 0;
 }
 
+// Caller must deallocate `description`.
 int execute(const char *code, char **description) {
   auto result = target.EvaluateExpression(code, expr_opts);
   auto errorType = result.GetError().GetType();
@@ -62,11 +63,11 @@ int execute(const char *code, char **description) {
   } else {
     SBStream stream;
     result.GetDescription(stream);
-    const char *desc = stream.GetData();
+    const char *unowned_desc = stream.GetData();
     
-    int string_size = strlen(desc);
-    char *string_ptr = malloc(string_size * sizeof(char));
-    
+    int desc_size = strlen(desc);
+    char *owned_desc = malloc(desc_size + 1);
+    memcpy(owned_desc, unowned_desc, desc_size + 1);
   }
   
   if (errorType == eErrorTypeInvalid) {
