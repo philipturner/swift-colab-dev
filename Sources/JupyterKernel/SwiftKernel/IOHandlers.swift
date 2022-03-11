@@ -66,7 +66,7 @@ fileprivate func getStdout() -> String {
   return String(data: stdout, encoding: .utf8)
 }
 
-fileprivate func sendStdout(_ stdout: SubString) {
+fileprivate func sendStdout(_ stdout: Substring) {
   let kernel = KernelContext.kernel
   if let clearSequenceRange = stdout.firstIndex(of: "\033[2J") {
     
