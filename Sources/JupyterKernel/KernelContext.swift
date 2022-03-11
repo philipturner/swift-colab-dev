@@ -18,7 +18,7 @@ struct KernelContext {
     LLDBProcessLibrary.loadSymbol(name: "execute")
   
   static let get_stdout: @convention(c) (
-    UnsafeMutablePointer<CChar>?, Int32) -> Int32 =
+    UnsafeMutablePointer<CChar>, Int32) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "get_stdout")
 }
 
