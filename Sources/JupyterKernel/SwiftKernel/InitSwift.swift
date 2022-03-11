@@ -44,8 +44,9 @@ fileprivate func initBitWidth() throws {
   guard let result = result as? SuccessWithValue else {
     if result is SuccessWithoutValue {
       throw Exception("Got SuccessWithoutValue from Int.bitWidth")
+    } else {
+      throw Exception("Expected value from Int.bitWidth, but got: \(String(reflecting: result))")
     }
-    throw Exception("Expected value from Int.bitWidth, but got: \(String(reflecting: result))")
   }
   precondition(result.description.contains("64"), 
     "Int.bitWidth returned \(result.description) when '64' was expected.")
