@@ -37,6 +37,14 @@ int init_repl_process(const char *swift_module_search_path_command,
   
   // ASLR is forbidden on Docker, but it may not be forbidden on Colab. So, it
   // will not be disabled until there is proof it crashes Swift-Colab.
+  
+  
+  auto launch_info = target.GetLaunchInfo()
+  auto launch_flags = launch_info.GetLaunchFlags()
+  launch_info.SetLaunchFlags(launch_flags & ~eLaunchFlagDisableASLR)
+  target.SetLaunchInfo(launch_info)
+  
+  
   process = target.LaunchSimple(NULL, repl_env, cwd);
   
   expr_opts = SBExpressionOptions();
