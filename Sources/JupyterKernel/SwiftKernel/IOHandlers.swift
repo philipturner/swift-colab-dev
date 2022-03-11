@@ -63,10 +63,10 @@ fileprivate func getStdout() -> String {
       bytesNoCopy: scratchBuffer, count: Int(stdoutSize), deallocator: .none)
     stdout += stdoutSegment
   }
-  return String(data: stdout, encoding: .utf8)
+  return String(data: stdout, encoding: .utf8)!
 }
 
-fileprivate func sendStdout(_ stdout: Substring) {
+fileprivate func sendStdout(_ stdout: String) {
   let kernel = KernelContext.kernel
   if let clearSequenceRange = stdout.firstIndex(of: "\033[2J") {
     
@@ -82,6 +82,6 @@ fileprivate func getAndSendStdout(handler: PythonObject) {
   let stdout = getStdout()
   if stdout.count > 0 {
     handler.had_stdout = true
-    sendStdout(stdout[...])
+    sendStdout(stdout)
   }
 }
