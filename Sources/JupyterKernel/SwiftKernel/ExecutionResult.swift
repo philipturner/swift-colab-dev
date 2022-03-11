@@ -30,6 +30,16 @@ struct PreprocessorError: ExecutionResultError {
     }
 }
 
+/// There was a compile or runtime error.
+struct SwiftError: ExecutionResultError {
+    var description: String
+}
+
+struct Exception: LocalizedError {
+    var errorDescription: String?
+    init(_ message: String) { errorDescription = message }
+}
+
 struct PreprocessorException: LocalizedError {
     var errorDescription: String?
     init(_ message: String) { errorDescription = message }
@@ -38,9 +48,4 @@ struct PreprocessorException: LocalizedError {
 struct PackageInstallException: LocalizedError {
     var errorDescription: String?
     init(_ message: String) { errorDescription = message }
-}
-
-/// There was a compile or runtime error.
-struct SwiftError: ExecutionResultError {
-    var description: String
 }
