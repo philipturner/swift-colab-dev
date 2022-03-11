@@ -10,7 +10,6 @@ SBProcess process;
 SBExpressionOptions expr_opts;
 SBThread main_thread;
 
-// Caller does not need to deallocate `data`.
 int read_byte_array(SBValue sbvalue, 
                     uint64_t *output_size, 
                     uint64_t *output_capacity, 
@@ -48,6 +47,7 @@ int read_byte_array(SBValue sbvalue,
     memcpy(new_output, *output, *output_size);
     free(*output);
     *output = new_output;
+    *output_capacity = new_capacity
   }
   
   int64_t added_size = 
@@ -62,7 +62,11 @@ int read_byte_array(SBValue sbvalue,
   data_stream[0] = count;
   
   if (count > 0) {
-    
+    auto get_data_error = SBError();
+    process.ReadMemory(address, data_stream + 1, count, get_data_error);
+    if (get_data_error.Fail()) {
+      return 3;
+    }
   }
   
   // Update `output_size` to reflect the added data.
