@@ -28,9 +28,14 @@ int read_byte_array(SBValue sbvalue,
   auto count_data = sbvalue
     .GetChildMemberWithName("count")
     .GetData();
-  int64_t = count_data.GetSignedInt64(get_count_error, 0);
+  int64_t count = count_data.GetSignedInt64(get_count_error, 0);
   if (get_count_error.Fail()) {
     return 2;
+  }
+  
+  int64_t added_capacity = 8 + count;
+  if (*output_size + added_capacity + 8 > *output_capacity) {
+    
   }
   
   // If serialized_output is too small, double its capacity and copy
