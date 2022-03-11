@@ -14,7 +14,7 @@ struct KernelContext {
   
   static let execute: @convention(c) (
     UnsafePointer<CChar>?, 
-    UnsafeMutablePointer<UnsafeMutablePointer<CChar>>) -> Int32 =
+    UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "execute")
 }
 
