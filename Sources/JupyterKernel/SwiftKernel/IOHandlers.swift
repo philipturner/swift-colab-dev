@@ -49,7 +49,8 @@ let StdoutHandler = PythonClass(
 
 fileprivate func getAndSendStdout(handler: PythonObject) {
   var stdout = ""
-  let scratchBuffer = UnsafeMutablePointer<CChar>.allocate(1025)
+  let scratchBuffer = UnsafeMutablePointer<CChar>.allocate(capacity: 1025)
+  defer { scratchBuffer.deallocate() }
   scratchBuffer[1024] = 0
   while true {
     _ = KernelContext.get_stdout(scratchBuffer, 1024)
