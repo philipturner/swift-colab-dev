@@ -33,8 +33,11 @@ int read_byte_array(SBValue sbvalue,
     return 2;
   }
   // need to round up `count`.
-  int64_t added_capacity = 8 + count;
-  if (*output_size + added_capacity + 8 > *output_capacity) {
+  int64_t spare_capacity = 
+    8 // 3rd-level header 
+    + (~7 & (count + 7)) // byte array's contents
+    + 8; // potential next 2nd-level header
+  if (*output_size + spare_capacity > *output_capacity) {
     
   }
   
