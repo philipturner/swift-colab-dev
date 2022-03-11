@@ -66,7 +66,7 @@ int execute(const char *code, char **description) {
     const char *unowned_desc = stream.GetData();
     
     int desc_size = strlen(desc);
-    char *owned_desc = malloc(desc_size + 1);
+    char *owned_desc = (char *)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
     *description = owned_desc;
   }
