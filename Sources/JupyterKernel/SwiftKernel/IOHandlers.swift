@@ -8,6 +8,7 @@ let SIGINTHandler = PythonClass(
   superclasses: [threading.Thread],
   members: [
     "__init__": PythonInstanceMethod { (`self`: PythonObject) in
+      threading.Thread.__init__(`self`)
       `self`.daemon = true
       return Python.None
     },
