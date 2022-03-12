@@ -76,13 +76,21 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   var chosenPath = ""
   var rejectedAPath = false
   
+  // Paths in "/content" should override paths in "/opt/swift/include".
+  // Paths later in the list `includePaths` have higher priority.
   for includePath in includePaths {
     let path = includePath + "/" + name
     if previouslyReadPaths[path, default: false] { 
         rejectedAPath = true
         continue 
     }
+    
+    if let data = FileManager.default.contents(atPath: path) {
+      
+    }
   }
+  
+  // TODO: in the error, reverse order of `includePaths`.
   
   previouslyReadPaths[path] = true
 }
