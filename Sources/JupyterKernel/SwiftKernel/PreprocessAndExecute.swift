@@ -84,7 +84,6 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
         rejectedAPath = true
         continue 
     }
-    
     if let data = FileManager.default.contents(atPath: path) {
       code = String(data: data, encoding: .utf8)!
       chosenPath = path
@@ -95,12 +94,18 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
     if rejectedAPath {
       return ""
     }
+    
     // Reversing `includePaths` to show the highest-priority one first.
     throw PreprocessorException(
         "Line \(lineIndex + 1): Could not find \"\(name)\". Searched \(includePaths.reversed()).")
   }
   
-  // TODO: in the error, reverse order of `includePaths`.
-  
   previouslyReadPaths[path] = true
+  
+  // TODO: Ensure I do not need an extra newline at the end of this.
+  return """
+  #sourceLocation(file: "\(chosenPath)", line: 1)
+  \(code)
+  \(getLocationDirective(lineIndex: lineIndex))
+  """
 }
