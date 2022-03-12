@@ -11,8 +11,14 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
 
 // TODO: test that this function works
 func execute(code: String) -> ExecutionResult {
+  let executionCount = Int(KernelContext.kernel.execution_count) ?? -1
+  let locationDirective = """
+  #sourceLocation(file: "<Cell \(executionCount)>", line: 1)
+  """
+  let codeWithLocationDirective = locationDirective + "\n" + code
+  
   var descriptionPtr: UnsafeMutablePointer<CChar>?
-  let error = KernelContext.execute(code, &descriptionPtr)
+  let error = KernelContext.execute(codeWithLocationDirective, &descriptionPtr)
   
   var description: String?
   if let descriptionPtr = descriptionPtr {
