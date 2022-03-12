@@ -9,7 +9,6 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
   }
 }
 
-// TODO: test that this function works
 func execute(code: String, lineIndex: Int? = -1) -> ExecutionResult {
   let locationDirective = getLocationDirective(lineIndex: lineIndex)
   let codeWithLocationDirective = locationDirective + "\n" + code
