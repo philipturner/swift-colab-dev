@@ -1,5 +1,7 @@
 import Foundation
 
+fileprivate let re = Python.import("re")
+
 func preprocessAndExecute(code: String) throws -> ExecutionResult {
   do {
     let preprocessed = try preprocess(code: code)
@@ -45,11 +47,15 @@ fileprivate func getLocationDirective(lineIndex: Int) -> String {
 fileprivate func preprocess(code: String) throws -> String {
   let lines = code.split(separator: "\n").map(String.init)
   let preprocessedLines = try lines.indices.map { i in
-    return try preprocessLine(lines[i], index: i)
+    return try preprocess(line: lines[i], index: i)
   }
   return preprocessedLines.joined(separator: "\n")
 }
 
-fileprivate func preprocessLine(_ line: String, index lineIndex: Int) throws -> String {
+// TODO: move %system and interface into %install commands here
+
+fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String {
   return line
 }
+
+fileprivate func 
