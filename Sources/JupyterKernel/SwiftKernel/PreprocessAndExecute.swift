@@ -72,7 +72,7 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   
   let name = String(nameMatch.group(1))!
   let includePaths = ["/opt/swift/include", "/content"]
-  var code = ""
+  var code: String? = nil
   var chosenPath = ""
   var rejectedAPath = false
   
@@ -86,8 +86,18 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
     }
     
     if let data = FileManager.default.contents(atPath: path) {
-      
+      code = String(data: data, encoding: .utf8)!
+      chosenPath = path
     }
+  }
+  
+  guard let code = code else {
+    if rejectedAPath {
+      return ""
+    }
+    // Reversing `includePaths` to show the highest-priority one first.
+    throw PreprocessorException(
+        "Line \(lineIndex + 1): Could not find \"\(name)\". Searched \(includePaths.reversed()).")
   }
   
   // TODO: in the error, reverse order of `includePaths`.
