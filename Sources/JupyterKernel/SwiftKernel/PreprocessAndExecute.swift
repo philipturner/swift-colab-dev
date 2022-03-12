@@ -11,8 +11,15 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
   }
 }
 
-func execute(code: String, lineIndex: Int = -1) -> ExecutionResult {
-  let locationDirective = getLocationDirective(lineIndex: lineIndex)
+func execute(code: String, lineIndex: Int? = nil) -> ExecutionResult {
+  var locationDirective: String
+  if let lineIndex = lineIndex {
+    locationDirective = getLocationDirective(lineIndex: lineIndex)
+  } else {
+    locationDirective = """
+    #sourceLocation(file: "n/a", line: 1)
+    """
+  }
   let codeWithLocationDirective = locationDirective + "\n" + code
 //   print(codeWithLocationDirective)
   return SwiftError(description: codeWithLocationDirective)
