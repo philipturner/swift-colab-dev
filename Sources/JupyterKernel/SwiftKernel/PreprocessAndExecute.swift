@@ -14,6 +14,7 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
 func execute(code: String, lineIndex: Int = -1) -> ExecutionResult {
   let locationDirective = getLocationDirective(lineIndex: lineIndex)
   let codeWithLocationDirective = locationDirective + "\n" + code
+  print(codeWithLocationDirective)
   
   var descriptionPtr: UnsafeMutablePointer<CChar>?
   let error = KernelContext.execute(codeWithLocationDirective, &descriptionPtr)
