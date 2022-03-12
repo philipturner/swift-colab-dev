@@ -35,6 +35,15 @@ func execute(code: String) -> ExecutionResult {
   }
 }
 
+// Location directive for the current cell
+// This adds one to `lineIndex` before creating the string.
+fileprivate func getLocationDirective(lineIndex: Int) -> String {
+  let executionCount = Int(KernelContext.kernel.execution_count)!
+  return """
+  #sourceLocation(file: "<Cell \(executionCount)>", line: \(lineIndex + 1))
+  """
+}
+
 fileprivate func preprocess(code: String) throws -> String {
   let lines = code.split(separator: "\n").map(String.init)
   let preprocessedLines = try lines.indices.map { i in
