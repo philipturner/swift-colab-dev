@@ -33,6 +33,7 @@ func execute(code: String, lineIndex: Int? = -1) -> ExecutionResult {
 }
 
 // Location directive for the current cell
+//
 // This adds one to `lineIndex` before creating the string.
 // This does not include the newline that should come after the directive.
 fileprivate func getLocationDirective(lineIndex: Int) -> String {
