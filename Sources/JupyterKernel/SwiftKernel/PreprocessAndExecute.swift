@@ -58,4 +58,31 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   return line
 }
 
-fileprivate func 
+// This is a dictionary to avoid having O(n^2) algorithmic complexity.
+fileprivate var previouslyReadPaths: [String: Bool] = [:]
+
+fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> String {
+  let nameMatch = re.match(###"""
+  ^\s*"([^"]+)"\s*$
+  """###, restOfLine)
+  guard nameMatch != Python.None else {
+    throw PreprocessorException(
+            "Line \(line_index + 1): %include must be followed by a name in quotes")
+  }
+  
+  let name = String(nameMatch.group(1))!
+  let includePaths = ["/opt/swift/include", "/content"]
+  var code = ""
+  var chosenPath = ""
+  var rejectedAPath = false
+  
+  for includePath in includePaths {
+    let path = includePath + "/" + name
+    if previouslyReadPaths[path, default: false] { 
+        rejectedAPath = true
+        continue 
+    }
+  }
+  
+  previouslyReadPaths[path] = true
+}
