@@ -188,12 +188,15 @@ int after_successful_execution(uint64_t **serialized_output) {
   
   uint32_t num_display_messages = result.GetNumChildren();
   ((uint64_t *)output)[0] = num_display_messages;
-  output_size = 8;
+  output_size += 8;
   
   for (uint32_t i = 0; i < num_display_messages; ++i) {
     auto display_message = result.GetChildAtIndex(i);
     
     uint32_t num_byte_arrays = display_message.GetNumChildren();
+    ((uint64_t *)(output + output_size))[0] = num_byte_arrays;
+    output_size += 8;
+    
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
       auto byte_array = display_message.GetChildAtIndex(j);
       
