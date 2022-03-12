@@ -64,7 +64,8 @@ fileprivate var previouslyReadPaths: [String: Bool] = [:]
 fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> String {
   let nameMatch = re.match(###"""
   ^\s*"([^"]+)"\s*$
-  """###, restOfLine)
+  """###, 
+  restOfLine)
   guard nameMatch != Python.None else {
     throw PreprocessorException(
             "Line \(line_index + 1): %include must be followed by a name in quotes")
