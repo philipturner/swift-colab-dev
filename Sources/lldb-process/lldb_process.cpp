@@ -199,8 +199,7 @@ int after_successful_execution(uint64_t **serialized_output) {
     
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
       auto byte_array = display_message.GetChildAtIndex(j);
-      
-      // TODO: put read_byte_array into an external function
+      read_byte_array(byte_array, &output_size, &output_capacity, &output);
     }
   }
   
