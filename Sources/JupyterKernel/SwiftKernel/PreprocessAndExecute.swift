@@ -62,6 +62,14 @@ fileprivate func preprocess(code: String) throws -> String {
 // TODO: move %system and interface into %install commands here
 
 fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String {
+  let includeRegularExpression = ###"""
+  ^\s*%include (.*)$
+  """###
+  let includeMatch = re.match(includeRegularExpression, line)
+  guard includeMatch != Python.None else {
+    let restOfLine = String(includeMatch.group(1))!
+    return try readInclude(restOfLine: restOfLine, lineIndex: lineIndex)
+  }
   return line
 }
 
