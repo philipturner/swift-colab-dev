@@ -47,14 +47,14 @@ int read_byte_array(SBValue sbvalue,
     memcpy(new_output, *output, *output_size);
     free(*output);
     *output = new_output;
-    *output_capacity = new_capacity
+    *output_capacity = new_capacity;
   }
   
   int64_t added_size = 
     8 // 3rd-level header 
     + (~7 & (count + 7)); // byte array's contents
   int64_t current_size = *output_size;
-  int64_t *data_stream = (int64_t*)((*output) + current_size);
+  int64_t *data_stream = (int64_t*)((char*)(*output) + current_size);
   
   // Zero out the last 8 bytes in the buffer; everything else will
   // be written to at some point.
@@ -194,7 +194,7 @@ int after_successful_execution(uint64_t **serialized_output) {
     auto display_message = result.GetChildAtIndex(i);
     
     uint32_t num_byte_arrays = display_message.GetNumChildren();
-    ((uint64_t *)(output + output_size))[0] = num_byte_arrays;
+    ((uint64_t *)((char*)output + output_size))[0] = num_byte_arrays;
     output_size += 8;
     
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
