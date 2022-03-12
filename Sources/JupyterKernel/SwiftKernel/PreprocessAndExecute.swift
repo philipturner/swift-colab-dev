@@ -11,7 +11,7 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
   }
 }
 
-func execute(code: String, lineIndex: Int? = -1) -> ExecutionResult {
+func execute(code: String, lineIndex: Int = -1) -> ExecutionResult {
   let locationDirective = getLocationDirective(lineIndex: lineIndex)
   let codeWithLocationDirective = locationDirective + "\n" + code
   
@@ -68,13 +68,13 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   let nameMatch = re.match(nameRegularExpression, restOfLine)
   guard nameMatch != Python.None else {
     throw PreprocessorException(
-            "Line \(line_index + 1): %include must be followed by a name in quotes")
+            "Line \(lineIndex + 1): %include must be followed by a name in quotes")
   }
   
   let name = String(nameMatch.group(1))!
   let includePaths = ["/opt/swift/include", "/content"]
   var code: String? = nil
-  var chosenPath = ""
+  var chosenPath: String? = nil
   var rejectedAPath = false
   
   // Paths in "/content" should override paths in "/opt/swift/include".
@@ -91,7 +91,8 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
     }
   }
   
-  guard let code = code else {
+  guard let code = code, 
+        let chosenPath = chosenPath else {
     if rejectedAPath {
       return ""
     }
@@ -101,7 +102,7 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
         "Line \(lineIndex + 1): Could not find \"\(name)\". Searched \(includePaths.reversed()).")
   }
   
-  previouslyReadPaths[path] = true
+  previouslyReadPaths[chosenPath] = true
   
   // TODO: Ensure I do not need an extra newline at the end of this.
   return """
