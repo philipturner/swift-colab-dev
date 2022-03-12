@@ -182,7 +182,14 @@ int after_successful_execution(uint64_t **serialized_output) {
     return 1;
   }
   
+  uint64_t output_size = 0;
+  uint64_t output_capacity = 1024;
+  void *output = malloc(output_capacity);
+  
   uint32_t num_display_messages = result.GetNumChildren();
+  ((uint64_t *)output)[0] = num_display_messages;
+  output_size = 8;
+  
   for (uint32_t i = 0; i < num_display_messages; ++i) {
     auto display_message = result.GetChildAtIndex(i);
     
