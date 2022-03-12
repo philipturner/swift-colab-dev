@@ -10,11 +10,8 @@ func preprocessAndExecute(code: String) throws -> ExecutionResult {
 }
 
 // TODO: test that this function works
-func execute(code: String) -> ExecutionResult {
-  let executionCount = Int(KernelContext.kernel.execution_count) ?? -1
-  let locationDirective = """
-  #sourceLocation(file: "<Cell \(executionCount)>", line: 1)
-  """
+func execute(code: String, lineIndex: Int? = -1) -> ExecutionResult {
+  let locationDirective = getLocationDirective(lineIndex: lineIndex)
   let codeWithLocationDirective = locationDirective + "\n" + code
   
   var descriptionPtr: UnsafeMutablePointer<CChar>?
@@ -37,6 +34,7 @@ func execute(code: String) -> ExecutionResult {
 
 // Location directive for the current cell
 // This adds one to `lineIndex` before creating the string.
+// This does not include the newline that should come after the directive.
 fileprivate func getLocationDirective(lineIndex: Int) -> String {
   let executionCount = Int(KernelContext.kernel.execution_count)!
   return """
