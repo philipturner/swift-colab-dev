@@ -48,6 +48,19 @@ fileprivate func initKernelCommunicator() throws {
   if result is ExecutionResultError {
     throw Exception("Error initializing KernelCommunicator: \(result)")
   }
+  
+  let session = KernelContext.kernel.session
+  let id = String(session.session)!
+  let key = String(session.key.decode("utf8"))!
+  let username = String(session.username)!
+  
+  let declCode = """
+  enum JupyterKernel {
+    static var communicator = KernelCommunicator(
+      jupyterSession: KernelCommunicator.JupyterSession(
+        id: \(id), key: \(key), username: \(username)))
+  }
+  """
 }
 
 fileprivate func initBitWidth() throws {
