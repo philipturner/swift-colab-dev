@@ -47,10 +47,9 @@ fileprivate func initReplProcess() throws {
 }
 
 fileprivate func initKernelCommunicator() throws {
-  let includeCode = """
+  var result = try preprocessAndExecute(code: """
   %include "KernelCommunicator.swift"
-  """
-  var result = try preprocessAndExecute(code: includeCode)
+  """)
   if result is ExecutionResultError {
     throw Exception("Error initializing KernelCommunicator: \(result)")
   }
@@ -60,14 +59,13 @@ fileprivate func initKernelCommunicator() throws {
   let key = String(session.key.decode("utf8"))!
   let username = String(session.username)!
   
-  let declCode = """
+  result = try preprocessAndExecute(code: """
   enum JupyterKernel {
     static var communicator = KernelCommunicator(
       jupyterSession: KernelCommunicator.JupyterSession(
         id: "\(id)", key: "\(key)", username: "\(username)"))
   }
-  """
-  result = try preprocessAndExecute(code: declCode)
+  """)
   if result is ExecutionResultError {
     throw Exception("Error declaring JupyterKernel: \(result)")
   }
