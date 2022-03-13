@@ -8,7 +8,7 @@ func doExecute(code: String) throws -> PythonObject? {
   return nil
 }
 
-func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
+fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
   return [
     "status": "error",
     "execution_count": KernelContext.kernel.execution_count,
@@ -18,7 +18,7 @@ func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
   ]
 }
 
-func sendIOPubErrorMessage(traceback: [String]) {
+fileprivate func sendIOPubErrorMessage(traceback: [String]) {
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "error", [
     "ename": "",
@@ -26,3 +26,4 @@ func sendIOPubErrorMessage(traceback: [String]) {
     "traceback": traceback
   ])
 }
+
