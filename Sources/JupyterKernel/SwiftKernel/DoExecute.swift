@@ -39,7 +39,36 @@ func doExecute(code: String) throws -> PythonObject? {
   } else if result is SuccessWithoutValue {
     return emptyResponse
   } else if result is ExecutionResultError {
-    
+//       if not self.process.is_alive:
+//           self._send_iopub_error_message(['Process killed'])
+
+//           # Exit the kernel because there is no way to recover from a
+//           # killed process. The UI will tell the user that the kernel has
+//           # died and the UI will automatically restart the kernel.
+//           # We do the exit in a callback so that this execute request can
+//           # cleanly finish before the kernel exits.
+//           loop = ioloop.IOLoop.current()
+//           loop.add_timeout(time.time()+0.1, loop.stop)
+
+//           return self._make_execute_reply_error_message(['Process killed'])
+
+//       if stdout_handler.had_stdout:
+//           # When there is stdout, it is a runtime error. Stdout, which we
+//           # have already sent to the client, contains the error message
+//           # (plus some other ugly traceback that we should eventually
+//           # figure out how to suppress), so this block of code only needs
+//           # to add a traceback.
+//           traceback = []
+//           traceback.append('Current stack trace:')
+//           traceback += [
+//               '\t%s' % frame
+//               for frame in self._get_pretty_main_thread_stack_trace()
+//           ]
+    // There is no stdout, so it must be a compile error. Simply return
+    // the error without trying to get a stack trace.
+    let traceback = [result.description]
+    sendIOPubErrorMessage(traceback: traceback)
+    return makeExecuteReplyErrorMessage(traceback: traceback)
   } else {
     fatalError("This should never happen.")
   }
