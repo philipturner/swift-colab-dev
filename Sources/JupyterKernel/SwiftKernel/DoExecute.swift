@@ -7,12 +7,16 @@ func doExecute(code: String) throws -> PythonObject? {
     KernelContext.debuggerInitialized = true
   }
   
+  // Execute the cell, handle unexpected exceptions, and make sure to
+  // always clean up the stdout handler.
   var result: ExecutionResult
   do {
     result = try executeCell(code: code)
   } catch {
     sendExceptionReport(whileDoing: "executeCell", error: error)
   }
+  
+  // Send values/errors and status to the client.
   
   return nil
 }
