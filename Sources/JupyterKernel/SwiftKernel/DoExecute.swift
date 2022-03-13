@@ -27,3 +27,11 @@ fileprivate func sendIOPubErrorMessage(traceback: [String]) {
   ])
 }
 
+fileprivate func sendExceptionReport(whileDoing: String, error: Error) {
+  sendIOPubErrorMessage(traceback: [
+    "Kernel is in a bad state. Try restarting the kernel.",
+    "",
+    "Exception in `\(whileDoing)`:",
+    error.localizedDescription
+  ])
+}
