@@ -53,9 +53,6 @@ fileprivate func initKernelCommunicator() throws {
   let session = KernelContext.kernel.session
   let id = String(session.session)!
   let key = String(session.key.decode("utf8"))!
-  print("key:")
-  print(key)
-  print(String(session.key) as Any)
   let username = String(session.username)!
   
   let declCode = """
