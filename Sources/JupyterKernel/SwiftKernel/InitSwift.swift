@@ -26,6 +26,7 @@ fileprivate struct CEnvironment {
 
 func initSwift() throws {
   try initReplProcess()
+  try initKernelCommunicator()
   try initBitWidth()
 }
 
