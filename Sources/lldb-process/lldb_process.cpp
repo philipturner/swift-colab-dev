@@ -142,9 +142,10 @@ int execute(const char *code, char **description) {
   if (errorType == eErrorTypeGeneric) {
     *description = NULL;
   } else {
-    SBStream stream;
-    result.GetDescription(stream);
-    const char *unowned_desc = stream.GetData();
+//     SBStream stream;
+//     result.GetDescription(stream);
+//     const char *unowned_desc = stream.GetData();
+    const char *unowned_desc = result.GetObjectDescription();
     
     int desc_size = strlen(unowned_desc);
     char *owned_desc = (char *)malloc(desc_size + 1);
