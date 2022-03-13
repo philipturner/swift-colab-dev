@@ -24,10 +24,15 @@ fileprivate struct CEnvironment {
   }
 }
 
+fileprivate var sigintHandler: PythonObject!
+
 func initSwift() throws {
   try initReplProcess()
   try initKernelCommunicator()
   try initBitWidth()
+  
+  sigintHandler = SIGINTHandler()
+  sigintHandler.start()
 }
 
 fileprivate func initReplProcess() throws {
