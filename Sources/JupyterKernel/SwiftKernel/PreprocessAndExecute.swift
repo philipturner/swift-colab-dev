@@ -21,7 +21,6 @@ func execute(code: String, lineIndex: Int? = nil) -> ExecutionResult {
     """
   }
   let codeWithLocationDirective = locationDirective + "\n" + code
-  print("Code to execute: \(codeWithLocationDirective)")
   
   var descriptionPtr: UnsafeMutablePointer<CChar>?
   let error = KernelContext.execute(codeWithLocationDirective, &descriptionPtr)
@@ -68,11 +67,9 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   """###
   let includeMatch = re.match(includeRegularExpression, line)
   guard includeMatch == Python.None else {
-    print("match succeeded")
     let restOfLine = String(includeMatch.group(1))!
     return try readInclude(restOfLine: restOfLine, lineIndex: lineIndex)
   }
-  print("match failed")
   return line
 }
 
@@ -122,13 +119,11 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   
   previouslyReadPaths[chosenPath] = true
   
-  // TODO: Ensure I do not need an extra newline at the end of this.
-  
-  //#sourceLocation(file: "\(chosenPath)", line: 1)
-  //\(getLocationDirective(lineIndex: lineIndex))
+  // TODO: Determine whether I need an extra newline at the end of this.
   return """
-  
+  #sourceLocation(file: "\(chosenPath)", line: 1)
   \(code)
+  \(getLocationDirective(lineIndex: lineIndex))
   
   """
 }
