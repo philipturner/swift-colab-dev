@@ -16,7 +16,7 @@ fileprivate func setParentMessage() throws {
   let json = Python.import("json")
   let jsonDumps = String(json.dumps(json.dumps(squash_dates(parentHeader))))!
   
-  let result = try execute(code: """
+  let result = execute(code: """
   JupyterKernel.communicator.updateParentMessage(
     to: KernelCommunicator.ParentMessage(json: \(jsonDumps)))
   """)
