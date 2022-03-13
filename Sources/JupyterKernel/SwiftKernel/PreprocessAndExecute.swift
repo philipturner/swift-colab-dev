@@ -67,7 +67,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   ^\s*%include (.*)$
   """###
   let includeMatch = re.match(includeRegularExpression, line)
-  if includeMatch != Python.None {
+  guard includeMatch == Python.None else {
     print("match succeeded")
     let restOfLine = String(includeMatch.group(1))!
     return try readInclude(restOfLine: restOfLine, lineIndex: lineIndex)
