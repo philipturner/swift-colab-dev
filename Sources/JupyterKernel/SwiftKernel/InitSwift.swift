@@ -44,7 +44,7 @@ fileprivate func initKernelCommunicator() throws {
   let includeCode = """
   %include "KernelCommunicator.swift"
   """
-  let result = try preprocessAndExecute(code: includeCode)
+  var result = try preprocessAndExecute(code: includeCode)
   if result is ExecutionResultError {
     throw Exception("Error initializing KernelCommunicator: \(result)")
   }
@@ -60,6 +60,10 @@ fileprivate func initKernelCommunicator() throws {
       jupyterSession: .init(id: "\(id)", key: "\(key)", username: "\(username)"))
   }
   """
+  result = try preprocessAndExecute(code: declCode)
+  if result is ExecutionResultError {
+    throw Exception("Error declaring JupyterKernel: \(result)")
+  }
 }
 
 fileprivate func initBitWidth() throws {
