@@ -19,7 +19,7 @@
 /// ZeroMQ. This is not currently possible, because ZeroMQ sends messages
 /// asynchronously using IO threads, and LLDB pauses those IO threads, which
 /// prevents them from sending the messages.
-public struct KernelCommunicator {
+// public struct KernelCommunicator {
 //   private var afterSuccessfulExecutionHandlers: [() -> [JupyterDisplayMessage]]
 //   private var parentMessageHandlers: [(ParentMessage) -> ()]
 
@@ -117,4 +117,4 @@ public struct KernelCommunicator {
 //     let key: String
 //     let username: String
 //   }
-}
+// }
