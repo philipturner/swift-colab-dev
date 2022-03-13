@@ -31,7 +31,7 @@ func doExecute(code: String) throws -> PythonObject? {
     kernel.send_response(kernel.iopub_socket, "execute_result", [
       "execution_count": kernel.execution_count,
       "data": [
-          "text/plain": result.description
+          "text/plain": result.description.pythonObject
       ],
       "metadata": [:]
     ])
