@@ -21,6 +21,7 @@ func execute(code: String, lineIndex: Int? = nil) -> ExecutionResult {
     """
   }
   let codeWithLocationDirective = locationDirective + "\n" + code
+  print("Code to execute: \(codeWithLocationDirective)")
   
   var descriptionPtr: UnsafeMutablePointer<CChar>?
   let error = KernelContext.execute(codeWithLocationDirective, &descriptionPtr)
