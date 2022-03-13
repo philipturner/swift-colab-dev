@@ -14,6 +14,7 @@ func doExecute(code: String) throws -> PythonObject? {
     result = try executeCell(code: code)
   } catch {
     sendExceptionReport(whileDoing: "executeCell", error: error)
+    throw error
   }
   
   var emptyResponse: PythonObject {
