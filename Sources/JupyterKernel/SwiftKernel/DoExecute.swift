@@ -14,7 +14,7 @@ fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObje
     "execution_count": KernelContext.kernel.execution_count,
     "ename": "",
     "evalue": "",
-    "traceback": traceback
+    "traceback": traceback.pythonObject
   ]
 }
 
@@ -23,8 +23,8 @@ fileprivate func sendIOPubErrorMessage(traceback: [String]) {
   kernel.send_response(kernel.iopub_socket, "error", [
     "ename": "",
     "evalue": "",
-    "traceback": traceback
-  ].pythonObject)
+    "traceback": traceback.pythonObject
+  ])
 }
 
 fileprivate func sendExceptionReport(whileDoing: String, error: Error) {
