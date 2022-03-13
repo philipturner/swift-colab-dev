@@ -143,15 +143,13 @@ int execute(const char *code, char **description) {
   if (errorType == eErrorTypeGeneric) {
     *description = NULL;
   } else {
-//     SBStream stream;
-//     result.GetDescription(stream);
-//     const char *unowned_desc = stream.GetData();
-    
     const char *unowned_desc;
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-      unowned_desc = error.GetObjectDescription();
+      SBStream stream;
+      error.GetDescription(stream);
+      unowned_desc = stream.GetData();
     }
     
     int desc_size = strlen(unowned_desc);
