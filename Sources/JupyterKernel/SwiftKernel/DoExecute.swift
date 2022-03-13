@@ -24,7 +24,7 @@ fileprivate func sendIOPubErrorMessage(traceback: [String]) {
     "ename": "",
     "evalue": "",
     "traceback": traceback
-  ])
+  ].pythonObject)
 }
 
 fileprivate func sendExceptionReport(whileDoing: String, error: Error) {
