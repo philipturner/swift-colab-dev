@@ -40,6 +40,12 @@ fileprivate func initReplProcess() throws {
   }
 }
 
+fileprivate func initKernelCommunicator() throws {
+  let result = try preprocessAndExecute(code: """
+    %include "KernelCommunicator.swift"
+    """)
+}
+
 fileprivate func initBitWidth() throws {
   let result = execute(code: "Int.bitWidth")
   guard let result = result as? SuccessWithValue else {
