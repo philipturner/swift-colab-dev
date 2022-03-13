@@ -1,10 +1,10 @@
 import Foundation
 fileprivate let re = Python.import("re")
 
-func preprocessAndExecute(code: String) throws -> ExecutionResult {
+func preprocessAndExecute(code: String, isCell: Bool) throws -> ExecutionResult {
   do {
     let preprocessed = try preprocess(code: code)
-    return execute(code: preprocessed)
+    return execute(code: preprocessed, lineIndex: isCell ? 1 : nil)
   } catch let e as PreprocessorException {
     return PreprocessorError(exception: e)
   }
