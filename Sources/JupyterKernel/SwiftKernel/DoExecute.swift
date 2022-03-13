@@ -52,3 +52,12 @@ fileprivate func sendExceptionReport(whileDoing: String, error: Error) {
     error.localizedDescription
   ])
 }
+
+fileprivate func executeCell(code: String) throws -> ExecutionResult {
+  try setParentMessage()
+  let result = try preprocessAndExecute(code: code)
+  if result is ExecutionResultSuccess {
+    // afterSuccessfulExecution()
+  }
+  return result
+}
