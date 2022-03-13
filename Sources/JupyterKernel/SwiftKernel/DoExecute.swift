@@ -11,7 +11,7 @@ func doExecute(code: String) throws -> PythonObject? {
   do {
     result = try executeCell(code: code)
   } catch {
-    
+    sendExceptionReport(whileDoing: "executeCell", error: error)
   }
   
   return nil
