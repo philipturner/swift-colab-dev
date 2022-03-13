@@ -16,7 +16,29 @@ func doExecute(code: String) throws -> PythonObject? {
     sendExceptionReport(whileDoing: "executeCell", error: error)
   }
   
+  var emptyResponse: PythonObject {
+    return [
+      "status": "ok",
+      "execution_count": KernelContext.kernel.execution_count,
+      "payload": [],
+      "user_expressions": [:]
+    ]
+  }
+  
   // Send values/errors and status to the client.
+  if result is SuccessWithValue {
+    let kernel = KernelContext.kernel
+    kernel.send_response(kernel.iopub_socket, "execute_result", [
+      "execution_count": kernel.execution_count,
+      "data": [
+          "text/plain": result.description
+      ],
+      "metadata": [:]
+    ])
+    return emptyResponse
+  } else {
+    
+  }
   
   return nil
 }
