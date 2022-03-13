@@ -63,7 +63,8 @@ fileprivate func initKernelCommunicator() throws {
   let declCode = """
   enum JupyterKernel {
     static var communicator = KernelCommunicator(
-      jupyterSession: .init(id: "\(id)", key: "\(key)", username: "\(username)"))
+      jupyterSession: KernelCommunicator.JupyterSession(
+        id: "\(id)", key: "\(key)", username: "\(username)"))
   }
   """
   result = try preprocessAndExecute(code: declCode)
