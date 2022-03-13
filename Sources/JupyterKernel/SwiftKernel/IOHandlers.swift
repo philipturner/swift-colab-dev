@@ -1,5 +1,4 @@
 import Foundation
-
 fileprivate let signal = Python.import("signal")
 fileprivate let threading = Python.import("threading")
 
