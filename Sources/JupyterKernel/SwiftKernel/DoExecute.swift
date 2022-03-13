@@ -6,6 +6,14 @@ func doExecute(code: String) throws -> PythonObject? {
     try initSwift()
     KernelContext.debuggerInitialized = true
   }
+  
+  var result: ExecutionResult
+  do {
+    result = try executeCell(code: code)
+  } catch {
+    
+  }
+  
   return nil
 }
 
