@@ -120,9 +120,12 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   previouslyReadPaths[chosenPath] = true
   
   // TODO: Ensure I do not need an extra newline at the end of this.
+  
+  //#sourceLocation(file: "\(chosenPath)", line: 1)
+  //\(getLocationDirective(lineIndex: lineIndex))
   return """
-  #sourceLocation(file: "\(chosenPath)", line: 1)
+  
   \(code)
-  \(getLocationDirective(lineIndex: lineIndex))
+  
   """
 }
