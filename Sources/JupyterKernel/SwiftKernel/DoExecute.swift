@@ -1,4 +1,5 @@
 import Foundation
+fileprivate let squash_dates = Python.import("jupyter_client").jsonutil.squash_dates
 
 func doExecute(code: String) throws -> PythonObject? {
   if !KernelContext.debuggerInitialized {
@@ -6,6 +7,13 @@ func doExecute(code: String) throws -> PythonObject? {
     KernelContext.debuggerInitialized = true
   }
   return nil
+}
+
+fileprivate func setParentMessage() throws {
+  // TODO: remove dependency on Python JSON once I figure
+  // out what this parent message is
+  let json = Python.import("json")
+  let jsonDumps = json.dumps(j
 }
 
 fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
