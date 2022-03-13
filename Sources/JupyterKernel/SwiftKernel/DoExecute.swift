@@ -36,11 +36,13 @@ func doExecute(code: String) throws -> PythonObject? {
       "metadata": [:]
     ])
     return emptyResponse
-  } else {
+  } else if result is SuccessWithoutValue {
+    return emptyResponse
+  } else if result is ExecutionResultError {
     
+  } else {
+    fatalError("This should never happen.")
   }
-  
-  return nil
 }
 
 fileprivate func setParentMessage() throws {
