@@ -1,5 +1,4 @@
 import Foundation
-
 fileprivate let re = Python.import("re")
 
 func preprocessAndExecute(code: String) throws -> ExecutionResult {
