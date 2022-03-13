@@ -41,9 +41,13 @@ fileprivate func initReplProcess() throws {
 }
 
 fileprivate func initKernelCommunicator() throws {
-  let result = try preprocessAndExecute(code: """
-    %include "KernelCommunicator.swift"
-    """)
+  let includeCode = """
+  %include "KernelCommunicator.swift"
+  """
+  let result = try preprocessAndExecute(code: includeCode)
+  if result is ExecutionResultError {
+    throw Exception("Error initializing KernelCommunicator: \(result)")
+  }
 }
 
 fileprivate func initBitWidth() throws {
