@@ -7,3 +7,13 @@ func doExecute(code: String) throws -> PythonObject? {
   }
   return nil
 }
+
+func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
+  return [
+    "status": "error",
+    "execution_count": KernelContext.kernel.execution_count,
+    "ename": "",
+    "evalue": "",
+    "traceback": traceback
+  ]
+}
