@@ -14,7 +14,6 @@ fileprivate func setParentMessage() throws {
   // out what this parent message is
   let parentHeader = KernelContext.kernel._parent_header
   let json = Python.import("json")
-  // TODO: remove forced conversion to Swift string if possible
   let jsonDumps = String(json.dumps(json.dumps(squash_dates(parentHeader))))!
   
   let result = try execute(code: """
