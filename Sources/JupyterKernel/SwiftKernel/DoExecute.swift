@@ -12,8 +12,14 @@ func doExecute(code: String) throws -> PythonObject? {
 fileprivate func setParentMessage() throws {
   // TODO: remove dependency on Python JSON once I figure
   // out what this parent message is
+  let parentHeader = KernelContext.kernel._parent_header
   let json = Python.import("json")
-  let jsonDumps = json.dumps(j
+  let jsonDumps = json.dumps(json.dumps(squash_dates(parentHeader)))
+  let code = """
+  JupyterKernel.communicator.updateParentMessage(
+                to: KernelCommunicator.ParentMessage(json: %s))
+        
+  """
 }
 
 fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
