@@ -17,3 +17,12 @@ func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
     "traceback": traceback
   ]
 }
+
+func sendIOPubErrorMessage(traceback: [String]) {
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "error", [
+    "ename": "",
+    "evalue": "",
+    "traceback": traceback
+  ])
+}
