@@ -68,9 +68,11 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   """###
   let includeMatch = re.match(includeRegularExpression, line)
   guard includeMatch != Python.None else {
+    print("match succeeded")
     let restOfLine = String(includeMatch.group(1))!
     return try readInclude(restOfLine: restOfLine, lineIndex: lineIndex)
   }
+  print("match failed")
   return line
 }
 
