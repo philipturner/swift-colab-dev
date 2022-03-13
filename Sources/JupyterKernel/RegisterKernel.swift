@@ -1,5 +1,4 @@
 import Foundation
-
 fileprivate let ipykernel_launcher = Python.import("ipykernel_launcher")
 fileprivate let KernelSpecManager = Python.import("jupyter_client").kernelspec.KernelSpecManager
 
