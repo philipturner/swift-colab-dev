@@ -14,14 +14,21 @@ func afterSuccessfulExecution() throws {
 
 fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) -> [[String]] {
   var stream = executionOutput
-  let streamSize = Int(stream.pointee)
+  let numJupyterMessages = Int(stream.pointee)
   stream += 1
   
   var jupyterMessages: [[String]] = []
-  jupyterMessages.reserveCapacity(streamSize)
-  
-  for _ in 0..<streamSize {
+  jupyterMessages.reserveCapacity(numJupyterMessages)
+  for _ in 0..<numJupyterMessages {
+    let numDisplayMessages = Int(stream.pointee)
+    stream += 1
     
+    var displayMessages: [String] = []
+    displayMessages.reserveCapacity(numDisplayMessages)
+    for _ in 0..<numDisplayMessages {
+      
+    }
+    jupyterMessages.append(displayMessages)
   }
   
   return []
