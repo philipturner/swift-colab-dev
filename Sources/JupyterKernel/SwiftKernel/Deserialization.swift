@@ -35,7 +35,6 @@ fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) thro
       guard let message = String(data: byteArray, encoding: .utf8) else {
         throw Exception("Could not decode bytes: \(byteArray.map { $0 })")
       }
-      
       displayMessages.append(message)
       stream += (numBytes + 7) / 8
     }
