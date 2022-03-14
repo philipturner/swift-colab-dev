@@ -78,7 +78,8 @@ func doExecute(code: String) throws -> PythonObject? {
     var traceback: [String]
     
     // TODO: replace with `== true` once I know it isn't Python.None
-    if Bool(stdoutHandler.had_stdout)! {
+//     if Bool(stdoutHandler.had_stdout)! {
+    if true {
       // When there is stdout, it is a runtime error. Stdout, which we
       // have already sent to the client, contains the error message
       // (plus some other ugly traceback that we should eventually
