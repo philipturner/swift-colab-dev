@@ -150,6 +150,7 @@ int after_successful_execution(uint64_t **serialized_output) {
         byte_array, &output_size, &output_capacity, &output);
       if (error_code != 0) {
         free(output);
+        *serialized_output = NULL;
         return 1 + error_code;
       }
     }
