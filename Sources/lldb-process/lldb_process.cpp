@@ -208,12 +208,13 @@ int after_successful_execution(uint64_t **serialized_output) {
       error_code = read_byte_array(
         byte_array, &output_size, &output_capacity, &output);
       if (error_code != 0) {
+        free(output);
         return 1 + error_code;
       }
     }
   }
   
-  *serialized_output = NULL;
+  *serialized_output = output;
   return 0;
 }
 
