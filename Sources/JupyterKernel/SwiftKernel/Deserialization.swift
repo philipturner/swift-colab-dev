@@ -13,5 +13,16 @@ func afterSuccessfulExecution() throws {
 }
 
 fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) -> [[String]] {
+  var stream = executionOutput
+  let streamSize = stream.pointee
+  stream += 1
+  
+  var jupyterMessages: [[String]] = []
+  jupyterMessages.reserveCapacity(streamSize)
+  
+  for _ in 0..<streamSize {
+    
+  }
+  
   return []
 }
