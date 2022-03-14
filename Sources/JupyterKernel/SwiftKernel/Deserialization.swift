@@ -8,11 +8,12 @@ func afterSuccessfulExecution() throws {
       "C++ part of `afterSuccessfulExecution` failed with error code \(error).")
   }
    
-  let output = deserialize(executionOutput: serializedOutput)
+  let output = try deserialize(executionOutput: serializedOutput)
+  print(output)
   free(serializedOutput)
 }
 
-fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) -> [[String]] {
+fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[String]] {
   var stream = executionOutput
   let numJupyterMessages = Int(stream.pointee)
   stream += 1
@@ -26,10 +27,20 @@ fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) -> [
     var displayMessages: [String] = []
     displayMessages.reserveCapacity(numDisplayMessages)
     for _ in 0..<numDisplayMessages {
+      let numBytes = Int(stream.pointee)
+      stream += 1
       
+      let byteArray = Data
+        (bytesNoCopy: stream, count: numBytes, deallocator: .none)
+      guard let message = String(data: byteArray, encoding: .utf8) else {
+        throw Exception("Could not decode bytes: \(byteArray.map { $0 })")
+      }
+      
+      displayMessages.append(message)
+      stream += (numBytes + 7) / 8
     }
     jupyterMessages.append(displayMessages)
   }
   
-  return []
+  return jupyterMessages
 }
