@@ -7,10 +7,20 @@ func doExecute(code: String) throws -> PythonObject? {
     KernelContext.debuggerInitialized = true
   }
   
+  // Start up a new thread to collect stdout.
+  // TODO: attempt to use GCD or Swift Concurrency instead 
+  // of spawning Python threads.
+  let stdoutHandler = StdoutHandler()
+  stdoutHandler.start()
+  
   // Execute the cell, handle unexpected exceptions, and make sure to
   // always clean up the stdout handler.
   var result: ExecutionResult
   do {
+    defer {
+      stdoutHandler.stop_event.set()
+      stdoutHandler.join()
+    }
     result = try executeCell(code: code)
   } catch {
     sendExceptionReport(whileDoing: "executeCell", error: error)
@@ -65,10 +75,24 @@ func doExecute(code: String) throws -> PythonObject? {
 //               '\t%s' % frame
 //               for frame in self._get_pretty_main_thread_stack_trace()
 //           ]
-    // There is no stdout, so it must be a compile error. Simply return
-    // the error without trying to get a stack trace.
-    let traceback = [result.description]
-    sendIOPubErrorMessage(traceback: traceback)
+    var traceback: [String]
+    
+    // TODO: replace with `== true` once I know it isn't Python.None
+    if Bool(stdoutHandler.had_stdout)! {
+      // When there is stdout, it is a runtime error. Stdout, which we
+      // have already sent to the client, contains the error message
+      // (plus some other ugly traceback that we should eventually
+      // figure out how to suppress), so this block of code only needs
+      // to add a traceback.
+      traceback = ["Current stack trace:"]
+      sendIOPubErrorMessage(traceback: traceback)      
+    } else {
+      // There is no stdout, so it must be a compile error. Simply return
+      // the error without trying to get a stack trace.
+      traceback = [result.description]
+      sendIOPubErrorMessage(traceback: traceback)
+    }
+    
     return makeExecuteReplyErrorMessage(traceback: traceback)
   } else {
     fatalError("This should never happen.")
