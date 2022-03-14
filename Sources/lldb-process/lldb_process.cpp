@@ -153,7 +153,7 @@ int execute(const char *code, char **description) {
     }
     
     int desc_size = strlen(unowned_desc);
-    char *owned_desc = (char *)malloc(desc_size + 1);
+    char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
     *description = owned_desc;
   }
@@ -193,14 +193,14 @@ int after_successful_execution(uint64_t **serialized_output) {
   void *output = malloc(output_capacity);
   
   uint32_t num_display_messages = result.GetNumChildren();
-  ((uint64_t *)output)[0] = num_display_messages;
+  ((uint64_t*)output)[0] = num_display_messages;
   output_size += 8;
   
   for (uint32_t i = 0; i < num_display_messages; ++i) {
     auto display_message = result.GetChildAtIndex(i);
     
     uint32_t num_byte_arrays = display_message.GetNumChildren();
-    ((uint64_t *)((char*)output + output_size))[0] = num_byte_arrays;
+    ((uint64_t*)((char*)output + output_size))[0] = num_byte_arrays;
     output_size += 8;
     
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
@@ -214,7 +214,7 @@ int after_successful_execution(uint64_t **serialized_output) {
     }
   }
   
-  *serialized_output = output;
+  *serialized_output = (uint64_t*)output;
   return 0;
 }
 
