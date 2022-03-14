@@ -13,6 +13,8 @@ func doExecute(code: String) throws -> PythonObject? {
   let stdoutHandler = StdoutHandler()
   stdoutHandler.start()
   
+  // Does KernelCommunicator even do anything? Is it just for graphs?
+  
   // Execute the cell, handle unexpected exceptions, and make sure to
   // always clean up the stdout handler.
   var result: ExecutionResult
