@@ -14,7 +14,7 @@ func afterSuccessfulExecution() throws {
 
 fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) -> [[String]] {
   var stream = executionOutput
-  let streamSize = stream.pointee
+  let streamSize = Int(stream.pointee)
   stream += 1
   
   var jupyterMessages: [[String]] = []
