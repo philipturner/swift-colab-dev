@@ -205,7 +205,11 @@ int after_successful_execution(uint64_t **serialized_output) {
     
     for (uint32_t j = 0; j < num_byte_arrays; ++j) {
       auto byte_array = display_message.GetChildAtIndex(j);
-      read_byte_array(byte_array, &output_size, &output_capacity, &output);
+      error_code = read_byte_array(
+        byte_array, &output_size, &output_capacity, &output);
+      if (error_code != 0) {
+        return 1 + error_code;
+      }
     }
   }
   
