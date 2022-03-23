@@ -87,6 +87,11 @@ func doExecute(code: String) throws -> PythonObject? {
       // figure out how to suppress), so this block of code only needs
       // to add a traceback.
       traceback = ["Current stack trace:"]
+      
+      for frame in KernelContext.kernel.main_thread {
+        traceback.append("Hello World")
+      }
+      
       sendIOPubErrorMessage(traceback: traceback)      
     } else {
       // There is no stdout, so it must be a compile error. Simply return
