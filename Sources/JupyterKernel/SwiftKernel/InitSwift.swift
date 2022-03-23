@@ -71,6 +71,8 @@ fileprivate func initKernelCommunicator() throws {
   }
 }
 
+// This is no longer needed for any functional purpose, but it serves
+// as a good validation test that Swift-Colab actually works.
 fileprivate func initBitWidth() throws {
   let result = execute(code: "Int.bitWidth")
   guard let result = result as? SuccessWithValue else {
