@@ -79,7 +79,7 @@ func doExecute(code: String) throws -> PythonObject? {
 //           ]
     var traceback: [String]
     
-    var isAlive: Int32?
+    var isAlive: Int32 = 0
     let error = KernelContext.process_is_alive(&isAlive)
     guard error != 0 else {
       throw Exception(
