@@ -85,10 +85,10 @@ int execute(const char *code, char **description) {
     *description = NULL;
   } else {
     const char *unowned_desc;
+    SBStream stream;
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-      SBStream stream;
       error.GetDescription(stream);
       unowned_desc = stream.GetData();
       if (stream.GetSize() != strlen(unowned_desc)) {
