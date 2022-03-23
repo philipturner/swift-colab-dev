@@ -13,11 +13,10 @@ struct KernelContext {
     LLDBProcessLibrary.loadSymbol(name: "init_repl_process")
   
   static let execute: @convention(c) (
-    UnsafePointer<CChar>?, 
+    UnsafePointer<CChar>, 
     UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "execute")
   
-  // why are so many parameters optionals? They should be non-optional.
   static let process_is_alive: @convention(c) (
     UnsafeMutablePointer<Int32>) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "process_is_alive")
