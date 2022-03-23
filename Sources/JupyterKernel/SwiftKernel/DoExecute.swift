@@ -1,5 +1,4 @@
 import Foundation
-fileprivate let squash_dates = Python.import("jupyter_client").jsonutil.squash_dates
 
 func doExecute(code: String) throws -> PythonObject? {
   if !KernelContext.debuggerInitialized {
@@ -83,8 +82,18 @@ func doExecute(code: String) throws -> PythonObject? {
     _ = KernelContext.process_is_alive(&isAlive)
     print("Process is alive: \(isAlive as Any)")
     
-    // TODO: replace with `== true` once I know it isn't Python.None
-    if Bool(stdoutHandler.had_stdout)! {
+    if isAlive == 0 {
+      traceback = ["Process killed"]
+      sendIOPubErrorMessage(traceback: traceback)
+      
+      // Exit the kernel because there is no way to recover from a
+      // killed process. The UI will tell the user that the kernel has
+      // died and the UI will automatically restart the kernel.
+      // We do the exit in a callback so that this execute request can
+      // cleanly finish before the kernel exits.
+      let loop = Python.import("ioloop").IOLoop.current()
+      loop.add_timeout(Python.import("time").time() + 0.1, loop.stop)
+    } else if Bool(stdoutHandler.had_stdout)! {
 //     if true {
       // When there is stdout, it is a runtime error. Stdout, which we
       // have already sent to the client, contains the error message
@@ -109,8 +118,9 @@ func doExecute(code: String) throws -> PythonObject? {
 fileprivate func setParentMessage() throws {
   // TODO: remove dependency on Python JSON once I figure
   // out what this parent message is
-  let parentHeader = KernelContext.kernel._parent_header
   let json = Python.import("json")
+  let squash_dates = Python.import("jupyter_client").jsonutil.squash_dates
+  let parentHeader = KernelContext.kernel._parent_header
   let jsonDumps = String(json.dumps(json.dumps(squash_dates(parentHeader))))!
   
   let result = execute(code: """
