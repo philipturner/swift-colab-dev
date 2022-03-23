@@ -84,14 +84,15 @@ int execute(const char *code, char **description) {
   if (errorType == eErrorTypeGeneric) {
     *description = NULL;
   } else {
-    const char *unowned_desc;
-    if (errorType == eErrorTypeInvalid) {
-      unowned_desc = result.GetObjectDescription();
-    } else {
-      SBStream stream;
-      error.GetDescription(stream);
-      unowned_desc = stream.GetData();
-    }
+    const char *unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
+//     const char *unowned_desc;
+//     if (errorType == eErrorTypeInvalid) {
+//       unowned_desc = result.GetObjectDescription();
+//     } else {
+//       SBStream stream;
+//       error.GetDescription(stream);
+//       unowned_desc = stream.GetData();
+//     }
     
     int desc_size = strlen(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
