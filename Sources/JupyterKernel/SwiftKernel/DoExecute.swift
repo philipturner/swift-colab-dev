@@ -80,11 +80,7 @@ func doExecute(code: String) throws -> PythonObject? {
     var traceback: [String]
     
     var isAlive: Int32 = 0
-    let error = KernelContext.process_is_alive(&isAlive)
-    guard error != 0 else {
-      throw Exception(
-        "C++ part of `process_is_alive` failed with error code \(error).")
-    }
+    _ = KernelContext.process_is_alive(&isAlive)
     print("Process is alive: \(isAlive as Any)")
     
     // TODO: replace with `== true` once I know it isn't Python.None
