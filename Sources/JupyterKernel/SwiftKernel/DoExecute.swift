@@ -92,7 +92,7 @@ func doExecute(code: String) throws -> PythonObject? {
     } else {
       // There is no stdout, so it must be a compile error. Simply return
       // the error without trying to get a stack trace.
-      traceback = [result.description]
+      traceback = ["Error", result.description]
       sendIOPubErrorMessage(traceback: traceback)
     }
     
