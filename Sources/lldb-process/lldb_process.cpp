@@ -135,17 +135,19 @@ int execute(const char *code, char **description) {
       }
     }
     char *owned_desc = (char*)malloc(desc_size + 1);
-    memcpy(owned_desc, unowned_desc, desc_size + 1);
     puts("On C++ side #2: ");
+    puts(unowned_desc);
+    memcpy(owned_desc, unowned_desc, desc_size + 1);
+    puts("On C++ side #3: ");
+    puts(unowned_desc);
     puts(owned_desc);
-    puts(*description);
     *description = owned_desc;
     if (errorType != eErrorTypeInvalid && replace_last) {
       (*description)[desc_size] = 0;
     }
     puts(owned_desc);
     puts(*description);
-    puts("On C++ side #2 finished");
+    puts("On C++ side #3 finished");
   }
   
   if (errorType == eErrorTypeInvalid) {
