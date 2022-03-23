@@ -93,6 +93,33 @@ int execute(const char *code, char **description) {
       unowned_desc = stream.GetData();
       if (stream.GetSize() != strlen(unowned_desc)) {
         unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
+      } else {
+        int size = stream.GetSize();
+        if (size == 0) {
+          unowned_desc = "0";
+        } else if (size == 1) {
+          unowned_desc = "1";
+        } else if (size == 2) {
+          unowned_desc = "2";
+        } else if (size == 3) {
+          unowned_desc = "3";
+        } else if (size == 4) {
+          unowned_desc = "4";
+        } else if (size < 10) {
+          unowned_desc = "5 to 9";
+        } else if (size < 20) {
+          unowned_desc = "10 to 19";
+        } else if (size < 40) {
+          unowned_desc = "20 to 39";
+        } else if (size < 80) {
+          unowned_desc = "40 to 79";
+        } else if (size < 160) {
+          unowned_desc = "80 to 159";
+        } else if (size >= 160) {
+          unowned_desc = "at least 160";
+        } else {
+          unowned_desc = "less than 0";
+        }
       }
     }
     
