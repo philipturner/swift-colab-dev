@@ -127,7 +127,7 @@ int execute(const char *code, char **description) {
     
     int desc_size = strlen(unowned_desc);
     bool replace_last = false;
-    if (desc_size > 0) {
+    if (errorType != eErrorTypeInvalid && desc_size > 0) {
       char last_char = unowned_desc[desc_size - 1];
       if (last_char == '\n' || last_char == '\r') {
         desc_size -= 1;
@@ -137,7 +137,7 @@ int execute(const char *code, char **description) {
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
     *description = owned_desc;
-    if (replace_last) {
+    if (errorType != eErrorTypeInvalid && replace_last) {
       description[desc_size] = 0;
     }
   }
