@@ -33,9 +33,6 @@ struct PreprocessorError: ExecutionResultError {
 /// There was a compile or runtime error.
 struct SwiftError: ExecutionResultError {
   var description: String
-  init(description: String) {
-    self.description = "Swift Error: " + description
-  }
 }
 
 struct Exception: LocalizedError {
