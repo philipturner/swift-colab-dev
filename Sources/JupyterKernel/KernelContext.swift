@@ -19,7 +19,7 @@ struct KernelContext {
   
   static let process_is_alive: @convention(c) (
     UnsafePointer<Int32>?) -> Int32 =
-    LDBProcessLibrary.loadSymbol(name: "process_is_alive")
+    LLDBProcessLibrary.loadSymbol(name: "process_is_alive")
   
   static let after_successful_execution: @convention(c) (
     UnsafeMutablePointer<UnsafeMutablePointer<UInt64>?>) -> Int32 =
