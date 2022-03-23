@@ -96,6 +96,7 @@ int execute(const char *code, char **description) {
       } else {
         int size = stream.GetSize();
         puts("hello world!");
+        puts(unowned_desc);
         if (size == 0) {
           unowned_desc = "0";
         } else if (size == 1) {
