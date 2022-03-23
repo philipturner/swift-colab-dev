@@ -8,10 +8,8 @@ func afterSuccessfulExecution() throws {
       "C++ part of `afterSuccessfulExecution` failed with error code \(error).")
   }
    
-  print("Starting")
   let output = try deserialize(executionOutput: serializedOutput)
-  print("Middle: \(output)")
-  print("End")
+  print("KernelCommunicator produced: \(output)")
   free(serializedOutput)
 }
 
