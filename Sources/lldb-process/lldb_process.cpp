@@ -140,6 +140,8 @@ int execute(const char *code, char **description) {
     if (errorType != eErrorTypeInvalid && replace_last) {
       (*description)[desc_size] = 0;
     }
+    puts("On C++ side #2: ");
+    puts(*description);
   }
   
   if (errorType == eErrorTypeInvalid) {
