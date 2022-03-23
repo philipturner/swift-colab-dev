@@ -95,7 +95,9 @@ int execute(const char *code, char **description) {
         unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
       } else {
         int size = stream.GetSize();
-        puts("On C++ side: ");
+        puts("On C++ side #0: ");
+        puts(unowned_desc);
+        puts("On C++ side #1: ");
         puts(unowned_desc);
 //         if (size == 0) {
 //           unowned_desc = "0";
@@ -124,7 +126,8 @@ int execute(const char *code, char **description) {
 //         }
       }
     }
-    
+    puts("On C++ side #1.4: ");
+    puts(unowned_desc);
     int desc_size = strlen(unowned_desc);
     bool replace_last = false;
     if (errorType != eErrorTypeInvalid && desc_size > 0) {
@@ -134,6 +137,8 @@ int execute(const char *code, char **description) {
         replace_last = true;
       }
     }
+    puts("On C++ side #1.5: ");
+    puts(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
     puts("On C++ side #2: ");
     puts(unowned_desc);
