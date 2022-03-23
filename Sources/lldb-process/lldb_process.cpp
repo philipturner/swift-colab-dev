@@ -91,69 +91,23 @@ int execute(const char *code, char **description) {
     } else {
       error.GetDescription(stream);
       unowned_desc = stream.GetData();
-      if (stream.GetSize() != strlen(unowned_desc)) {
-        unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
-      } else {
-        int size = stream.GetSize();
-        puts("On C++ side #0: ");
-        puts(unowned_desc);
-        puts("On C++ side #1: ");
-        puts(unowned_desc);
-//         if (size == 0) {
-//           unowned_desc = "0";
-//         } else if (size == 1) {
-//           unowned_desc = "1";
-//         } else if (size == 2) {
-//           unowned_desc = "2";
-//         } else if (size == 3) {
-//           unowned_desc = "3";
-//         } else if (size == 4) {
-//           unowned_desc = "4";
-//         } else if (size < 10) {
-//           unowned_desc = "5 to 9";
-//         } else if (size < 20) {
-//           unowned_desc = "10 to 19";
-//         } else if (size < 40) {
-//           unowned_desc = "20 to 39";
-//         } else if (size < 80) {
-//           unowned_desc = "40 to 79";
-//         } else if (size < 160) {
-//           unowned_desc = "80 to 159";
-//         } else if (size >= 160) {
-//           unowned_desc = "at least 160";
-//         } else {
-//           unowned_desc = "less than 0";
-//         }
-      }
     }
-    puts("On C++ side #1.4: ");
-    puts(unowned_desc);
+    
     int desc_size = strlen(unowned_desc);
     bool replace_last = false;
     if (errorType != eErrorTypeInvalid && desc_size > 0) {
       char last_char = unowned_desc[desc_size - 1];
       if (last_char == '\n' || last_char == '\r') {
-        puts("This is bad");
         desc_size -= 1;
         replace_last = true;
       }
     }
-    puts("On C++ side #1.5: ");
-    puts(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
-    puts("On C++ side #2: ");
-    puts(unowned_desc);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
-    puts("On C++ side #3: ");
-    puts(unowned_desc);
-    puts(owned_desc);
     *description = owned_desc;
-    if (errorType != eErrorTypeInvalid && replace_last) {
+    if (replace_last) {
       (*description)[desc_size] = 0;
     }
-    puts(owned_desc);
-    puts(*description);
-    puts("On C++ side #3 finished");
   }
   
   if (errorType == eErrorTypeInvalid) {
