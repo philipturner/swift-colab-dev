@@ -119,6 +119,22 @@ int execute(const char *code, char **description) {
   }
 }
 
+int process_is_alive(int *is_alive) {
+  auto s = process.GetState();
+  if (s == eStateAttaching ||
+      s == eStateLaunching ||
+      s == eStateStopped || 
+      s == eStateRunning || 
+      s == eStateStepping || 
+      s == eStateCrashed || 
+      s == eStateSuspended) {
+    *is_alive = 1;
+  } else {
+    *is_alive = 0;
+  }
+  return 0;
+}
+
 // Output is in a serialized format:
 // 1st level of recursion (the header that starts the output):
 // - first 8 bytes (UInt64): header that says how many display messages
