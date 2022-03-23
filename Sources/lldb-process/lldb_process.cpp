@@ -86,8 +86,8 @@ int execute(const char *code, char **description) {
   } else {
     const char *unowned_desc;
     if (errorType == eErrorTypeInvalid) {
-//       unowned_desc = result.GetObjectDescription();
-      unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
+      unowned_desc = result.GetObjectDescription();
+//       unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
     } else {
       SBStream stream;
       error.GetDescription(stream);
