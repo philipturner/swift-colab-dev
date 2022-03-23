@@ -138,7 +138,7 @@ int execute(const char *code, char **description) {
     memcpy(owned_desc, unowned_desc, desc_size + 1);
     *description = owned_desc;
     if (errorType != eErrorTypeInvalid && replace_last) {
-      description[desc_size] = 0;
+      (*description)[desc_size] = 0;
     }
   }
   
