@@ -95,7 +95,7 @@ int execute(const char *code, char **description) {
         unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
       } else {
         int size = stream.GetSize();
-        puts("hello world!");
+        puts("On C++ side: ");
         puts(unowned_desc);
         if (size == 0) {
           unowned_desc = "0";
