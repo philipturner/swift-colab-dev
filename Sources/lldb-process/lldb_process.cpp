@@ -133,7 +133,7 @@ int execute(const char *code, char **description) {
     if (errorType != eErrorTypeInvalid && desc_size > 0) {
       char last_char = unowned_desc[desc_size - 1];
       if (last_char == '\n' || last_char == '\r') {
-        puts(NULL);
+        puts("This is bad");
         desc_size -= 1;
         replace_last = true;
       }
