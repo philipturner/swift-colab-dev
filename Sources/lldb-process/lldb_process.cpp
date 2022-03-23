@@ -88,10 +88,12 @@ int execute(const char *code, char **description) {
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-//       SBStream stream;
-//       error.GetDescription(stream);
-//       unowned_desc = stream.GetData();
-      unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
+      SBStream stream;
+      error.GetDescription(stream);
+      unowned_desc = stream.GetData();
+      if (stream.GetSize() != strlen(unowned_desc)) {
+        unowned_desc = "/opt/swift/toolchain/usr/bin/repl_swift";
+      }
     }
     
     int desc_size = strlen(unowned_desc);
