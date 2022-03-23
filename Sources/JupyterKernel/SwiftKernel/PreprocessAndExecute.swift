@@ -27,7 +27,7 @@ func execute(code: String, lineIndex: Int? = nil) -> ExecutionResult {
   var description: String?
   if let descriptionPtr = descriptionPtr {
     description = String(cString: descriptionPtr)
-    print("Swift length stats: \(strlen(descriptionPtr)), \(description.count)")
+    print("Swift length stats: \(strlen(descriptionPtr)), \(description?.count)")
     print("On Swift side: \(description)")
     free(descriptionPtr)
   }
