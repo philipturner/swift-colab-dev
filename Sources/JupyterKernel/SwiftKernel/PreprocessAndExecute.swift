@@ -27,6 +27,7 @@ func execute(code: String, lineIndex: Int? = nil) -> ExecutionResult {
   var description: String?
   if let descriptionPtr = descriptionPtr {
     description = String(cString: descriptionPtr)
+    print("On Swift side: \(description)")
     free(descriptionPtr)
   }
   
