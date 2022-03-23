@@ -86,7 +86,7 @@ func doExecute(code: String) throws -> PythonObject? {
       // (plus some other ugly traceback that we should eventually
       // figure out how to suppress), so this block of code only needs
       // to add a traceback.
-      traceback = ["Current stack trace:"]
+      traceback = ["Current stack traceq:"]
       
       for frame in KernelContext.kernel.main_thread {
         traceback.append("Hello World")
