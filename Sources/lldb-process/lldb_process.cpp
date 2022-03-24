@@ -219,6 +219,9 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     SBStream stream;
     file_spec.GetDescription(stream);
     unowned_desc = stream.GetData();
+    
+    int desc_size = strlen(unowned_desc);
+    char *owned_desc = (char*)malloc(desc_size + 1);
   }
   *frames = out;
   return 0;
