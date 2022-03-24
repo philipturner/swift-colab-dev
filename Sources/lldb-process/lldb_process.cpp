@@ -228,6 +228,11 @@ int get_pretty_stack_trace(char ***frames, int *size) {
   return 0;
 }
 
+int async_interrupt_process() {
+  process.SendAsyncInterrupt();
+  return 0;
+}
+
 int validation_test(const char *input) {
   lldb::SBDebugger::Initialize();
   auto debugger = lldb::SBDebugger::Create();
