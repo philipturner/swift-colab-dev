@@ -80,7 +80,6 @@ func doExecute(code: String) throws -> PythonObject? {
       let loop = Python.import("ioloop").IOLoop.current()
       loop.add_timeout(Python.import("time").time() + 0.1, loop.stop)
     } else if Bool(stdoutHandler.had_stdout)! {
-//     if true {
       // When there is stdout, it is a runtime error. Stdout, which we
       // have already sent to the client, contains the error message
       // (plus some other ugly traceback that we should eventually
@@ -91,7 +90,6 @@ func doExecute(code: String) throws -> PythonObject? {
       var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
       var size: Int32 = 0
       let error = KernelContext.get_pretty_stack_trace(&frames, &size);
-      
       guard let frames = frames else {
         throw Exception(
           "`get_pretty_stack_trace` failed with error code \(error).")
@@ -99,12 +97,10 @@ func doExecute(code: String) throws -> PythonObject? {
       
       for i in 0..<Int(size) {
         let frame = frames[i]
-        
+        traceback.append("\t" + String(cString: UnsafePointer(frame)))
         free(frame)
       }
-      
-      // After debugging: append contents of frames to `traceback`
-      
+      free(frames)
       sendIOPubErrorMessage(traceback: traceback)      
     } else {
       // There is no stdout, so it must be a compile error. Simply return
