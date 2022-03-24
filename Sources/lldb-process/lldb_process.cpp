@@ -197,7 +197,7 @@ int get_pretty_stack_trace(char ***frames, int *size) {
   int filled_size = 0;
   for (uint32_t i = 0; i < allocated_size; ++i) {
     auto frame = main_thread.GetFrameAtIndex(i);
-    auto line_entry = frame.GetLineEntry();
+    auto file_spec = frame.GetLineEntry().GetFileSpec();
     
     // Do not include frames without source location information. These
     // are frames in libraries and frames that belong to the LLDB
