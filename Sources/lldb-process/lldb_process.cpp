@@ -212,18 +212,18 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     
     // Do not include <compiler-generated> frames. These are
     // specializations of library functions.
-    if (file_spec.GetFilename() == "<compiler-generated>") {
+    if (strcmp(file_spec.GetFilename(), "<compiler-generated>") != 0) {
       continue;
     }
     
     SBStream stream;
     file_spec.GetDescription(stream);
-    unowned_desc = stream.GetData();
+    auto unowned_desc = stream.GetData();
     
     int desc_size = strlen(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
-    out[filled_size] = desc
+    out[filled_size] = desc;
     filled_size += 1;
   }
   *frames = out;
