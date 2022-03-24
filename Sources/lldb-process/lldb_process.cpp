@@ -190,7 +190,8 @@ int after_successful_execution(uint64_t **serialized_output) {
 int get_stdout(char *dst, int *buffer_size) {
   return int(process.GetSTDOUT(dst, size_t(buffer_size)));
 }
-
+  
+// Caller must deallocate `frames` and every string within `frames`.
 int get_pretty_stack_trace(char ***frames, int *size) {
   uint32_t allocated_size = main_thread.GetNumFrames();
   char **out = (char**)malloc(allocated_size * sizeof(char*));
@@ -215,13 +216,15 @@ int get_pretty_stack_trace(char ***frames, int *size) {
       continue;
     }
     
-    // stack_trace.append(str(frame));
     SBStream stream;
     file_spec.GetDescription(stream);
     unowned_desc = stream.GetData();
     
     int desc_size = strlen(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
+    memcpy(owned_desc, unowned_desc, desc_size + 1);
+    out[i] = desc
+    i += 1;
   }
   *frames = out;
   return 0;
