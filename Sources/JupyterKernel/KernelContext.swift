@@ -28,6 +28,11 @@ struct KernelContext {
   static let get_stdout: @convention(c) (
     UnsafeMutablePointer<CChar>, Int32) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "get_stdout")
+  
+  static let get_pretty_stack_trace: @convention(c) (
+    UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?>,
+    UnsafeMutablePointer<Int32>) -> Int32 =
+    LLDBProcessLibrary.loadSymbol(name: "get_pretty_stack_trace")
 }
 
 fileprivate struct LLDBProcessLibrary {
