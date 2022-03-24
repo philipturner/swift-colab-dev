@@ -75,7 +75,7 @@ func doExecute(code: String) throws -> PythonObject? {
       
       for i in 0..<Int(size) {
         let frame = frames[i]
-        traceback.append("\t" + String(cString: UnsafePointer(frame)))
+        traceback.append("    " + String(cString: UnsafePointer(frame)))
         free(frame)
       }
       free(frames)
