@@ -204,13 +204,7 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     // expression execution implementation.
     auto file_spec = frame.GetLineEntry().GetFileSpec();
     if (!file_spec.IsValid()) {
-//       return 1;
       continue;
-    }
-    
-    if (!file_spec.Exists()) {
-      return 1;
-//       continue;
     }
     
     // Do not include <compiler-generated> frames. These are
