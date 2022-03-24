@@ -7,12 +7,8 @@ func doExecute(code: String) throws -> PythonObject? {
   }
   
   // Start up a new thread to collect stdout.
-  // TODO: attempt to use GCD or Swift Concurrency instead 
-  // of spawning Python threads.
   let stdoutHandler = StdoutHandler()
   stdoutHandler.start()
-  
-  // Does KernelCommunicator even do anything? Is it just for graphs?
   
   // Execute the cell, handle unexpected exceptions, and make sure to
   // always clean up the stdout handler.
