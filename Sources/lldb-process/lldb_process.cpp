@@ -191,7 +191,7 @@ int get_stdout(char *dst, int *buffer_size) {
   return int(process.GetSTDOUT(dst, size_t(buffer_size)));
 }
 
-int get_pretty_stack_trace(char **frames, int *size) {
+int get_pretty_stack_trace(char ***frames, int *size) {
   return 0;
 }
 
