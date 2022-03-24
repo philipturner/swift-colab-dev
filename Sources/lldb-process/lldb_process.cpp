@@ -214,9 +214,9 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     
     // Do not include <compiler-generated> frames. These are
     // specializations of library functions.
-    if (strcmp(file_spec.GetFilename(), "<compiler-generated>") != 0) {
-      continue;
-    }
+//     if (strcmp(file_spec.GetFilename(), "<compiler-generated>") != 0) {
+//       continue;
+//     }
     
     SBStream stream;
     frame.GetDescription(stream);
