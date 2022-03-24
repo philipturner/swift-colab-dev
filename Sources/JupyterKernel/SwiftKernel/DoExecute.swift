@@ -90,7 +90,18 @@ func doExecute(code: String) throws -> PythonObject? {
       
       var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
       var size: Int32 = 0
-      KernelContext.get_pretty_stack_trace(&frames, &size);
+      let error = KernelContext.get_pretty_stack_trace(&frames, &size);
+      
+      guard let frames = frames else {
+        throw Exception(
+          "`get_pretty_stack_trace` failed with error code \(error).")
+      }
+      
+      for i in 0..<Int(size) {
+        let frame = frames[i]
+        
+        free(frame)
+      }
       
       // After debugging: append contents of frames to `traceback`
       
