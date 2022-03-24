@@ -198,10 +198,24 @@ int get_pretty_stack_trace(char ***frames, int *size) {
   for (uint32_t i = 0; i < allocated_size; ++i) {
     auto frame = main_thread.GetFrameAtIndex(i);
     auto file_spec = frame.GetLineEntry().GetFileSpec();
+    if (!file_spec.IsValid()) {
+      return 1;
+    }
     
     // Do not include frames without source location information. These
     // are frames in libraries and frames that belong to the LLDB
     // expression execution implementation.
+    if (!file_spec.Exists()) {
+      continue;
+    }
+    
+    // Do not include <compiler-generated> frames. These are
+    // specializations of library functions.
+    if (file_spec.GetFilename() == "<compiler-generated>") {
+      continue;
+    }
+    
+    // stack_trace.append(str(frame));
   }
   *frames = out;
   return 0;
