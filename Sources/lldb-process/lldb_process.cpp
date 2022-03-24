@@ -216,6 +216,9 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     }
     
     // stack_trace.append(str(frame));
+    SBStream stream;
+    file_spec.GetDescription(stream);
+    unowned_desc = stream.GetData();
   }
   *frames = out;
   return 0;
