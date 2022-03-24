@@ -5,9 +5,6 @@ struct KernelContext {
   
   static var debuggerInitialized = false
   
-//   static let validation_test: @convention(c) (UnsafePointer<CChar>) -> Int32 = 
-//     LLDBProcessLibrary.loadSymbol(name: "validation_test")
-  
   static let init_repl_process: @convention(c) (
     UnsafePointer<CChar>?, OpaquePointer, UnsafePointer<CChar>) -> Int32 = 
     LLDBProcessLibrary.loadSymbol(name: "init_repl_process")
@@ -33,6 +30,9 @@ struct KernelContext {
     UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?>,
     UnsafeMutablePointer<Int32>) -> Int32 =
     LLDBProcessLibrary.loadSymbol(name: "get_pretty_stack_trace")
+  
+  static let send_async_interrupt: @convention(c) () -> Int32 =
+    LLDBProcessLibrary.loadSymbol(name: "send_async_interrupt")
 }
 
 fileprivate struct LLDBProcessLibrary {
