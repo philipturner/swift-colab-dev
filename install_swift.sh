@@ -84,12 +84,11 @@ export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 # Download Swift-Colab
 
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
-  # Retain this as something commented out when Swift-Colab 2.0
-  # is stable, for easier debugging
+  # Enable these lines only in dev mode
   rm -r swift-colab
   cp -r /content/swift-colab "swift-colab"
 
-  # Don't uncomment this until Swift-Colab 2.0 is stable
+  # Enable these lines when not in dev mode
 #   echo "Downloading Swift-Colab"
 #   git clone --single-branch --branch release/latest \
 #     https://github.com/philipturner/swift-colab
@@ -118,12 +117,8 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
     ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
   fi
   
-  cd ../
-  # Uncomment to debug Swift-Colab
-#   swift validate.swift
-  
   cd /opt/swift
-  # Don't uncomment this until Swift-Colab 2.0 is stable
+  # Enable this line when not in dev mode
 #   echo "true" > "progress/compiled-lldb-bindings"
 else
   echo "Using cached Swift LLDB bindings"
@@ -160,7 +155,7 @@ Removing existing JupyterKernel build products."
   fi
   
   cd /opt/swift
-  # Don't uncomment this until Swift-Colab 2.0 is stable
+  # Enable this line when not in dev mode
 #   echo $version > "progress/jupyterkernel-compiler-version"
 else
   echo "Using cached JupyterKernel library"
