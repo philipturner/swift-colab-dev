@@ -51,19 +51,6 @@ func doExecute(code: String) throws -> PythonObject? {
   } else if result is SuccessWithoutValue {
     return emptyResponse
   } else if result is ExecutionResultError {
-
-//       if stdout_handler.had_stdout:
-//           # When there is stdout, it is a runtime error. Stdout, which we
-//           # have already sent to the client, contains the error message
-//           # (plus some other ugly traceback that we should eventually
-//           # figure out how to suppress), so this block of code only needs
-//           # to add a traceback.
-//           traceback = []
-//           traceback.append('Current stack trace:')
-//           traceback += [
-//               '\t%s' % frame
-//               for frame in self._get_pretty_main_thread_stack_trace()
-//           ]
     var traceback: [String]
     var isAlive: Int32 = 0
     _ = KernelContext.process_is_alive(&isAlive)
@@ -85,7 +72,7 @@ func doExecute(code: String) throws -> PythonObject? {
       // (plus some other ugly traceback that we should eventually
       // figure out how to suppress), so this block of code only needs
       // to add a traceback.
-      traceback = ["Current stack trace (custom; eliminate this message after it works):"]
+      traceback = ["Current stack trace:"]
       
       var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
       var size: Int32 = 0
