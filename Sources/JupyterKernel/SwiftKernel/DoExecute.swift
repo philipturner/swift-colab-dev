@@ -86,11 +86,13 @@ func doExecute(code: String) throws -> PythonObject? {
       // (plus some other ugly traceback that we should eventually
       // figure out how to suppress), so this block of code only needs
       // to add a traceback.
-      traceback = ["Current stack traceq:"]
+      traceback = ["Current stack trace (custom; eliminate this message after it works):"]
       
-      for frame in KernelContext.kernel.main_thread {
-        traceback.append("Hello World")
-      }
+      var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
+      var size: Int32 = 0
+      KernelContext.get_pretty_stack_trace(&frames, &size);
+      
+      // After debugging: append contents of frames to `traceback`
       
       sendIOPubErrorMessage(traceback: traceback)      
     } else {
