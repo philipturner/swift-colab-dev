@@ -24,28 +24,19 @@ func doExecute(code: String) throws -> PythonObject? {
     throw error
   }
   
-  var emptyResponse: PythonObject {
-    return [
-      "status": "ok",
-      "execution_count": KernelContext.kernel.execution_count,
-      "payload": [],
-      "user_expressions": [:]
-    ]
-  }
-  
   // Send values/errors and status to the client.
   if result is SuccessWithValue {
     let kernel = KernelContext.kernel
     kernel.send_response(kernel.iopub_socket, "execute_result", [
       "execution_count": kernel.execution_count,
       "data": [
-          "text/plain": result.description.pythonObject
+        "text/plain": result.description.pythonObject
       ],
       "metadata": [:]
     ])
-    return emptyResponse
+    return nil
   } else if result is SuccessWithoutValue {
-    return emptyResponse
+    return nil
   } else if result is ExecutionResultError {
     var traceback: [String]
     var isAlive: Int32 = 0
