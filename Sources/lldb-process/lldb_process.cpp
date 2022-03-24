@@ -194,10 +194,14 @@ int get_stdout(char *dst, int *buffer_size) {
 int get_pretty_stack_trace(char ***frames, int *size) {
   uint32_t allocated_size = main_thread.GetNumFrames();
   char **out = (char**)malloc(allocated_size * sizeof(char*));
-  
   int filled_size = 0;
   for (uint32_t i = 0; i < allocated_size; ++i) {
+    auto frame = main_thread.GetFrameAtIndex(i);
+    auto line_entry = frame.GetLineEntry();
     
+    // Do not include frames without source location information. These
+    // are frames in libraries and frames that belong to the LLDB
+    // expression execution implementation.
   }
   *frames = out;
   return 0;
