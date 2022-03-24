@@ -223,10 +223,11 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     int desc_size = strlen(unowned_desc);
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
-    out[i] = desc
-    i += 1;
+    out[filled_size] = desc
+    filled_size += 1;
   }
   *frames = out;
+  *size = filled_size;
   return 0;
 }
 
