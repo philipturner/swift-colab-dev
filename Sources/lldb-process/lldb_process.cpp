@@ -102,12 +102,13 @@ int execute(const char *code, char **description) {
         replace_last = true;
       }
     }
+    
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
-    *description = owned_desc;
     if (replace_last) {
-      (*description)[desc_size] = 0;
+      owned_desc[desc_size] = 0;
     }
+    *description = owned_desc;
   }
   
   if (errorType == eErrorTypeInvalid) {
@@ -218,8 +219,20 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     auto unowned_desc = stream.GetData();
     
     int desc_size = strlen(unowned_desc);
+    bool replace_last = false;
+    if (desc_size > 0) {
+      char last_char = unowned_desc[desc_size - 1];
+      if (last_char == '\n' || last_char == '\r') {
+        desc_size -= 1;
+        replace_last = true;
+      }
+    }
+    
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
+    if (replace_last) {
+      owned_desc[desc_size] = 0;
+    }
     out[filled_size] = owned_desc;
     filled_size += 1;
   }
