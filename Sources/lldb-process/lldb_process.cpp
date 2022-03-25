@@ -215,28 +215,45 @@ int get_pretty_stack_trace(char ***frames, int *size) {
       continue;
     }
     
+    auto function_name = frame.GetDisplayFunctionName();
+    auto function_name_len = strlen(function_name);
+    auto file_name_len = strlen(file_name);
+    // 4 is length of " at "
+    char *desc = (char*)malloc(function_name_len + 4 + file_name_len + 1);
+    
+    memcpy(desc, function_name, function_name_len);
+    int str_ptr = function_name_len;
+    memcpy(desc + str_ptr, " at ", 4);
+    str_ptr += 4;
+    memcpy(desc + str_ptr, file_name, file_name_len);
+    str_ptr += file_name_len;
+    desc[str_ptr] = 0;
+    
+    out[filled_size] = desc;
+    filled_size += 1;
+    
 //     SBStream stream;
 //     frame.GetLineEntry().GetFileSpec().GetDescription(stream);
 //     auto unowned_desc = stream.GetData();
-    auto unowned_desc = frame.GetDisplayFunctionName();
+//     auto unowned_desc = frame.GetDisplayFunctionName();
     
-    int desc_size = strlen(unowned_desc);
-    bool replace_last = false;
+//     int desc_size = strlen(unowned_desc);
+//     bool replace_last = false;
 //     if (desc_size > 0) {
 //       char last_char = unowned_desc[desc_size - 1];
 //       if (last_char == '\n' || last_char == '\r') {
 //         desc_size -= 1;
 //         replace_last = true;
 //       }
-//     }
+// //     }
     
-    char *owned_desc = (char*)malloc(desc_size + 1);
-    memcpy(owned_desc, unowned_desc, desc_size + 1);
-    if (replace_last) {
-      owned_desc[desc_size] = 0;
-    }
-    out[filled_size] = owned_desc;
-    filled_size += 1;
+//     char *owned_desc = (char*)malloc(desc_size + 1);
+//     memcpy(owned_desc, unowned_desc, desc_size + 1);
+//     if (replace_last) {
+//       owned_desc[desc_size] = 0;
+//     }
+//     out[filled_size] = owned_desc;
+//     filled_size += 1;
   }
   *frames = out;
   *size = filled_size;
