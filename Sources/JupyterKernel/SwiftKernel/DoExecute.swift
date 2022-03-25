@@ -65,20 +65,21 @@ func doExecute(code: String) throws -> PythonObject? {
       // to add a traceback.
       traceback = ["Current stack trace:"]
       
-      var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
-      var size: Int32 = 0
-      let error = KernelContext.get_pretty_stack_trace(&frames, &size);
-      guard let frames = frames else {
-        throw Exception(
-          "`get_pretty_stack_trace` failed with error code \(error).")
-      }
+      traceback += try prettyPrintStackTrace()
+//       var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
+//       var size: Int32 = 0
+//       let error = KernelContext.get_pretty_stack_trace(&frames, &size);
+//       guard let frames = frames else {
+//         throw Exception(
+//           "`get_pretty_stack_trace` failed with error code \(error).")
+//       }
       
-      for i in 0..<Int(size) {
-        let frame = frames[i]
-        traceback.append("    " + String(cString: UnsafePointer(frame)))
-        free(frame)
-      }
-      free(frames)
+//       for i in 0..<Int(size) {
+//         let frame = frames[i]
+//         traceback.append("    " + String(cString: UnsafePointer(frame)))
+//         free(frame)
+//       }
+//       free(frames)
       sendIOPubErrorMessage(traceback: traceback)      
     } else {
       // There is no stdout, so it must be a compile error. Simply return
@@ -108,6 +109,28 @@ fileprivate func setParentMessage() throws {
   if result is ExecutionResultError {
     throw Exception("Error setting parent message: \(result)")
   }
+}
+
+fileprivate func prettyPrintStackTrace() throws -> [String] {
+  var output: [String] = []
+  
+  var frames: UnsafeMutablePointer<UnsafeMutablePointer<CChar>>?
+  var size: Int32 = 0
+  let error = KernelContext.get_pretty_stack_trace(&frames, &size);
+  guard let frames = frames else {
+    throw Exception(
+      "`get_pretty_stack_trace` failed with error code \(error).")
+  }
+  
+  for i in 0..<Int(size) {
+    let frame = frames[i]
+    output.append(String(cString: UnsafePointer(frame)))
+    free(frame)
+  }
+  free(frames)
+  
+  // TODO: adjust tabs based on numbers
+  return output
 }
 
 fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
