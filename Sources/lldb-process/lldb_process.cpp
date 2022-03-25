@@ -89,7 +89,8 @@ int execute(const char *code, char **description) {
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-      error.GetDescription(stream);
+      result.GetDescription(stream);
+//       error.GetDescription(stream);
       unowned_desc = stream.GetData();
     }
     
