@@ -210,7 +210,8 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     
     // Do not include <compiler-generated> frames. These are
     // specializations of library functions.
-    if (strcmp(file_spec.GetFilename(), "<compiler-generated>") == 0) {
+    auto file_name = file_spec.GetFilename();
+    if (strcmp(file_name, "<compiler-generated>") == 0) {
       continue;
     }
     
@@ -221,13 +222,13 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     
     int desc_size = strlen(unowned_desc);
     bool replace_last = false;
-    if (desc_size > 0) {
-      char last_char = unowned_desc[desc_size - 1];
-      if (last_char == '\n' || last_char == '\r') {
-        desc_size -= 1;
-        replace_last = true;
-      }
-    }
+//     if (desc_size > 0) {
+//       char last_char = unowned_desc[desc_size - 1];
+//       if (last_char == '\n' || last_char == '\r') {
+//         desc_size -= 1;
+//         replace_last = true;
+//       }
+//     }
     
     char *owned_desc = (char*)malloc(desc_size + 1);
     memcpy(owned_desc, unowned_desc, desc_size + 1);
