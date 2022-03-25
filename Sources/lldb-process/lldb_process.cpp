@@ -78,21 +78,17 @@ int init_repl_process(const char *swift_module_search_path_command,
 // Caller must deallocate `description`.
 int execute(const char *code, char **description) {
   auto result = target.EvaluateExpression(code, expr_opts);
-  auto errorType = result.GetError().GetType();
-  
-  auto _error = result.GetError();
+  auto error = result.GetError();
+  auto errorType = error.GetType();
   
   if (errorType == eErrorTypeGeneric) {
     *description = NULL;
   } else {
     const char *unowned_desc;
-    SBStream stream;
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-      unowned_desc = _error.GetCString();
-//       result.GetDescription(stream);
-//       unowned_desc = stream.GetData();
+      unowned_desc = error.GetCString();
     }
     
     int desc_size = strlen(unowned_desc);
