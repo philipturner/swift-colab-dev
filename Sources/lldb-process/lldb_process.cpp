@@ -203,30 +203,34 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     // Do not include frames without source location information. These
     // are frames in libraries and frames that belong to the LLDB
     // expression execution implementation.
-    auto file_spec = frame.GetLineEntry().GetFileSpec();
+    auto line_entry = frame.GetLineEntry();
+    auto file_spec = line_entry.GetFileSpec();
     if (!file_spec.IsValid()) {
       continue;
     }
     
     // Do not include <compiler-generated> frames. These are
     // specializations of library functions.
-    auto file_name = file_spec.GetFilename();
-    if (strcmp(file_name, "<compiler-generated>") == 0) {
+    if (strcmp(file_spec.GetFilename(), "<compiler-generated>") == 0) {
       continue;
     }
     
+    SBStream stream;
+    line_entry.GetDescription(stream);
+    auto source_loc = stream.GetData();
+    
     auto function_name = frame.GetDisplayFunctionName();
     auto function_name_len = strlen(function_name);
-    auto file_name_len = strlen(file_name);
+    auto source_loc_len = strlen(source_loc);
     // 4 is length of " at "
-    char *desc = (char*)malloc(function_name_len + 4 + file_name_len + 1);
+    char *desc = (char*)malloc(function_name_len + 4 + source_loc_len + 1);
     
     memcpy(desc, function_name, function_name_len);
     int str_ptr = function_name_len;
     memcpy(desc + str_ptr, " at ", 4);
     str_ptr += 4;
-    memcpy(desc + str_ptr, file_name, file_name_len);
-    str_ptr += file_name_len;
+    memcpy(desc + str_ptr, source_loc, source_loc_len);
+    str_ptr += source_loc_len;
     desc[str_ptr] = 0;
     
     out[filled_size] = desc;
