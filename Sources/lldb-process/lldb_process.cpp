@@ -197,6 +197,11 @@ int get_pretty_stack_trace(char ***frames, int *size) {
   uint32_t allocated_size = main_thread.GetNumFrames();
   char **out = (char**)malloc(allocated_size * sizeof(char*));
   int filled_size = 0;
+  
+  // Separates function name from source location in descriptions.
+  const char *separator = " - ";
+  int separator_len = strlen(separator);
+  
   for (uint32_t i = 0; i < allocated_size; ++i) {
     auto frame = main_thread.GetFrameAtIndex(i);
     
@@ -215,49 +220,35 @@ int get_pretty_stack_trace(char ***frames, int *size) {
       continue;
     }
     
+    // TODO: comment out check for compiler generated above, after debugging
+    auto function_name = frame.GetDisplayFunctionName();
+    auto function_name_len = strlen(function_name);
+    
     SBStream stream;
     line_entry.GetDescription(stream);
     auto source_loc = stream.GetData();
-    
-    auto function_name = frame.GetDisplayFunctionName();
-    auto function_name_len = strlen(function_name);
     auto source_loc_len = strlen(source_loc);
-    // 4 is length of " at "
-    char *desc = (char*)malloc(function_name_len + 4 + source_loc_len + 1);
     
+    char *desc = (char*)malloc(
+      function_name_len + separator_len + source_loc_len + 1);
+    
+    // Write function name
     memcpy(desc, function_name, function_name_len);
+    
+    // Write separator
     int str_ptr = function_name_len;
-    memcpy(desc + str_ptr, " at ", 4);
-    str_ptr += 4;
+    memcpy(desc + str_ptr, separator, separator_len);
+    
+    // Write source location
+    str_ptr += separator_len;
     memcpy(desc + str_ptr, source_loc, source_loc_len);
+    
+    // Write null terminator
     str_ptr += source_loc_len;
     desc[str_ptr] = 0;
     
     out[filled_size] = desc;
     filled_size += 1;
-    
-//     SBStream stream;
-//     frame.GetLineEntry().GetFileSpec().GetDescription(stream);
-//     auto unowned_desc = stream.GetData();
-//     auto unowned_desc = frame.GetDisplayFunctionName();
-    
-//     int desc_size = strlen(unowned_desc);
-//     bool replace_last = false;
-//     if (desc_size > 0) {
-//       char last_char = unowned_desc[desc_size - 1];
-//       if (last_char == '\n' || last_char == '\r') {
-//         desc_size -= 1;
-//         replace_last = true;
-//       }
-// //     }
-    
-//     char *owned_desc = (char*)malloc(desc_size + 1);
-//     memcpy(owned_desc, unowned_desc, desc_size + 1);
-//     if (replace_last) {
-//       owned_desc[desc_size] = 0;
-//     }
-//     out[filled_size] = owned_desc;
-//     filled_size += 1;
   }
   *frames = out;
   *size = filled_size;
