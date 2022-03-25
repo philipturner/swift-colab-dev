@@ -78,8 +78,7 @@ int init_repl_process(const char *swift_module_search_path_command,
 // Caller must deallocate `description`.
 int execute(const char *code, char **description) {
   auto result = target.EvaluateExpression(code, expr_opts);
-  auto error = result.GetError();
-  auto errorType = error.GetType();
+  auto errorType = result.GetError().GetType();
   
   if (errorType == eErrorTypeGeneric) {
     *description = NULL;
@@ -90,7 +89,6 @@ int execute(const char *code, char **description) {
       unowned_desc = result.GetObjectDescription();
     } else {
       result.GetDescription(stream);
-//       error.GetDescription(stream);
       unowned_desc = stream.GetData();
     }
     
