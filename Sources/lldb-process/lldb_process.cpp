@@ -215,7 +215,7 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     }
     
     SBStream stream;
-    frame.GetSymbol().GetDescription(stream);
+    frame.GetCompileUnit().GetDescription(stream);
     auto unowned_desc = stream.GetData();
     
     int desc_size = strlen(unowned_desc);
