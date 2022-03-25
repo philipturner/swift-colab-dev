@@ -124,12 +124,15 @@ fileprivate func prettyPrintStackTrace() throws -> [String] {
   
   for i in 0..<Int(size) {
     let frame = frames[i]
-    output.append(String(cString: UnsafePointer(frame)))
+    let description = String(cString: UnsafePointer(frame))
+    var frameID = String(i + 1) + " "
+    if frameID.count < 5 {
+      frameID += String(repeating: " " as Character, count: 5 - frameID.count)
+    }
+    output.append(frameID + description)
     free(frame)
   }
   free(frames)
-  
-  // TODO: adjust tabs based on numbers
   return output
 }
 
