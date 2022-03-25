@@ -216,11 +216,10 @@ int get_pretty_stack_trace(char ***frames, int *size) {
     
     // Do not include <compiler-generated> frames. These are
     // specializations of library functions.
-//     if (strcmp(file_spec.GetFilename(), "<compiler-generated>") == 0) {
-//       continue;
-//     }
+    if (strcmp(file_spec.GetFilename(), "<compiler-generated>") == 0) {
+      continue;
+    }
     
-    // TODO: comment out check for compiler generated above, after debugging
     auto function_name = frame.GetDisplayFunctionName();
     auto function_name_len = strlen(function_name);
     
