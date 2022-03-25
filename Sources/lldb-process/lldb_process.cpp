@@ -88,8 +88,9 @@ int execute(const char *code, char **description) {
     if (errorType == eErrorTypeInvalid) {
       unowned_desc = result.GetObjectDescription();
     } else {
-      result.GetDescription(stream);
-      unowned_desc = stream.GetData();
+      unowned_desc = result.GetObjectDescription();
+//       result.GetDescription(stream);
+//       unowned_desc = stream.GetData();
     }
     
     int desc_size = strlen(unowned_desc);
