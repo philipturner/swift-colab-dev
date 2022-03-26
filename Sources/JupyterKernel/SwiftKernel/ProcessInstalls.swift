@@ -137,7 +137,7 @@ fileprivate func readInstalledPackages() throws {
   if let packagesData = FileManager.default.contents(
      atPath: installedPackagesLocation) {
     let packagesString = String(data: packagesData, encoding: .utf8)!
-    let lines = packagesString.split(
+    let lines = (packagesString == "") ? [] : packagesString.split(
       separator: "\n", omittingEmptySubsequences: false)
     guard lines.count % 2 == 0 else {
       throw Exception("""
