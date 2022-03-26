@@ -86,7 +86,7 @@ fileprivate var installLocation = "/opt/swift/build"
 fileprivate func processInstallLocation(
   restOfLine: String, lineIndex: Int
 ) throws {
-  installLocation = try substitudeCwd(
+  installLocation = try substituteCwd(
     template: restOfLine, lineIndex: lineIndex)
   
   let kernel = KernelContext.kernel
