@@ -2,29 +2,24 @@ import Foundation
 fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
 
-func processInstallDirective(line: String, isValidDirective: inout Bool) throws {
+func processInstallDirective(
+  line: String, isValidDirective: inout Bool
+) throws {
+  func attempt(regex: String, command: (String) throws -> Void) rethrows {
+    let regexMatch = re.match(regex, line)
+    if regexMatch != Python.None {
+      let restOfLine = String(regexMatch.group(1))!
+      try command(restOfLine)
+      isValidDirective = true
+    }
+  }
+  
   try attempt(
     regex: ###"""
     ^\s*%install-swiftpm-flags (.*)$
     """###, 
-    command: processSwiftPMFlags, 
-    line: line, 
-    isValidDirective: &isValidDirective)
+    command: processSwiftPMFlags)
   if isValidDirective { return }
-}
-
-fileprivate func attempt(
-  regex: String, 
-  command: (String) throws -> Void,
-  line: String, 
-  isValidDirective: inout Bool
-) rethrows {
-  let regexMatch = re.match(regex, line)
-  if regexMatch != Python.None {
-    let restOfLine = String(regexMatch.group(1))!
-    try command(restOfLine)
-    isValidDirective = true
-  }
 }
 
 fileprivate var swiftPMFlags: [String] = []
