@@ -126,6 +126,7 @@ fileprivate func sendStdout(_ message: String) {
   ])
 }
 
+typealias InstalledPackages = [(spec: String, products: [String])]
 fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
 
