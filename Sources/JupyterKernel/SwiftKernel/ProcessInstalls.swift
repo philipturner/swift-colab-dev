@@ -296,9 +296,10 @@ fileprivate func processInstall(
     Installing package:
     \(packageHumanDescription)
     """)
+  // why do i specify separator twice?
   sendStdout("""
     With SwiftPM flags:
-        \(JoinedSequence(base: swiftPMFlags, separator: " "))
+        \(JoinedSequence(base: swiftPMFlags, separator: " ").joined(separator: " ")
     """)
   sendStdout("""
     Working in:
