@@ -34,7 +34,7 @@ func processInstallDirective(
   if isValidDirective { return }
   
   try attempt(command: processInstall, ###"""
-    ^\s*%install-location (.*)$
+    ^\s*%install (.*)$
     """###)
   if isValidDirective { return }
 }
