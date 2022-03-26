@@ -71,10 +71,13 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   ^\s*%install
   """###
   let installMatch = re.match(installRegularExpression, line)
-  guard installMatch == Python.None else {
-//     let restOfLine = String(installMatch.group(1))!
-    // Call into "ProcessInstalls.swift"
-    return ""
+  if installMatch != Python.None {
+    if let blankLine = try processInstallDirective(line: line) {
+      return blankLine
+    } else {
+      // This was an invalid %install-XXX command. Continue through
+      // regular processing and let the Swift parser throw an error.
+    }
   }
   
   let systemRegularExpression = ###"""
@@ -83,7 +86,8 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   let systemMatch = re.match(systemRegularExpression, line)
   guard systemMatch == Python.None else {
     let restOfLine = String(systemMatch.group(1))!
-    return executeSystemCommand(restOfLine: restOfLine)
+    executeSystemCommand(restOfLine: restOfLine)
+    return ""
   }
   
   let includeRegularExpression = ###"""
@@ -97,7 +101,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   return line
 }
 
-fileprivate func executeSystemCommand(restOfLine: String) -> String {
+fileprivate func executeSystemCommand(restOfLine: String) {
   let process = subprocess.Popen(restOfLine,
                                  stdout: subprocess.PIPE,
                                  stderr: subprocess.STDOUT,
@@ -110,7 +114,6 @@ fileprivate func executeSystemCommand(restOfLine: String) -> String {
     "name": "stdout",
     "text": commandResult
   ])
-  return ""
 }
 
 // This is a dictionary to avoid having O(n^2) algorithmic complexity.
