@@ -34,6 +34,15 @@ fileprivate var swiftPMFlags: [String] = []
 fileprivate func processSwiftPMFlags(restOfLine: String) {
   let flags = shlex[dynamicMember: "split"](restOfLine)
   swiftPMFlags += [String](flags)!
+  printSwiftPMFlags()
+}
+
+fileprivate func printSwiftPMFlags() {
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "stream", [
+    "name": "stdout",
+    "text": swiftPMFlags.pythonObject
+  ])
 }
 
 fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
@@ -49,4 +58,10 @@ fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
       Stderr: \(result.stderr.decode("utf8"))
       """)
   }
+  
+  let includeDirs = shlex[dynamicMember: "split"](result.stdout.decode("utf8"))
+  for includeDir in [String](includeDirs)! {
+    swiftPMFlags.append(includeDir)
+  }
+  printSwiftPMFlags()
 }
