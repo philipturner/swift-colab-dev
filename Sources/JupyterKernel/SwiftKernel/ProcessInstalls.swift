@@ -31,5 +31,5 @@ fileprivate var swiftPMFlags: [String] = []
 
 fileprivate func processSwiftPMFlags(restOfLine: String) throws {
   let flags = shlex[dynamicMember: "split"](restOfLine)
-  swiftPMFlags.append([String](flags)!)
+  swiftPMFlags += [String](flags)!
 }
