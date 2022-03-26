@@ -3,28 +3,27 @@ fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
 
 func processInstallDirective(line: String, isValidDirective: inout Bool) throws {
-  if try attempt(
+  try attempt(
     regex: ###"""
     ^\s*%install-swiftpm-flags (.*)$
     """###, 
+    command: processSwiftPMFlags, 
     line: line, 
-    command: processSwiftPMFlags
-  ) {
-    isValidDirective = true
-    return
-  }
+    isValidDirective: &isValidDirective)
+  if isValidDirective { return }
 }
 
 fileprivate func attempt(
-  regex: String, line: String, command: (String) throws -> Void
-) rethrows -> Bool {
+  regex: String, 
+  command: (String) throws -> Void,
+  line: String, 
+  isValidDirective: inout Bool
+) rethrows {
   let regexMatch = re.match(regex, line)
   if regexMatch != Python.None {
     let restOfLine = String(regexMatch.group(1))!
     try command(restOfLine)
-    return true
-  } else {
-    return false
+    isValidDirective = true
   }
 }
 
