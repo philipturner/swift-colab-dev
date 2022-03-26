@@ -118,6 +118,14 @@ fileprivate func substituteCwd(
 
 // %install
 
+fileprivate func sendStdout(_ message: String) {
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "stream", [
+    "name": "stdout",
+    "text": "\(message)\n"
+  ])
+}
+
 fileprivate func processInstall(
   restOfLine: String, lineIndex: Int
 ) throws {
@@ -148,7 +156,19 @@ fileprivate func processInstall(
         \(packagesString)
         """)
     }
+    
+    for i in 0..<lines.count / 2 {
+      let spec = lines[i * 2]
+      let productsString = lines[i * 2 + 1]
+      let products = productsString.split(separator: " ")
+      installedPackages.append((spec, products))
+    }
   }
+  
+  sendStdout(message: """
+  Previously installed packages:
+  \(installedPackages)
+  """)
   
   // Don't use a dictionary bc won't be O(n^2). There's a limited number of products per target.
   // Also, it would mess with array index.
