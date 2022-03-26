@@ -129,4 +129,9 @@ fileprivate func processInstall(
   let spec = try substituteCwd(template: parsed[0], lineIndex: lineIndex)
   let products = Array(parsed[1...])
   
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "stream", [
+    "name": "stdout",
+    "text": "\(spec)\n    \(products)"
+  ])
 }
