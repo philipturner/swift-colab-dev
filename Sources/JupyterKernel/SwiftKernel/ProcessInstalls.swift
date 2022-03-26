@@ -131,11 +131,11 @@ fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
 
 fileprivate func readInstalledPackages() throws {
-  let fm = FileManager.default
   installedPackages = []
   installedPackagesLocation = "\(installLocation)/index"
   
-  if let packagesData = fm.contents(atPath: installedPackagesLocation) {
+  if let packagesData = FileManager.default.contents(
+     atPath: installedPackagesLocation) {
     let packagesString = String(data: packagesData, encoding: .utf8)!
     let lines = packagesString.split(
       separator: "\n", omittingEmptySubsequences: false)
@@ -152,6 +152,19 @@ fileprivate func readInstalledPackages() throws {
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
     }
+  }
+}
+
+fileprivate func writeInstalledPackages() throws {
+  let packagesString = installedPackages.reduce("", {
+    $0 + "\($1.spec)\n\($1.products)\n"
+  })
+  let packagesData = packagesString.data(using: .utf8)!
+  guard FileManager.default.createFile(
+        atPath: installedPackagesLocation, contents: packagesData) else {
+    throw Exception("""
+      Could not write to file "\(installedPackagesLocation)"
+      """)
   }
 }
 
@@ -177,25 +190,6 @@ fileprivate func processInstall(
   if installedPackages == nil || installedPackagesLocation != installLocation {
     try readInstalledPackages()
   }
-//   var installedPackages: [(spec: String, products: [String])] = []
-//   if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
-//     let packagesString = String(data: packagesData, encoding: .utf8)!
-//     let lines = packagesString.split(
-//       separator: "\n", omittingEmptySubsequences: false)
-//     guard lines.count % 2 == 0 else {
-//       throw Exception("""
-//         The contents of "\(installLocation)/index" were malformatted:
-//         \(packagesString)
-//         """)
-//     }
-    
-//     for i in 0..<lines.count / 2 {
-//       let spec = String(lines[i * 2])
-//       let productsString = lines[i * 2 + 1]
-//       let products = productsString.split(separator: " ").map(String.init)
-//       installedPackages.append((spec, products))
-//     }
-//   }
   
   // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Previously installed packages:", {
@@ -204,4 +198,6 @@ fileprivate func processInstall(
   
   // Not using a dictionary because this won't be O(n^2); there are a very small 
   // number of products per target. Also, it would mess with array indices.
+  
+  try writeInstalledPackages()
 }
