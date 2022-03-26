@@ -129,10 +129,12 @@ fileprivate func sendStdout(_ message: String) {
 typealias InstalledPackages = [(spec: String, products: [String])]
 fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
+fileprivate var installedProductsDictionary: [String: Int]! = nil
 
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
   installedPackagesLocation = "\(installLocation)/index"
+  installedProductsDictionary = [:]
   
   if let packagesData = FileManager.default.contents(
      atPath: installedPackagesLocation) {
@@ -156,6 +158,19 @@ fileprivate func readInstalledPackages() throws {
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
+      
+      for product in products {
+        if let index = installedProductsDictionary[product] {
+          let conflictingSpec = installedPackages[index].spec
+          throw Exception("""
+            Could not decode "\(installedPackagesLocation)". Both of these \
+            packages produced "\(product)":
+            \(conflictingSpec)
+            \(spec)
+            """)
+        }
+        installedProductsDictionary[product] = i
+      }
     }
   }
 }
@@ -201,8 +216,12 @@ fileprivate func processInstall(
     $0 + "\n" + String(describing: $1)
   }))
   
-  // Not using a dictionary because this won't be O(n^2); there are a very small 
-  // number of products per target. Also, it would mess with array indices.
+  // ... search for a package that mirrors this
+  
+  // Just throw a soft warning if there's a duplicate product. SwiftPM will make
+  // an error if there needs to be one. Also, this warning should help the user 
+  // debug any error caused by duplicate products.
+  // ... search for duplicate stuff
   
   try writeInstalledPackages()
 }
