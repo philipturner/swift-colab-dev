@@ -88,12 +88,6 @@ fileprivate func processInstallLocation(
 ) throws {
   installLocation = try substituteCwd(
     template: restOfLine, lineIndex: lineIndex)
-  
-  let kernel = KernelContext.kernel
-  kernel.send_response(kernel.iopub_socket, "stream", [
-    "name": "stdout",
-    "text": "%install-location \(installLocation)"
-  ])
 }
 
 fileprivate func substituteCwd(
