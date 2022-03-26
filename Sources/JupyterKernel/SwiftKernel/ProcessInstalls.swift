@@ -137,8 +137,13 @@ fileprivate func readInstalledPackages() throws {
   if let packagesData = FileManager.default.contents(
      atPath: installedPackagesLocation) {
     let packagesString = String(data: packagesData, encoding: .utf8)!
-    let lines = (packagesString == "") ? [] : packagesString.split(
-      separator: "\n", omittingEmptySubsequences: false)
+    var lines: [String]
+    if packagesString == "" {
+      lines = []
+    } else {
+      lines = packagesString.split(
+        separator: "\n", omittingEmptySubsequences: false).map(String.init)
+    }
     guard lines.count % 2 == 0 else {
       throw Exception("""
         The contents of "\(installLocation)/index" were malformatted:
@@ -147,7 +152,7 @@ fileprivate func readInstalledPackages() throws {
     }
     
     for i in 0..<lines.count / 2 {
-      let spec = String(lines[i * 2])
+      let spec = lines[i * 2]
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
