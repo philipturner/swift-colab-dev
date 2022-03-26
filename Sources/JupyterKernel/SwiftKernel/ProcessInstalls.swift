@@ -27,6 +27,12 @@ func processInstallDirective(
     """###, 
     command: processExtraIncludeCommand)
   if isValidDirective { return }
+  
+  try attempt(###"""
+    ^\s*%install-location (.*)$
+    """###, 
+    command: processInstallLocation)
+  if isValidDirective { return }
 }
 
 fileprivate var swiftPMFlags: [String] = []
@@ -61,4 +67,8 @@ fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
     }
     swiftPMFlags.append(includeDir)
   }
+}
+
+fileprivate func processInstallLocation(restOfLine: String) throws {
+  
 }
