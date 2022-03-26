@@ -5,13 +5,15 @@ fileprivate let string = Python.import("string")
 fileprivate let subprocess = Python.import("subprocess")
 
 func processInstallDirective(
-  line: String, isValidDirective: inout Bool
+  line: String, lineIndex: Int, isValidDirective: inout Bool
 ) throws {
-  func attempt(_ regex: String, command: (String) throws -> Void) rethrows {
+  func attempt(
+    _ regex: String, command: (String, Int) throws -> Void
+  ) rethrows {
     let regexMatch = re.match(regex, line)
     if regexMatch != Python.None {
       let restOfLine = String(regexMatch.group(1))!
-      try command(restOfLine)
+      try command(restOfLine, lineIndex)
       isValidDirective = true
     }
   }
@@ -35,14 +37,22 @@ func processInstallDirective(
   if isValidDirective { return }
 }
 
+// %install-swiftpm-flags
+
 fileprivate var swiftPMFlags: [String] = []
 
-fileprivate func processSwiftPMFlags(restOfLine: String) {
+fileprivate func processSwiftPMFlags(
+  restOfLine: String, lineIndex: Int
+) {
   let flags = shlex[dynamicMember: "split"](restOfLine)
   swiftPMFlags += [String](flags)!
 }
 
-fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
+// %install-extra-include-command
+
+fileprivate func processExtraIncludeCommand(
+  restOfLine: String, lineIndex: Int
+) throws {
   let result = subprocess.run(restOfLine,
                               stdout: subprocess.PIPE,
                               stderr: subprocess.PIPE,
@@ -69,8 +79,16 @@ fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
   }
 }
 
-fileprivate func processInstallLocation(restOfLine: String) throws {
+// %install-location
+
+fileprivate var installLocation = "/opt/swift/build"
+
+fileprivate func processInstallLocation(
+  restOfLine: String, lineIndex: Int
+) throws {
   
 }
 
-// for %install command, rewrite /opt/swift/install_location every time
+// TODO: function that substitutes "cwd"
+
+// %install
