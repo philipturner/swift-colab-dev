@@ -96,6 +96,10 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   return line
 }
 
+fileprivate func executeSystemCommand(restOfLine: String) throws -> String {
+  // TODO: change this to Swift Process after debugging
+}
+
 // This is a dictionary to avoid having O(n^2) algorithmic complexity.
 fileprivate var previouslyReadPaths: [String: Bool] = [:]
 
