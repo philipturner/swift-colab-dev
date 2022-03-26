@@ -215,6 +215,7 @@ fileprivate func processInstall(
   sendStdout(installedPackages.reduce("Previously installed packages:", {
     $0 + "\n" + String(describing: $1)
   }))
+  sendStdout("Previously installed dictionary:\n\(installedProductsDictionary)")
   
   var packageID: Int
   if let index = installedPackages.firstIndex(where: { $0.spec == spec }) {
@@ -225,26 +226,25 @@ fileprivate func processInstall(
   }
   
   // Just throw a soft warning if there's a duplicate product. SwiftPM will make
-  // an error if there needs to be one. Also, this warning should help the user 
-  // debug any error caused by duplicate products.
-  // ... search for duplicate stuff
+  // an error if there needs to be one. Also, this warning could help the user 
+  // debug any error caused by duplicated products.
   for product in products {
-    if let index = installedProductsDictionary[product] {
-          let conflictingSpec = installedPackages[index].spec
-          throw Exception("""
-            Could not decode "\(installedPackagesLocation)". Both of these \
-            packages produced "\(product)":
-            \(conflictingSpec)
-            \(spec)
-            """)
-        }
-        installedProductsDictionary[product] = i
+    if let index = installedProductsDictionary[product], index != packageID {
+      let conflictingSpec = installedPackages[index].spec
+      sendStdout("""
+        Warning: Both of these packages produced "\(product)":
+        \(conflictingSpec)
+        \(spec)
+        """)
+    }
+    installedProductsDictionary[product] = packageID
   }
-  
-  try writeInstalledPackages()
   
   // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Currently installed packages:", {
     $0 + "\n" + String(describing: $1)
   }))
+  sendStdout("Currently installed dictionary:\n\(installedProductsDictionary)")
+  
+  try writeInstalledPackages()
 }
