@@ -22,7 +22,7 @@ func processInstallDirective(
     command: processSwiftPMFlags)
   if isValidDirective { return }
   
-  attempt(###"""
+  try attempt(###"""
     ^\s*%install-extra-include-command (.*)$
     """###, 
     command: processExtraIncludeCommand)
@@ -36,6 +36,17 @@ fileprivate func processSwiftPMFlags(restOfLine: String) {
   swiftPMFlags += [String](flags)!
 }
 
-fileprivate func processExtraIncludeCommand(restOfLine: String) {
-//   let result = subprocess.run(restOfLine, 
+fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
+  let result = subprocess.run(restOfLine,
+                              stdout: subprocess.PIPE,
+                              stderr: subprocess.PIPE,
+                              shell: true)
+  if result.returncode != 0 {
+    throw PackageInstallException("""
+      %install-extra-include-command returned nonzero \
+      exit code: \(result.returncode)
+      Stdout: \(result.stdout.decode("utf8"))
+      Stderr: \(result.stderr.decode("utf8"))
+      """)
+  }
 }
