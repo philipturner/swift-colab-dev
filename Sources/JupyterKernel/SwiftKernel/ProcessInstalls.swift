@@ -37,5 +37,5 @@ fileprivate func processSwiftPMFlags(restOfLine: String) {
 }
 
 fileprivate func processExtraIncludeCommand(restOfLine: String) {
-  let result = subprocess.run(restOfLine, 
+//   let result = subprocess.run(restOfLine, 
 }
