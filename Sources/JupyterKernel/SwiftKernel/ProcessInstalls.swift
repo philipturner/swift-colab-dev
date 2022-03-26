@@ -136,4 +136,9 @@ fileprivate func processInstall(
   try? fm.removeItem(atPath: linkPath)
   try fm.createSymbolicLink(
     atPath: linkPath, withDestinationPath: installLocation)
+  
+  var installedPackages = 
+  
+  // Don't use a dictionary bc won't be O(n^2). There's a limited number of products per target.
+  // Also, it would mess with array index.
 }
