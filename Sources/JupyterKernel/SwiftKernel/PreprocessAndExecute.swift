@@ -66,6 +66,16 @@ fileprivate func preprocess(code: String) throws -> String {
 // TODO: move %system and interface into %install commands here
 
 fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String {
+  let installRegularExpression = ###"""
+  ^\s*%install
+  """###
+  let installMatch = re.match(installRegularExpression, line)
+  guard installMatch == Python.None else {
+//     let restOfLine = String(installMatch.group(1))!
+    // Call into "ProcessInstalls.swift"
+    return ""
+  }
+  
   let includeRegularExpression = ###"""
   ^\s*%include (.*)$
   """###
