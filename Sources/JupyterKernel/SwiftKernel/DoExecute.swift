@@ -23,12 +23,18 @@ func doExecute(code: String) throws -> PythonObject? {
       stdoutHandler.join()
     }
     result = try executeCell(code: code)
-  } catch error as PackageInstallException {
+  } catch let error as PackageInstallException {
     let traceback = [error.localizedDescription]
     sendIOPubErrorMessage(traceback)
     return makeExecuteReplyErrorMessage(traceback)
   } catch {
-    sendExceptionReport(whileDoing: "executeCell", error: error)
+    let kernel = KernelContext.kernel
+    sendIOPubErrorMessage([
+      "Kernel is in a bad state. Try restarting the kernel.",
+      "",
+      "Exception in cell \(kernel.execution_count):",
+      error.localizedDescription
+    ])
     throw error
   }
   
@@ -141,15 +147,6 @@ fileprivate func sendIOPubErrorMessage(_ message: [String]) {
     "ename": "",
     "evalue": "",
     "traceback": message.pythonObject
-  ])
-}
-
-fileprivate func sendExceptionReport(whileDoing: String, error: Error) {
-  sendIOPubErrorMessage(traceback: [
-    "Kernel is in a bad state. Try restarting the kernel.",
-    "",
-    "Exception in `\(whileDoing)`:",
-    error.localizedDescription
   ])
 }
 
