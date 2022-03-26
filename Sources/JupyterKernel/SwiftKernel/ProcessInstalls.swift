@@ -292,6 +292,18 @@ fileprivate func processInstall(
     packageHumanDescription += 
       String(repeating: " " as Character, count: 8) + "\(product)\n"
   }
+  sendStdout("""
+    Installing package:
+    \(packageHumanDescription)
+    """)
+  sendStdout("""
+    With SwiftPM flags:
+        \(JoinedSequence(base: swiftPMFlags, separator: " "))
+    """)
+  sendStdout("""
+    Working in:
+        \(installLocation)/modules
+    """)
   
   try writeInstalledPackages()
 }
