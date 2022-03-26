@@ -160,7 +160,7 @@ fileprivate func processInstall(
     for i in 0..<lines.count / 2 {
       let spec = String(lines[i * 2])
       let productsString = lines[i * 2 + 1]
-      let products = [String](productsString.split(separator: " "))
+      let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
     }
   }
