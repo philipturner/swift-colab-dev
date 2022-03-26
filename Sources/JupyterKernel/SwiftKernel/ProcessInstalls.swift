@@ -221,11 +221,10 @@ fileprivate func processInstall(
     try readInstalledPackages()
   }
   
-  // TODO: Remove when done debugging
-  sendStdout(installedPackages.reduce("Previously installed packages:", {
-    $0 + "\n" + String(describing: $1)
-  }))
-  sendStdout("Previously installed dictionary:\n\(installedProductsDictionary!)")
+//   sendStdout(installedPackages.reduce("Previously installed packages:", {
+//     $0 + "\n" + String(describing: $1)
+//   }))
+//   sendStdout("Previously installed dictionary:\n\(installedProductsDictionary!)")
   
   var packageID: Int
   if let index = installedPackages.firstIndex(where: { $0.spec == spec }) {
@@ -280,13 +279,12 @@ fileprivate func processInstall(
     ]
   )
   """
-  sendStdout("Manifest:\n\(manifest)")
+//   sendStdout("Manifest:\n\(manifest)")
   
-  // TODO: Remove when done debugging
-  sendStdout(installedPackages.reduce("Currently installed packages:", {
-    $0 + "\n" + String(describing: $1)
-  }))
-  sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
+//   sendStdout(installedPackages.reduce("Currently installed packages:", {
+//     $0 + "\n" + String(describing: $1)
+//   }))
+//   sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
   
   try writeInstalledPackages()
 }
