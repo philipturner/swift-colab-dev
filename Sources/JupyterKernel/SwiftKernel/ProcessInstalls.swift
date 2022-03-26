@@ -130,7 +130,7 @@ typealias InstalledPackages = [(spec: String, products: [String])]
 fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
 
-fileprivate func readPackages() throws {
+fileprivate func readInstalledPackages() throws {
   let fm = FileManager.default
   installedPackages = []
   installedPackagesLocation = "\(installLocation)/index"
