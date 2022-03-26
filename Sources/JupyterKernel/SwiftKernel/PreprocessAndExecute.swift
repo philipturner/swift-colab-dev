@@ -98,6 +98,20 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
 
 fileprivate func executeSystemCommand(restOfLine: String) throws -> String {
   // TODO: change this to Swift Process after debugging
+  let subprocess = Python.import("subprocess")
+  let process = subprocess.Popen(restOfLine,
+                                 stdout: subprocess.PIPE,
+                                 stderr: subprocess.STDOUT,
+                                 shell: true)
+  process.wait()
+    
+  let commandResult = process.stdout.read().decode("utf-8")
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "stream", [
+    "name": "stdout",
+    "text": "\(commandResult)"
+  ])
+  return ""
 }
 
 // This is a dictionary to avoid having O(n^2) algorithmic complexity.
