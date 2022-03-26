@@ -23,6 +23,10 @@ func doExecute(code: String) throws -> PythonObject? {
       stdoutHandler.join()
     }
     result = try executeCell(code: code)
+  } catch error as PackageInstallException {
+    let traceback = [error.localizedDescription]
+    sendIOPubErrorMessage(traceback)
+    return makeExecuteReplyErrorMessage(traceback)
   } catch {
     sendExceptionReport(whileDoing: "executeCell", error: error)
     throw error
@@ -48,7 +52,7 @@ func doExecute(code: String) throws -> PythonObject? {
     
     if isAlive == 0 {
       traceback = ["Process killed"]
-      sendIOPubErrorMessage(traceback: traceback)
+      sendIOPubErrorMessage(traceback)
       
       // Exit the kernel because there is no way to recover from a
       // killed process. The UI will tell the user that the kernel has
@@ -65,15 +69,15 @@ func doExecute(code: String) throws -> PythonObject? {
       // to add a traceback.
       traceback = ["Current stack trace:"]
       traceback += try prettyPrintStackTrace()
-      sendIOPubErrorMessage(traceback: traceback)      
+      sendIOPubErrorMessage(traceback)      
     } else {
       // There is no stdout, so it must be a compile error. Simply return
       // the error without trying to get a stack trace.
       traceback = [result.description]
-      sendIOPubErrorMessage(traceback: traceback)
+      sendIOPubErrorMessage(traceback)
     }
     
-    return makeExecuteReplyErrorMessage(traceback: traceback)
+    return makeExecuteReplyErrorMessage(traceback)
   } else {
     fatalError("This should never happen.")
   }
@@ -121,22 +125,22 @@ fileprivate func prettyPrintStackTrace() throws -> [String] {
   return output
 }
 
-fileprivate func makeExecuteReplyErrorMessage(traceback: [String]) -> PythonObject {
+fileprivate func makeExecuteReplyErrorMessage(_ message: [String]) -> PythonObject {
   return [
     "status": "error",
     "execution_count": KernelContext.kernel.execution_count,
     "ename": "",
     "evalue": "",
-    "traceback": traceback.pythonObject
+    "traceback": message.pythonObject
   ]
 }
 
-fileprivate func sendIOPubErrorMessage(traceback: [String]) {
+fileprivate func sendIOPubErrorMessage(_ message: [String]) {
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "error", [
     "ename": "",
     "evalue": "",
-    "traceback": traceback.pythonObject
+    "traceback": message.pythonObject
   ])
 }
 
