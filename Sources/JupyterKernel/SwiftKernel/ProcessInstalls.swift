@@ -119,5 +119,14 @@ fileprivate func substituteCwd(
 fileprivate func processInstall(
   restOfLine: Int, lineIndex: Int
 ) throws {
+  let parsed = [String](shlex[dynamicMember: "split"](restOfLine))!
+  if parsed.count < 2 {
+    throw PackageInstallException(
+      "Line \(lineIndex + 1): %install usage: SPEC PRODUCT [PRODUCT ...]")
+  }
+  
   // Expand template before writing to file
+  let spec = try substituteCwd(template: parsed[0], lineIndex: lineIndex)
+  let products = Array(parsed[1...])
+  
 }
