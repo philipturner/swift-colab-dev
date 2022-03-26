@@ -119,7 +119,7 @@ fileprivate func substituteCwd(
 // %install
 
 fileprivate func processInstall(
-  restOfLine: Int, lineIndex: Int
+  restOfLine: String, lineIndex: Int
 ) throws {
   let parsed = [String](shlex[dynamicMember: "split"](restOfLine))!
   if parsed.count < 2 {
