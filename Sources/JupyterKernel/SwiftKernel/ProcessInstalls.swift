@@ -72,3 +72,5 @@ fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
 fileprivate func processInstallLocation(restOfLine: String) throws {
   
 }
+
+// for %install command, rewrite /opt/swift/install_location every time
