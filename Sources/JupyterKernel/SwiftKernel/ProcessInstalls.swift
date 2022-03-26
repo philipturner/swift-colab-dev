@@ -165,7 +165,7 @@ fileprivate func processInstall(
     }
   }
   
-  sendStdout(message: """
+  sendStdout("""
   Previously installed packages:
   \(installedPackages)
   """)
