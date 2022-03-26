@@ -116,10 +116,7 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
     throw PreprocessorException(
         "Line \(lineIndex + 1): Could not find \"\(name)\". Searched \(includePaths.reversed()).")
   }
-  
   previouslyReadPaths[chosenPath] = true
-  
-  // TODO: Determine whether I need an extra newline at the end of this.
   return """
   #sourceLocation(file: "\(chosenPath)", line: 1)
   \(code)
