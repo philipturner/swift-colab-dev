@@ -83,7 +83,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   let systemMatch = re.match(systemRegularExpression, line)
   guard systemMatch == Python.None else {
     let restOfLine = String(systemMatch.group(1))!
-    return try executeSystemCommand(restOfLine: restOfLine)
+    return executeSystemCommand(restOfLine: restOfLine)
   }
   
   let includeRegularExpression = ###"""
@@ -97,7 +97,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   return line
 }
 
-fileprivate func executeSystemCommand(restOfLine: String) throws -> String {
+fileprivate func executeSystemCommand(restOfLine: String) -> String {
   let process = subprocess.Popen(restOfLine,
                                  stdout: subprocess.PIPE,
                                  stderr: subprocess.STDOUT,
