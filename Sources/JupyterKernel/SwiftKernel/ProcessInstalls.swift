@@ -61,7 +61,7 @@ fileprivate func processExtraIncludeCommand(restOfLine: String) throws {
   
   let includeDirs = shlex[dynamicMember: "split"](result.stdout.decode("utf8"))
   for includeDir in [String](includeDirs)! {
-    if includeDir[0..<2] != "-I" {
+    if includeDir.prefix(2) != "-I" {
       KernelContext.kernel.log.warn("""
         Non "-I" output from \
         %install-extra-include-command: \(includeDir)
