@@ -86,7 +86,11 @@ fileprivate var installLocation = "/opt/swift/build"
 fileprivate func processInstallLocation(
   restOfLine: String, lineIndex: Int
 ) throws {
-  
+  let kernel = KernelContext.kernel
+  kernel.send_response(kernel.iopub_socket, "stream", [
+    "name": "stdout",
+    "text": "%install-location \(restOfLine)"
+  ])
 }
 
 // TODO: function that substitutes "cwd"
