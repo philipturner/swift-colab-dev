@@ -165,10 +165,9 @@ fileprivate func processInstall(
     }
   }
   
-  sendStdout("""
-  Previously installed packages:
-  \(installedPackages)
-  """)
+  sendStdout(installedPackages.reduce("Previously installed packages:", {
+    $0 + "\n" + String(describing: $1)
+  })
   
   // Don't use a dictionary bc won't be O(n^2). There's a limited number of products per target.
   // Also, it would mess with array index.
