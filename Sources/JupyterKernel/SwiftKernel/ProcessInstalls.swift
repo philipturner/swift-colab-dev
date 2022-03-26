@@ -3,8 +3,6 @@ fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
 
 func processInstallDirective(line: String, isValidDirective: inout Bool) throws {
-  isValidDirective = true
-  
   if try attempt(
     regex: ###"""
     ^\s*%install-swiftpm-flags (.*)$
