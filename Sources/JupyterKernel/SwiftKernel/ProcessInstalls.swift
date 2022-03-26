@@ -1,7 +1,5 @@
 import Foundation
-func processInstallDirective(
-  line: String, 
-  isValidDirective: inout Bool
-) throws {
+
+func processInstallDirective(line: String, isValidDirective: inout Bool) throws {
   
 }
