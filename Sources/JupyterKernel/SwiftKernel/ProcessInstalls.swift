@@ -163,7 +163,7 @@ fileprivate func writeInstalledPackages() throws {
   guard FileManager.default.createFile(
         atPath: installedPackagesLocation, contents: packagesData) else {
     throw Exception("""
-      Could not write to file "\(installedPackagesLocation)"
+      Could not write to file "\(installedPackagesLocation!)"
       """)
   }
 }
