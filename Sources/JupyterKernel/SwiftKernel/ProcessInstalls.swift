@@ -126,10 +126,15 @@ fileprivate func sendStdout(_ message: String) {
   ])
 }
 
-fileprivate var installedPackages = {
+fileprivate var installedPackages: InstalledPackages! = nil
+fileprivate var installedPackagesLocation: String! = nil
+
+fileprivate func readPackages() throws {
   let fm = FileManager.default
-  var output: [(spec: String, products: [String])] = []
-  if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
+  installedPackages = []
+  installedPackagesLocation = "\(installLocation)/index"
+  
+  if let packagesData = fm.contents(atPath: installedPackagesLocation) {
     let packagesString = String(data: packagesData, encoding: .utf8)!
     let lines = packagesString.split(
       separator: "\n", omittingEmptySubsequences: false)
@@ -144,11 +149,10 @@ fileprivate var installedPackages = {
       let spec = String(lines[i * 2])
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
-      output.append((spec, products))
+      installedPackages.append((spec, products))
     }
   }
-  return output
-}()
+}
 
 fileprivate func processInstall(
   restOfLine: String, lineIndex: Int
@@ -169,6 +173,9 @@ fileprivate func processInstall(
   try fm.createSymbolicLink(
     atPath: linkPath, withDestinationPath: installLocation)
   
+  if installedPackages == nil || installedPackagesLocation != installLocation {
+    try readInstalledPackages()
+  }
 //   var installedPackages: [(spec: String, products: [String])] = []
 //   if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
 //     let packagesString = String(data: packagesData, encoding: .utf8)!
