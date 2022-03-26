@@ -127,6 +127,7 @@ fileprivate func sendStdout(_ message: String) {
 }
 
 fileprivate var installedPackages = {
+  let fm = FileManager.default
   var output: [(spec: String, products: [String])] = []
   if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
     let packagesString = String(data: packagesData, encoding: .utf8)!
