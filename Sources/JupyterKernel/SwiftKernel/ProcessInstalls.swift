@@ -105,6 +105,8 @@ fileprivate func substituteCwd(
         "cwd": FileManager.default.currentDirectoryPath
       ])
   } catch PythonError.exception(let error, let traceback) {
+    let e = PythonError.exception(error, traceback: traceback)
+    
     if Bool(Python.isinstance(error, Python.KeyError))! {
       throw PackageInstallException(
         "Line \(lineIndex + 1): Invalid template argument \(e)")
@@ -112,7 +114,7 @@ fileprivate func substituteCwd(
       throw PackageInstallException(
         "Line \(lineIndex + 1): \(e)")
     } else {
-      throw PythonError.exception(error, traceback)
+      throw e
     }
   }
 }
