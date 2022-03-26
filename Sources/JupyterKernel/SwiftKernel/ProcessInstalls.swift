@@ -115,3 +115,9 @@ fileprivate func substituteCwd(
 }
 
 // %install
+
+fileprivate func processInstall(
+  restOfLine: Int, lineIndex: Int
+) throws {
+  // Expand template before writing to file
+}
