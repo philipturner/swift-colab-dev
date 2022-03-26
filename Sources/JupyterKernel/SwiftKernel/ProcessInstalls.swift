@@ -165,10 +165,11 @@ fileprivate func processInstall(
     }
   }
   
+  // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Previously installed packages:", {
     $0 + "\n" + String(describing: $1)
   }))
   
-  // Don't use a dictionary bc won't be O(n^2). There's a limited number of products per target.
-  // Also, it would mess with array index.
+  // Not using a dictionary because this won't be O(n^2); there are a very small 
+  // number of products per target. Also, it would mess with array indices.
 }
