@@ -158,9 +158,9 @@ fileprivate func processInstall(
     }
     
     for i in 0..<lines.count / 2 {
-      let spec = lines[i * 2]
+      let spec = String(lines[i * 2])
       let productsString = lines[i * 2 + 1]
-      let products = productsString.split(separator: " ")
+      let products = [String](productsString.split(separator: " "))
       installedPackages.append((spec, products))
     }
   }
