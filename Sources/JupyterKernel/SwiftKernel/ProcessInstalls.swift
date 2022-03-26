@@ -250,10 +250,37 @@ fileprivate func processInstall(
     installedProductsDictionary[product] = packageID
   }
   
+  let packageName = "jupyterInstalledPackages\(packageID)"
+  let packageNameQuoted = "\"\(packageName)\""
+  
   // Contents of the Swift package manifest
-  let /*communist*/ manifest /*o*/ = """
-  g
+  let /*communist*/ manifest /*o*/ = 
   """
+  // swift-tools-version:4.2
+  import PackageDescription
+  let package = Package(
+    name: \(packageNameQuoted),
+    products: [
+      .library(
+        name: \(packageNameQuoted),
+        type: .dynamic,
+        targets: [\(packageNameQuoted)]
+      ),
+    ],
+    dependencies: [
+      \(spec)
+    ],
+    targets: [
+      .target(
+        name: \(packageNameQuoted),
+        dependencies: \(products),
+        path: ".",
+        sources: ["\(packageName).swift"]
+      )
+    ]
+  )
+  """
+  sendStdout("Manifest:\n\(manifest)")
   
   // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Currently installed packages:", {
