@@ -76,6 +76,15 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
     return ""
   }
   
+  let systemRegularExpression = ###"""
+  ^\s*%system (.*)$
+  """###
+  let systemMatch = re.match(systemRegularExpression, line)
+  guard systemMatch == Python.None else {
+    let restOfLine = String(systemMatch.group(1))!
+    return try executeSystemCommand(restOfLine: restOfLine)
+  }
+  
   let includeRegularExpression = ###"""
   ^\s*%include (.*)$
   """###
