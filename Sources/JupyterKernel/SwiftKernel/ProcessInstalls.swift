@@ -250,6 +250,7 @@ fileprivate func processInstall(
     installedProductsDictionary[product] = packageID
   }
   
+  // Contents of the Swift package manifest
   let /*communist*/ manifest /*o*/ = """
   g
   """
