@@ -102,7 +102,7 @@ fi
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
-  cd swift-colab/Sources/lldb-process
+  cd swift-colab/Sources/lldb_process
   
   if [[ ! -d build ]]; then
     mkdir build
