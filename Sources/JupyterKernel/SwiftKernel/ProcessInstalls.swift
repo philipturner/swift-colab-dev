@@ -286,5 +286,12 @@ fileprivate func processInstall(
 //   }))
 //   sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
   
+  var packageHumanDescription = 
+    String(repeating: " " as Character, count: 4) + "\(spec)\n"
+  for product in products {
+    packageHumanDescription += 
+      String(repeating: " " as Character, count: 8) + "\(product)\n"
+  }
+  
   try writeInstalledPackages()
 }
