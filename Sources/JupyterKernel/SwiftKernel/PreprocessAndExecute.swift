@@ -1,5 +1,6 @@
 import Foundation
 fileprivate let re = Python.import("re")
+fileprivate let subprocess = Python.import("subprocess")
 
 func preprocessAndExecute(code: String, isCell: Bool = false) throws -> ExecutionResult {
   do {
@@ -97,8 +98,6 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
 }
 
 fileprivate func executeSystemCommand(restOfLine: String) throws -> String {
-  // TODO: change this to Swift Process after debugging
-  let subprocess = Python.import("subprocess")
   let process = subprocess.Popen(restOfLine,
                                  stdout: subprocess.PIPE,
                                  stderr: subprocess.STDOUT,
@@ -109,7 +108,7 @@ fileprivate func executeSystemCommand(restOfLine: String) throws -> String {
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "stream", [
     "name": "stdout",
-    "text": "\(commandResult)"
+    "text": commandResult
   ])
   return ""
 }
