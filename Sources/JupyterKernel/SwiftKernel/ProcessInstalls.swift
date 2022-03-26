@@ -15,8 +15,6 @@ func processInstallDirective(line: String, isValidDirective: inout Bool) throws 
     isValidDirective = true
     return
   }
-  
-  isValidDirective = true
 }
 
 fileprivate func attempt(
