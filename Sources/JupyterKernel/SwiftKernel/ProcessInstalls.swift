@@ -100,7 +100,7 @@ fileprivate func substituteCwd(
   template: String, lineIndex: Int
 ) throws -> String {
   do {
-    let output = try string.Template(template).throwing
+    let output = try string.Template(template).substitute.throwing
       .dynamicallyCall(withArguments: [
         "cwd": FileManager.default.currentDirectoryPath
       ])
