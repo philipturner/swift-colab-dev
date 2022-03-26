@@ -265,7 +265,7 @@ fileprivate func processInstall(
         name: \(packageNameQuoted),
         type: .dynamic,
         targets: [\(packageNameQuoted)]
-      ),
+      )
     ],
     dependencies: [
       \(spec)
