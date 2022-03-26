@@ -41,7 +41,7 @@ fileprivate func printSwiftPMFlags() {
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "stream", [
     "name": "stdout",
-    "text": "\(swiftPMFlags.pythonObject)"
+    "text": "\(swiftPMFlags.pythonObject)\n"
   ])
 }
 
