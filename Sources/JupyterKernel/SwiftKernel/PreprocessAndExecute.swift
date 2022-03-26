@@ -54,7 +54,7 @@ fileprivate func getLocationDirective(lineIndex: Int) -> String {
 fileprivate func preprocess(code: String) throws -> String {
   let lines = code.split(separator: "\n", omittingEmptySubsequences: false)
     .map(String.init)
-  let preprocessedLines = try lines.indices.map { i in
+  let preprocessedLines = try lines.indices.map { i -> String in
     let line = lines[i]
     guard line.contains("%") else {
       return line
