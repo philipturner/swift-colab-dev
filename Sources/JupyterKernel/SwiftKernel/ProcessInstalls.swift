@@ -148,8 +148,11 @@ fileprivate func readInstalledPackages() throws {
     }
     guard lines.count % 2 == 0 else {
       throw Exception("""
-        The contents of "\(installLocation)/index" were malformatted:
+        The contents of "\(installLocation)/index" were malformatted. \
+        There should be no unnecessary whitespace.
+        Begin file:
         \(packagesString)
+        End file:
         """)
     }
     
@@ -177,7 +180,10 @@ fileprivate func readInstalledPackages() throws {
 
 fileprivate func writeInstalledPackages() throws {
   var packagesString = installedPackages.reduce("", {
-    $0 + "\($1.spec)\n\($1.products)\n"
+    let productString = $1.products.reduce("", {
+      $0 + " " + $1
+    })
+    return $0 + $1.spec + "\n" + productString + "\n"
   })
   if packagesString.hasSuffix("\n") {
     packagesString.removeLast(1)
