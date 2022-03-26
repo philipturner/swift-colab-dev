@@ -73,7 +73,8 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   let installMatch = re.match(installRegularExpression, line)
   if installMatch != Python.None {
     var isValidDirective = false
-    try processInstallDirective(line: line, isValidDirective: &isValidDirective)
+    try processInstallDirective(
+      line: line, lineIndex: lineIndex, isValidDirective: &isValidDirective)
     if isValidDirective {
       return ""
     } else {
