@@ -287,10 +287,10 @@ fileprivate func processInstall(
 //   sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
   
   var packageHumanDescription = 
-    String(repeating: " " as Character, count: 4) + "\(spec)"
+    String(repeating: Character(" "), count: 4) + "\(spec)"
   for product in products {
     packageHumanDescription += "\n" +
-      String(repeating: " " as Character, count: 8) + "\(product)"
+      String(repeating: Character(" "), count: 8) + "\(product)"
   }
   sendStdout("""
     Installing package:
@@ -299,7 +299,7 @@ fileprivate func processInstall(
   // why do i specify separator twice?
   sendStdout("""
     With SwiftPM flags:
-        \(JoinedSequence(base: swiftPMFlags, separator: " ").joined(separator: " "))
+        \(JoinedSequence(base: swiftPMFlags, separator: Character(" ")).joined(separator: Character(" ")))
     """)
   sendStdout("""
     Working in:
