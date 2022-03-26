@@ -287,10 +287,10 @@ fileprivate func processInstall(
 //   sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
   
   var packageHumanDescription = 
-    String(repeating: " " as Character, count: 4) + "\(spec)\n"
+    String(repeating: " " as Character, count: 4) + "\(spec)"
   for product in products {
-    packageHumanDescription += 
-      String(repeating: " " as Character, count: 8) + "\(product)\n"
+    packageHumanDescription += "\n" +
+      String(repeating: " " as Character, count: 8) + "\(product)"
   }
   sendStdout("""
     Installing package:
