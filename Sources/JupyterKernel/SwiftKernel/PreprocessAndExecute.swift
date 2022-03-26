@@ -72,10 +72,12 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   """###
   let installMatch = re.match(installRegularExpression, line)
   if installMatch != Python.None {
-    if let blankLine = try processInstallDirective(line: line) {
-      return blankLine
+    var isValidDirective = false
+    try processInstallDirective(line: line, isValidDirective: &isValidDirective)
+    if isValidDirective {
+      return ""
     } else {
-      // This was an invalid %install-XXX command. Continue through
+      // This was not a valid %install-XXX command. Continue through
       // regular processing and let the Swift parser throw an error.
     }
   }
