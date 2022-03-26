@@ -216,12 +216,35 @@ fileprivate func processInstall(
     $0 + "\n" + String(describing: $1)
   }))
   
-  // ... search for a package that mirrors this
+  var packageID: Int
+  if let index = installedPackages.firstIndex(where: { $0.spec == spec }) {
+    packageID = index
+  } else {
+    packageID = installedPackages.count
+    installedPackages.append((spec, products))
+  }
   
   // Just throw a soft warning if there's a duplicate product. SwiftPM will make
   // an error if there needs to be one. Also, this warning should help the user 
   // debug any error caused by duplicate products.
   // ... search for duplicate stuff
+  for product in products {
+    if let index = installedProductsDictionary[product] {
+          let conflictingSpec = installedPackages[index].spec
+          throw Exception("""
+            Could not decode "\(installedPackagesLocation)". Both of these \
+            packages produced "\(product)":
+            \(conflictingSpec)
+            \(spec)
+            """)
+        }
+        installedProductsDictionary[product] = i
+  }
   
   try writeInstalledPackages()
+  
+  // TODO: Remove when done debugging
+  sendStdout(installedPackages.reduce("Currently installed packages:", {
+    $0 + "\n" + String(describing: $1)
+  }))
 }
