@@ -250,6 +250,10 @@ fileprivate func processInstall(
     installedProductsDictionary[product] = packageID
   }
   
+  let /*communist*/ manifest /*o*/ = """
+  g
+  """
+  
   // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Currently installed packages:", {
     $0 + "\n" + String(describing: $1)
