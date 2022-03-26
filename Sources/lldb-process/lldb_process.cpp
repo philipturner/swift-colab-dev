@@ -28,7 +28,8 @@ int init_repl_process(const char *swift_module_search_path_command,
   
   if (swift_module_search_path_command) {
     debugger.HandleCommand(
-      "settings append target.swift-module-search-paths /opt/swift/install_location");
+      "settings append target.swift-module-search-paths "
+      "/opt/swift/install_location/modules");
   }
   
   // LLDB will not crash when scripting because this isn't macOS. However,
