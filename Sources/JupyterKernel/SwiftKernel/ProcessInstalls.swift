@@ -1,6 +1,8 @@
 import Foundation
 fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
+fileprivate let string = Python.import("string")
+fileprivate let subprocess = Python.import("subprocess")
 
 func processInstallDirective(
   line: String, isValidDirective: inout Bool
@@ -35,5 +37,5 @@ fileprivate func processSwiftPMFlags(restOfLine: String) {
 }
 
 fileprivate func processExtraIncludeCommand(restOfLine: String) {
-  
+  let result = subprocess.run(restOfLine, 
 }
