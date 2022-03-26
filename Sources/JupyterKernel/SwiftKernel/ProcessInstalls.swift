@@ -140,6 +140,14 @@ fileprivate func processInstall(
   var installedPackages: [(spec: String, products: [String])] = []
   if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
     let packagesString = String(data: packagesData, encoding: .utf8)!
+    let lines = packagesString.split(
+      separator: "\n", omittingEmptySubsequences: false)
+    guard lines.count % 2 == 0 else {
+      throw Exception("""
+        The contents of "\(installLocation)/index" were malformatted:
+        \(packagesString)
+        """)
+    }
   }
   
   // Don't use a dictionary bc won't be O(n^2). There's a limited number of products per target.
