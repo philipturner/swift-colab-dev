@@ -176,10 +176,14 @@ fileprivate func readInstalledPackages() throws {
 }
 
 fileprivate func writeInstalledPackages() throws {
-  let packagesString = installedPackages.reduce("", {
+  var packagesString = installedPackages.reduce("", {
     $0 + "\($1.spec)\n\($1.products)\n"
   })
+  if packagesString.hasSuffix("\n") {
+    packagesString.removeLast(1)
+  }
   let packagesData = packagesString.data(using: .utf8)!
+  
   guard FileManager.default.createFile(
         atPath: installedPackagesLocation, contents: packagesData) else {
     throw Exception("""
