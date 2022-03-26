@@ -51,7 +51,8 @@ fileprivate func getLocationDirective(lineIndex: Int) -> String {
 }
 
 fileprivate func preprocess(code: String) throws -> String {
-  let lines = code.split(separator: "\n").map(String.init)
+  let lines = code.split(separator: "\n", omittingEmptySubsequences: false)
+    .map(String.init)
   let preprocessedLines = try lines.indices.map { i in
     return try preprocess(line: lines[i], index: i)
   }
