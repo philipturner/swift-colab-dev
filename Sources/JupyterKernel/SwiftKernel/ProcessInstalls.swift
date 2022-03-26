@@ -8,7 +8,7 @@ func processInstallDirective(
   line: String, lineIndex: Int, isValidDirective: inout Bool
 ) throws {
   func attempt(
-    _ regex: String, command: (String, Int) throws -> Void
+    command: (String, Int) throws -> Void, _ regex: String
   ) rethrows {
     let regexMatch = re.match(regex, line)
     if regexMatch != Python.None {
@@ -18,22 +18,24 @@ func processInstallDirective(
     }
   }
   
-  attempt(###"""
+  attempt(command: processSwiftPMFlags, ###"""
     ^\s*%install-swiftpm-flags (.*)$
-    """###, 
-    command: processSwiftPMFlags)
+    """###)
   if isValidDirective { return }
   
-  try attempt(###"""
+  try attempt(command: processExtraIncludeCommand, ###"""
     ^\s*%install-extra-include-command (.*)$
-    """###, 
-    command: processExtraIncludeCommand)
+    """###)
   if isValidDirective { return }
   
-  try attempt(###"""
+  try attempt(command: processInstallLocation, ###"""
     ^\s*%install-location (.*)$
-    """###, 
-    command: processInstallLocation)
+    """###)
+  if isValidDirective { return }
+  
+  try attempt(command: processInstall, ###"""
+    ^\s*%install-location (.*)$
+    """###)
   if isValidDirective { return }
 }
 
