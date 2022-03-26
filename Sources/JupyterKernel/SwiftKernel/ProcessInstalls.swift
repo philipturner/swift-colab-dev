@@ -5,15 +5,18 @@ fileprivate let shlex = Python.import("shlex")
 func processInstallDirective(line: String, isValidDirective: inout Bool) throws {
   isValidDirective = true
   
-  let swiftPMFlagsRegularExpression = ###"""
-  ^\s*%system (.*)$
-  """###
-  let systemMatch = re.match(systemRegularExpression, line)
-  guard systemMatch == Python.None else {
-    let restOfLine = String(systemMatch.group(1))!
-    executeSystemCommand(restOfLine: restOfLine)
-    return ""
+  if try attempt(
+    regex: ###"""
+    ^\s*%install-swiftpm-flags (.*)$
+    """###, 
+    line: line, 
+    command: processSwiftPMFlags
+  ) {
+    isValidDirective = true
+    return
   }
+  
+  isValidDirective = true
 }
 
 fileprivate func attempt(
