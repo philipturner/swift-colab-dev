@@ -86,13 +86,36 @@ fileprivate var installLocation = "/opt/swift/build"
 fileprivate func processInstallLocation(
   restOfLine: String, lineIndex: Int
 ) throws {
+  
+  
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "stream", [
     "name": "stdout",
-    "text": "%install-location \(restOfLine)"
+    "text": "%install-location \(installLocation)"
   ])
 }
 
 // TODO: function that substitutes "cwd"
+
+fileprivate func substituteCwd(
+  template: String, lineIndex: Int
+) throws -> String {
+  do {
+    return try string.Template(template).throwing
+      .dynamicallyCall(withArguments: [
+        "cwd": FileManager.default.currentDirectoryPath
+      ])
+  } catch PythonError.exception(let error, let traceback) {
+    if Bool(Python.isinstance(error, Python.KeyError))! {
+      throw PackageInstallException(
+        "Line \(lineIndex + 1): Invalid template argument \(e)")
+    } else if Bool(Python.isinstance(error, Python.ValueError))! {
+      throw PackageInstallException(
+        "Line \(lineIndex + 1): \(e)")
+    } else {
+      throw PythonError.exception(error, traceback)
+    }
+  }
+}
 
 // %install
