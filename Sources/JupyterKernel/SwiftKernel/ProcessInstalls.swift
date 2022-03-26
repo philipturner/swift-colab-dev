@@ -126,6 +126,29 @@ fileprivate func sendStdout(_ message: String) {
   ])
 }
 
+fileprivate var installedPackages = {
+  var output: [(spec: String, products: [String])] = []
+  if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
+    let packagesString = String(data: packagesData, encoding: .utf8)!
+    let lines = packagesString.split(
+      separator: "\n", omittingEmptySubsequences: false)
+    guard lines.count % 2 == 0 else {
+      throw Exception("""
+        The contents of "\(installLocation)/index" were malformatted:
+        \(packagesString)
+        """)
+    }
+    
+    for i in 0..<lines.count / 2 {
+      let spec = String(lines[i * 2])
+      let productsString = lines[i * 2 + 1]
+      let products = productsString.split(separator: " ").map(String.init)
+      output.append((spec, products))
+    }
+  }
+  return output
+}()
+
 fileprivate func processInstall(
   restOfLine: String, lineIndex: Int
 ) throws {
@@ -145,25 +168,25 @@ fileprivate func processInstall(
   try fm.createSymbolicLink(
     atPath: linkPath, withDestinationPath: installLocation)
   
-  var installedPackages: [(spec: String, products: [String])] = []
-  if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
-    let packagesString = String(data: packagesData, encoding: .utf8)!
-    let lines = packagesString.split(
-      separator: "\n", omittingEmptySubsequences: false)
-    guard lines.count % 2 == 0 else {
-      throw Exception("""
-        The contents of "\(installLocation)/index" were malformatted:
-        \(packagesString)
-        """)
-    }
+//   var installedPackages: [(spec: String, products: [String])] = []
+//   if let packagesData = fm.contents(atPath: "\(installLocation)/index") {
+//     let packagesString = String(data: packagesData, encoding: .utf8)!
+//     let lines = packagesString.split(
+//       separator: "\n", omittingEmptySubsequences: false)
+//     guard lines.count % 2 == 0 else {
+//       throw Exception("""
+//         The contents of "\(installLocation)/index" were malformatted:
+//         \(packagesString)
+//         """)
+//     }
     
-    for i in 0..<lines.count / 2 {
-      let spec = String(lines[i * 2])
-      let productsString = lines[i * 2 + 1]
-      let products = productsString.split(separator: " ").map(String.init)
-      installedPackages.append((spec, products))
-    }
-  }
+//     for i in 0..<lines.count / 2 {
+//       let spec = String(lines[i * 2])
+//       let productsString = lines[i * 2 + 1]
+//       let products = productsString.split(separator: " ").map(String.init)
+//       installedPackages.append((spec, products))
+//     }
+//   }
   
   // TODO: Remove when done debugging
   sendStdout(installedPackages.reduce("Previously installed packages:", {
