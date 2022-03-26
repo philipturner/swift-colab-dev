@@ -17,8 +17,6 @@ int read_byte_array(SBValue sbvalue,
 
 extern "C" {
 
-// swift_module_search_path_command = 
-// "settings append target.swift-module-search-paths \(swift_module_search_path)" 
 int init_repl_process(const char *swift_module_search_path_command, 
                       const char **repl_env,
                       const char *cwd) {
@@ -29,7 +27,6 @@ int init_repl_process(const char *swift_module_search_path_command,
   debugger.SetAsync(false);
   
   if (swift_module_search_path_command) {
-//     debugger.HandleCommand(swift_module_search_path_command);
     debugger.HandleCommand(
       "settings append target.swift-module-search-paths /opt/swift/install_location");
   }
