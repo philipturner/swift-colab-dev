@@ -292,15 +292,20 @@ fileprivate func processInstall(
     packageHumanDescription += "\n" +
       String(repeating: Character(" "), count: 8) + "\(product)"
   }
+  
   sendStdout("""
     Installing package:
     \(packageHumanDescription)
     """)
   // why do i specify separator twice?
-  sendStdout("""
+  
+  if swiftPMFlags.count > 0 {
+    sendStdout("""
     With SwiftPM flags:
-        \(JoinedSequence(base: swiftPMFlags, separator: Character(" ")).joined(separator: Character(" ")))
+        \(swiftPMFlags.reduce(swiftPMFlags[0]) { $0 + " " + $1 })
     """)
+  }
+  
   sendStdout("""
     Working in:
         \(installLocation)/modules
