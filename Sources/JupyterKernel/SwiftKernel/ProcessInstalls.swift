@@ -153,9 +153,6 @@ fileprivate func writeInstalledPackages() throws {
   var packagesString = installedPackages.reduce("") {
     $0 + $1.spec + "\n"
   }
-  if packagesString.hasSuffix("\n") {
-    packagesString.removeLast(1)
-  }
   let packagesData = packagesString.data(using: .utf8)!
   
   guard FileManager.default.createFile(
