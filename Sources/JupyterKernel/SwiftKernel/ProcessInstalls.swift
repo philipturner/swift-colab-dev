@@ -389,20 +389,15 @@ fileprivate func processInstall(
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
   for path in swiftModules {
-    guard fm.fileExists(atPath: path) else {
-      continue
-    }
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(installLocation)/modules/\(fileName)"
-    sendStdout("Iteration")
-    sendStdout(path)
-    sendStdout(target)
     try? fm.removeItem(atPath: target)
     do {
       try fm.copyItem(atPath: path, toPath: target)
-      sendStdout("succeeded")
     } catch {
-      sendStdout("failed")
+      throw PackageInstallException("""
+        Could not copy "\(path)" to "\(target)"
+        """)
     }
   }
 }
