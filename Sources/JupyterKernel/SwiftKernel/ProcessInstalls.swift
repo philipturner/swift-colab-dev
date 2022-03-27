@@ -55,10 +55,11 @@ fileprivate func processSwiftPMFlags(
 fileprivate func processExtraIncludeCommand(
   restOfLine: String, lineIndex: Int
 ) throws {
-  let result = subprocess.run(restOfLine,
-                              stdout: subprocess.PIPE,
-                              stderr: subprocess.PIPE,
-                              shell: true)
+  let result = subprocess.run(
+    restOfLine,
+    stdout: subprocess.PIPE,
+    stderr: subprocess.PIPE,
+    shell: true)
   if result.returncode != 0 {
     throw PackageInstallException("""
       %install-extra-include-command returned nonzero \
@@ -279,8 +280,7 @@ fileprivate func processInstall(
     [swiftBuildPath] + swiftPMFlags,
     stdout: subprocess.PIPE,
     stderr: subprocess.STDOUT,
-    cwd: packagePath
-  )
+    cwd: packagePath)
   var currentlyInsideBrackets = false
   
   for buildOutputLine in Python.iter(
@@ -321,8 +321,12 @@ fileprivate func processInstall(
       """)
   }
   
-================================================================================
   let showBinPathResult = subprocess.run(
     [swiftBuildPath, "--show-bin-path"] + swiftPMFlags,
+    stdout: subprocess.PIPE,
+    stderr: subprocess.PIPE,
+    cwd: packagePath)
+  let binDir = String(showBinPathResult.decode("utf8").strip())!
+  let libFileName = "\(binDir)/lib\(packageName).so"
     
 }
