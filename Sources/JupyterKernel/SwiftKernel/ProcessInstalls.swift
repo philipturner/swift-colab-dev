@@ -326,7 +326,7 @@ fileprivate func processInstall(
     stdout: subprocess.PIPE,
     stderr: subprocess.PIPE,
     cwd: packagePath)
-  let binDir = String(showBinPathResult.decode("utf8").strip())!
+  let binDir = String(showBinPathResult.stdout.decode("utf8").strip())!
   let libFileName = "\(binDir)/lib\(packageName).so"
   
   // == Copy .swiftmodule and modulemap files to Swift module search path ==
@@ -343,7 +343,6 @@ fileprivate func processInstall(
     stdout: subprocess.PIPE,
     stderr: subprocess.PIPE,
     cwd: packagePath)
-  sendStdout(String(describing: dependenciesResult))
-//   let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
-//   sendStdout(String(dependenciesJSON)!)
+  let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
+  sendStdout(String(dependenciesJSON)!)
 }
