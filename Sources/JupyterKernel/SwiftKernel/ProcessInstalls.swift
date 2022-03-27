@@ -302,13 +302,13 @@ fileprivate func processInstall(
   if swiftPMFlags.count > 0 {
     sendStdout("""
     With SwiftPM flags:
-        \(swiftPMFlags.reduce(swiftPMFlags[0]) { $0 + " " + $1 })
+    \(swiftPMFlags/*.reduce(swiftPMFlags[0]) { $0 + " " + $1 }*/)
     """)
   }
   
   sendStdout("""
     Working in:
-        \(installLocation)/modules
+    \(installLocation)/modules
     """)
   
   try writeInstalledPackages()
