@@ -396,6 +396,11 @@ fileprivate func processInstall(
     sendStdout(path)
     sendStdout(target)
     try? fm.removeItem(atPath: target)
-    try! fm.copyItem(atPath: path, toPath: target)
+    do {
+      try fm.copyItem(atPath: path, toPath: target)
+      sendStdout("succeeded")
+    } catch {
+      sendStdout("failed")
+    }
   }
 }
