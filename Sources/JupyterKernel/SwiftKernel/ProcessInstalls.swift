@@ -363,8 +363,7 @@ fileprivate func processInstall(
   let dependenciesSet = Python.set(flattenDepsPaths(dependenciesObj))
   let dependenciesPaths = [String](Python.list(dependenciesSet))!
   
-  func isValidDependency(_ pathPythonObject: PythonObject) -> Bool {
-    let path = String(pathPythonObject)!
+  func isValidDependency(_ path: String) -> Bool {
     for p in dependenciesPaths {
       if path.hasPrefix(p) {
         return true
@@ -381,4 +380,10 @@ fileprivate func processInstall(
   // Connect to build.db
   let dbConnection = sqlite3.connect(buildDBPath)
   let cursor = dbConnection.cursor()
+  
+  // Process *.swiftmodule files
+  cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
+  let swiftModules = cursor.fetchall()
+    .map { String(path[0])! }.filter(isValidDependency)
+  sendStdout("\(swiftModules)")
 }
