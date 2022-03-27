@@ -129,15 +129,14 @@ fileprivate func sendStdout(_ message: String, insertNewLine: Bool = true) {
 typealias InstalledPackages = [(spec: String, products: [String])]
 fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
-fileprivate var installedProductsDictionary: [String: Int]! = nil
 
-// To prevent to search for matching specs from becoming O(n^2)
+// To prevent to search for matching package specs from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
+fileprivate var loadedProductsMap: [String: String] = [:]
 
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
   installedPackagesLocation = "\(installLocation)/index"
-  installedProductsDictionary = [:]
   installedPackagesMap = [:]
   
   if let packagesData = FileManager.default.contents(
@@ -166,18 +165,6 @@ fileprivate func readInstalledPackages() throws {
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
       installedPackagesMap[spec] = i
-      
-      for product in products {
-        if let index = installedProductsDictionary[product] {
-          let conflictingSpec = installedPackages[index].spec
-          sendStdout("""
-            Warning: Both of these packages produce "\(product)":
-            \(conflictingSpec)
-            \(spec)
-            """)
-        }
-        installedProductsDictionary[product] = i
-      }
     }
   }
 }
@@ -238,15 +225,14 @@ fileprivate func processInstall(
   // an error if there needs to be one. Also, this warning could help the user 
   // debug any error caused by duplicated products.
   for product in products {
-    if let index = installedProductsDictionary[product], index != packageID {
-      let conflictingSpec = installedPackages[index].spec
+    if let conflictingSpec = loadedProductsMap[product] {
       sendStdout("""
         Warning: Both of these packages produce "\(product)":
         \(conflictingSpec)
         \(spec)
         """)
     }
-    installedProductsDictionary[product] = packageID
+    loadedProductsMap[product] = spec
   }
   
   // Summary of how this works:
