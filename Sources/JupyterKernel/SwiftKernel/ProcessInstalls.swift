@@ -244,7 +244,9 @@ fileprivate func processInstall(
     installedProductsDictionary[product] = packageID
   }
   
-  try writeInstalledPackages()
+  defer { 
+    try writeInstalledPackages() 
+  }
   
   // Summary of how this works:
   // - create a Swift package that depends all the modules that
