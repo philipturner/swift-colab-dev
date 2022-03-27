@@ -343,6 +343,7 @@ fileprivate func processInstall(
     stdout: subprocess.PIPE,
     stderr: subprocess.PIPE,
     cwd: packagePath)
-  let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
-  sendStdout(String(dependenciesJSON)!)
+  sendStdout(String(describing: dependenciesResult))
+//   let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
+//   sendStdout(String(dependenciesJSON)!)
 }
