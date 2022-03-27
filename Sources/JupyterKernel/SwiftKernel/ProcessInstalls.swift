@@ -165,7 +165,7 @@ fileprivate func readInstalledPackages() throws {
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
-      installedPackasgesMap[spec] = i
+      installedPackagesMap[spec] = i
       
       for product in products {
         if let index = installedProductsDictionary[product] {
