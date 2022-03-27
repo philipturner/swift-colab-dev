@@ -336,7 +336,7 @@ fileprivate func processInstall(
     let str = String(buildOutputLine.decode("utf8"))!
     guard str.hasSuffix("\n") else {
       throw Exception("""
-        A build output line from SwiftPM did not end with "\n":
+        A build output line from SwiftPM did not end with "\\n":
         \(str)
         """)
     }
