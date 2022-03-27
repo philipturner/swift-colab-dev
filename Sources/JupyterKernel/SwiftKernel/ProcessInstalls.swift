@@ -345,7 +345,7 @@ fileprivate func processInstall(
     stderr: subprocess.PIPE,
     cwd: packagePath)
   let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
-  sendStdout(String(dependenciesJSON))!
+  sendStdout(String(dependenciesJSON)!)
   let dependenciesObj = json.loads(dependenciesJSON)
   
   func flattenDepsPaths(_ dep: PythonObject) -> [PythonObject] {
