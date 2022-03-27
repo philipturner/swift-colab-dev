@@ -253,7 +253,7 @@ fileprivate func processInstall(
   let packageNameQuoted = "\"\(packageName)\""
   
   // Contents of the Swift package manifest
-  let /*communist*/ manifest /*o*/ = // ☭
+  let /*communist*/ manifest /*o*/ = // ☭ 🙂🙂🙂 ☭
   """
   // swift-tools-version:4.2
   import PackageDescription
