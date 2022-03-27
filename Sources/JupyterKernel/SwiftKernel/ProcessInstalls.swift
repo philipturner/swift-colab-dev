@@ -131,10 +131,14 @@ fileprivate var installedPackages: InstalledPackages! = nil
 fileprivate var installedPackagesLocation: String! = nil
 fileprivate var installedProductsDictionary: [String: Int]! = nil
 
+// To prevent to search for matching specs from becoming O(n^2)
+fileprivate var installedPackagesMap: [String: Int]! = nil
+
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
   installedPackagesLocation = "\(installLocation)/index"
   installedProductsDictionary = [:]
+  installedPackagesMap = [:]
   
   if let packagesData = FileManager.default.contents(
      atPath: installedPackagesLocation) {
@@ -161,6 +165,7 @@ fileprivate func readInstalledPackages() throws {
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
       installedPackages.append((spec, products))
+      installedPackasgesMap[spec] = i
       
       for product in products {
         if let index = installedProductsDictionary[product] {
@@ -221,11 +226,12 @@ fileprivate func processInstall(
   }
   
   var packageID: Int
-  if let index = installedPackages.firstIndex(where: { $0.spec == spec }) {
+  if let index = installedPackagesMap[spec] {
     packageID = index
   } else {
     packageID = installedPackages.count
     installedPackages.append((spec, products))
+    installedPackagesMap[spec] = packageID
   }
   
   // Just throw a soft warning if there's a duplicate product. SwiftPM will make
