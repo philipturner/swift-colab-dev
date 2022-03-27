@@ -205,7 +205,7 @@ fileprivate func processInstall(
   
   // == Create the Swift package ==
   
-  let packageName = "jupyterInstalledPackages\(packageID)"
+  let packageName = "jupyterInstalledPackages\(packageID + 1)"
   let packageNameQuoted = "\"\(packageName)\""
   
   let /*communist*/ manifest/*o*/ =
