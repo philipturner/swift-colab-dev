@@ -364,7 +364,8 @@ fileprivate func processInstall(
   let dependenciesSet = Python.set(flattenDepsPaths(dependenciesObj))
   let dependenciesPaths = [String](Python.list(dependenciesSet))!
   
-  func isValidDependency(_ path: PythonObject) -> Bool {
+  func isValidDependency(_ pathPythonObject: PythonObject) -> Bool {
+    let path = String(pathPythonObject)!
     for p in dependenciesPaths {
       if path.hasPrefix(p) {
         return true
