@@ -351,7 +351,6 @@ fileprivate func processInstall(
   func flattenDepsPaths(_ dep: PythonObject) -> [PythonObject] {
     var paths = [dep["path"]]
     if let dependencies = dep.checking["dependencies"] {
-      precondition(dependencies != Python.None, "This should never happen")
       for d in dependencies {
         paths += flattenDepsPaths(d)
       }
@@ -382,5 +381,4 @@ fileprivate func processInstall(
   // Connect to build.db
   let dbConnection = sqlite3.connect(buildDBPath)
   let cursor = dbConnection.cursor()
-  precondition(cursor != Python.None)
 }
