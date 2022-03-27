@@ -127,7 +127,7 @@ fileprivate func sendStdout(_ message: String, insertNewLine: Bool = true) {
 }
 
 typealias InstalledPackages = [(spec: String, products: [String])]
-fileprivate var installedPackages: InstalledPackages! = nil
+fileprivate var installedPackages: InstalledP! = nil
 fileprivate var installedPackagesLocation: String! = nil
 
 // To prevent to search for matching package specs from becoming O(n^2)
@@ -141,24 +141,9 @@ fileprivate func readInstalledPackages() throws {
   if let packagesData = FileManager.default.contents(
      atPath: installedPackagesLocation) {
     let packagesString = String(data: packagesData, encoding: .utf8)!
-    var lines: [String]
-    if packagesString == "" {
-      lines = []
-    } else {
-      lines = packagesString.split(
-        separator: "\n", omittingEmptySubsequences: false).map(String.init)
-    }
-    guard lines.count % 2 == 0 else {
-      throw Exception("""
-        The contents of "\(installLocation)/index" were malformatted. \
-        There should be no unnecessary whitespace.
-        Begin file:
-        \(packagesString)
-        End file:
-        """)
-    }
+    let lines = packagesString.split(separator: "\n").map(String.init)
     
-    for i in 0..<lines.count / 2 {
+    for i in 0..<lines.count {
       let spec = lines[i * 2]
       let productsString = lines[i * 2 + 1]
       let products = productsString.split(separator: " ").map(String.init)
