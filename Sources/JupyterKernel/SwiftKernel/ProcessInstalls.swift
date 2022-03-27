@@ -329,8 +329,15 @@ fileprivate func processInstall(
                                       stdout: subprocess.PIPE,
                                       stderr: subprocess.STDOUT,
                                       cwd: packagePath)
-  for buildOutputLine in Python.iter(buildProcess.stdout.readline, PythonBytes(Data())) {
+  for buildOutputLine in Python.iter(
+      buildProcess.stdout.readline, PythonBytes(Data())) {
     sendStdout(String(buildOutputLine.decode("utf8"))!)
   }
   let buildReturnCode = buildProcess.wait()
+  if buildReturnCode != 0 {
+    throw PackageInstallException("""
+      Install Error: swift-build returned nonzero exit code \
+      \(buildReturnCode).
+      """)
+  }
 }
