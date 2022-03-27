@@ -335,4 +335,14 @@ fileprivate func processInstall(
   guard fm.fileExists(atPath: buildDBPath) else {
     throw PackageInstallException("build.db is missing")
   }
+  
+  // Execute swift-package show-dependencies to get all dependencies' paths
+  let swiftPackagePath = "/opt/swift/toolchain/usr/bin/swift-package"
+  let dependenciesResult = subprocess.run(
+    [swiftPackagePath, "show-dependencies", "--format", "json"],
+    stdout: subprocess.PIPE,
+    stderr: subprocess.PIPE,
+    cwd: packagePath)
+  let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
+  sendStdout(String(dependenciesJSON)!)
 }
