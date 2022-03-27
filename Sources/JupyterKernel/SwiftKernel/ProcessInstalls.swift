@@ -221,11 +221,6 @@ fileprivate func processInstall(
     try readInstalledPackages()
   }
   
-//   sendStdout(installedPackages.reduce("Previously installed packages:", {
-//     $0 + "\n" + String(describing: $1)
-//   }))
-//   sendStdout("Previously installed dictionary:\n\(installedProductsDictionary!)")
-  
   var packageID: Int
   if let index = installedPackages.firstIndex(where: { $0.spec == spec }) {
     packageID = index
@@ -248,6 +243,18 @@ fileprivate func processInstall(
     }
     installedProductsDictionary[product] = packageID
   }
+  
+  try writeInstalledPackages()
+  
+  // Summary of how this works:
+  // - create a SwiftPM package that depends all the modules that
+  //   the user requested
+  // - ask SwiftPM to build that package
+  // - copy all the .swiftmodule and module.modulemap files that SwiftPM
+  //   created to the Swift module search path
+  // - dlopen the .so file that SwiftPM created
+  
+  // == Create the SwiftPM package ==
   
   let packageName = "jupyterInstalledPackages\(packageID)"
   let packageNameQuoted = "\"\(packageName)\""
@@ -279,12 +286,6 @@ fileprivate func processInstall(
     ]
   )
   """
-//   sendStdout("Manifest:\n\(manifest)")
-  
-//   sendStdout(installedPackages.reduce("Currently installed packages:", {
-//     $0 + "\n" + String(describing: $1)
-//   }))
-//   sendStdout("Currently installed dictionary:\n\(installedProductsDictionary!)")
   
   var packageHumanDescription = 
     String(repeating: Character(" "), count: 4) + "\(spec)"
@@ -324,5 +325,7 @@ fileprivate func processInstall(
     
     """)
   
-  try writeInstalledPackages()
+  // == Ask SwiftPM to build the package ==
+  
+  
 }
