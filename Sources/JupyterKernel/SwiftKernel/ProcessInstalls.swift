@@ -194,7 +194,7 @@ fileprivate func processInstall(
     packageID = index
   } else {
     packageID = installedPackages.count
-    installedPackages.append((spec, products))
+    installedPackages.append(spec)
     installedPackagesMap[spec] = packageID
   }
   
