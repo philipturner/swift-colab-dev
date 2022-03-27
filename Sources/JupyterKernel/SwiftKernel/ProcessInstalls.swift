@@ -118,11 +118,11 @@ fileprivate func substituteCwd(
 
 // %install
 
-fileprivate func sendStdout(_ message: String) {
+fileprivate func sendStdout(_ message: String, insertNewLine: Bool = true) {
   let kernel = KernelContext.kernel
   kernel.send_response(kernel.iopub_socket, "stream", [
     "name": "stdout",
-    "text": "\(message)\n"
+    "text": "\(message)\(insertNewLine ? "\n" : "")"
   ])
 }
 
@@ -286,15 +286,14 @@ fileprivate func processInstall(
   )
   """
   
-  var modulesHumanDescription = products.reduce("") {
+  let modulesHumanDescription = products.reduce("") {
     $0 + "    " + $1 + "\n"
   }
-  modulesHumanDescription.removeLast()
   sendStdout("""
     Installing package:
     \(spec)
     \(modulesHumanDescription)
-    """)
+    """, insertNewLine: false)
   sendStdout("""
     With SwiftPM flags:
     \(swiftPMFlags)
@@ -331,7 +330,7 @@ fileprivate func processInstall(
                                       cwd: packagePath)
   for buildOutputLine in Python.iter(
       buildProcess.stdout.readline, PythonBytes(Data())) {
-    sendStdout(String(buildOutputLine.decode("utf8"))!)
+    sendStdout(String(buildOutputLine.decode("utf8"))!, insertNewLine: false)
   }
   let buildReturnCode = buildProcess.wait()
   if buildReturnCode != 0 {
