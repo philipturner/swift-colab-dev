@@ -2,6 +2,7 @@ import Foundation
 fileprivate let json = Python.import("json")
 fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
+fileprivate let sqlite3 = Python.import("sqlite3")
 fileprivate let string = Python.import("string")
 fileprivate let subprocess = Python.import("subprocess")
 
@@ -345,7 +346,6 @@ fileprivate func processInstall(
     stderr: subprocess.PIPE,
     cwd: packagePath)
   let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
-  sendStdout(String(dependenciesJSON)!)
   let dependenciesObj = json.loads(dependenciesJSON)
   
   func flattenDepsPaths(_ dep: PythonObject) -> [PythonObject] {
@@ -359,8 +359,27 @@ fileprivate func processInstall(
     return paths
   }
   
-  // Make list of paths where we expect .swiftmodule and .modulemap files of dependencies
+  // Make list of paths where we expect .swiftmodule and .modulemap files of 
+  // dependencies
   let dependenciesSet = Python.set(flattenDepsPaths(dependenciesObj))
   let dependenciesPaths = [String](Python.list(dependenciesSet))!
-  sendStdout(dependenciesPaths.reduce("") { $0 + $1 + "\n" })
+  
+  func isValidDependency(_ path: PythonObject) -> Bool {
+    for p in dependenciesPaths {
+      if path.hasPrefix(p) {
+        return true
+      }
+    }
+    return false
+  }
+  
+  // Query to get build files list from build.db
+  // SUBSTR because string starts with "N" (why?)
+  let SQL_FILES_SELECT = 
+    "SELECT SUBSTR(key, 2) FROM 'key_names' WHERE key LIKE ?"
+  
+  // Connect to build.db
+  let dbConnection = sqlite3.connect(buildDBFile)
+  let cursor = dbConnection.cursor()
+  precondition(cursor != Python.None)
 }
