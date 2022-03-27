@@ -389,6 +389,9 @@ fileprivate func processInstall(
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(installLocation)/modules/\(fileName)"
+    sendStdout("Iteration")
+    sendStdout(path)
+    sendStdout(target)
     try? fm.removeItem(atPath: target)
     try! fm.copyItem(atPath: path, toPath: target)
   }
