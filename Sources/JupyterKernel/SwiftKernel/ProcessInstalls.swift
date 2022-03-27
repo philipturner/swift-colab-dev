@@ -327,7 +327,9 @@ fileprivate func processInstall(
                                       cwd: packagePath)
   for buildOutputLine in Python.iter(
       buildProcess.stdout.readline, PythonBytes(Data())) {
-    sendStdout(String(buildOutputLine.decode("utf8"))!, insertNewLine: false)
+    if Python.isinstance(buildOutput, Python.string) {
+      sendStdout(String(buildOutputLine.decode("utf8"))!, insertNewLine: false) // try "true"
+    }
   }
   let buildReturnCode = buildProcess.wait()
   if buildReturnCode != 0 {
