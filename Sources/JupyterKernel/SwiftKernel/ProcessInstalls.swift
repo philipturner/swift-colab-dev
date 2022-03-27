@@ -329,7 +329,7 @@ fileprivate func processInstall(
     stderr: subprocess.PIPE,
     cwd: packagePath)
   let binDir = String(showBinPathResult.stdout.decode("utf8").strip())!
-  let libFileName = "\(binDir)/lib\(packageName).so"
+  let libPath = "\(binDir)/lib\(packageName).so"
   
   // == Copy .swiftmodule and modulemap files to Swift module search path ==
   
@@ -380,7 +380,7 @@ fileprivate func processInstall(
     "SELECT SUBSTR(key, 2) FROM 'key_names' WHERE key LIKE ?"
   
   // Connect to build.db
-  let dbConnection = sqlite3.connect(buildDBFile)
+  let dbConnection = sqlite3.connect(buildDBPath)
   let cursor = dbConnection.cursor()
   precondition(cursor != Python.None)
 }
