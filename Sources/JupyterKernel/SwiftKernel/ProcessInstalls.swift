@@ -225,7 +225,8 @@ fileprivate func processInstall(
   // an error if there needs to be one. Also, this warning could help the user 
   // debug any error caused by duplicated products.
   for product in products {
-    if let conflictingSpec = loadedProductsMap[product] {
+    if let conflictingSpec = loadedProductsMap[product],
+       conflictingSpec != spec {
       sendStdout("""
         Warning: Both of these packages produce "\(product)":
         \(conflictingSpec)
