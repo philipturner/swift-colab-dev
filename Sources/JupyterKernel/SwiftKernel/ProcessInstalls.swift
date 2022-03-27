@@ -275,10 +275,12 @@ fileprivate func processInstall(
   // == Ask SwiftPM to build the package ==
   
   let swiftBuildPath = "/opt/swift/toolchain/usr/bin/swift-build"
-  let buildProcess = subprocess.Popen([swiftBuildPath] + swiftPMFlags,
-                                      stdout: subprocess.PIPE,
-                                      stderr: subprocess.STDOUT,
-                                      cwd: packagePath)
+  let buildProcess = subprocess.Popen(
+    [swiftBuildPath] + swiftPMFlags,
+    stdout: subprocess.PIPE,
+    stderr: subprocess.STDOUT,
+    cwd: packagePath
+  )
   var currentlyInsideBrackets = false
   
   for buildOutputLine in Python.iter(
@@ -319,5 +321,8 @@ fileprivate func processInstall(
       """)
   }
   
-  
+================================================================================
+  let showBinPathResult = subprocess.run(
+    [swiftBuildPath, "--show-bin-path"] + swiftPMFlags,
+    
 }
