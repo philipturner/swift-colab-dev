@@ -105,10 +105,11 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
 }
 
 fileprivate func executeSystemCommand(restOfLine: String) {
-  let process = subprocess.Popen(restOfLine,
-                                 stdout: subprocess.PIPE,
-                                 stderr: subprocess.STDOUT,
-                                 shell: true)
+  let process = subprocess.Popen(
+    restOfLine,
+    stdout: subprocess.PIPE,
+    stderr: subprocess.STDOUT,
+    shell: true)
   process.wait()
     
   let commandResult = process.stdout.read().decode("utf-8")
