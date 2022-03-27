@@ -287,16 +287,14 @@ fileprivate func processInstall(
   )
   """
   
-  var packageHumanDescription = 
-    String(repeating: Character(" "), count: 4) + "\(spec)"
-  for product in products {
-    packageHumanDescription += "\n" +
-      String(repeating: Character(" "), count: 8) + "\(product)"
+  var modulesHumanDescription = products.reduce("") {
+    $0 + "    " + $1 + "\n"
   }
-  
+  modulesHumanDescription.removeLast()
   sendStdout("""
     Installing package:
-    \(packageHumanDescription)
+    \(spec)
+    \(modulesHumanDescription)
     """)
   sendStdout("""
     With SwiftPM flags:
