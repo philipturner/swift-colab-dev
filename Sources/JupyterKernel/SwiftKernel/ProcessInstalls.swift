@@ -165,9 +165,8 @@ fileprivate func readInstalledPackages() throws {
       for product in products {
         if let index = installedProductsDictionary[product] {
           let conflictingSpec = installedPackages[index].spec
-          throw Exception("""
-            Could not decode "\(installedPackagesLocation!)". Both of these \
-            packages produced "\(product)":
+          sendStdout("""
+            Warning: Both of these packages produce "\(product)":
             \(conflictingSpec)
             \(spec)
             """)
@@ -236,7 +235,7 @@ fileprivate func processInstall(
     if let index = installedProductsDictionary[product], index != packageID {
       let conflictingSpec = installedPackages[index].spec
       sendStdout("""
-        Warning: Both of these packages produced "\(product)":
+        Warning: Both of these packages produce "\(product)":
         \(conflictingSpec)
         \(spec)
         """)
