@@ -1,4 +1,5 @@
 import Foundation
+fileprivate let json = Python.import("json")
 fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
 fileprivate let string = Python.import("string")
@@ -344,5 +345,22 @@ fileprivate func processInstall(
     stderr: subprocess.PIPE,
     cwd: packagePath)
   let dependenciesJSON = dependenciesResult.stdout.decode("utf8")
-  sendStdout(String(dependenciesJSON)!)
+  sendStdout(String(dependenciesJSON))!
+  let dependenciesObj = json.loads(dependenciesJSON)
+  
+  func flattenDepsPaths(_ dep: PythonObject) -> [PythonObject] {
+    var paths = [dep["path"]]
+    if let dependencies = dep.checking["dependencies"] {
+      precondition(dependencies != Python.None, "This should never happen")
+      for d in dependencies {
+        paths += flattenDepsPaths(d)
+      }
+    }
+    return paths
+  }
+  
+  // Make list of paths where we expect .swiftmodule and .modulemap files of dependencies
+  let dependenciesSet = Python.set(flattenDepsPaths(dependenciesObj))
+  let dependenciesPaths = [String](Python.list(dependenciesSet))!
+  sendStdout(dependenciesPaths.reduce("") { $0 + $1 + "\n" })
 }
