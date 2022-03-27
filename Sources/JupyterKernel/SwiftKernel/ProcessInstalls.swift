@@ -329,7 +329,7 @@ fileprivate func processInstall(
       buildProcess.stdout.readline, PythonBytes(Data())) {
 //     if Bool(Python.isinstance(buildOutputLine, Python.string))! {
 //       sendStdout(String(buildOutputLine.decode("utf8"))!, insertNewLine: false) // try "true"
-      sendStdout(String(describing: buildOutputLine), insertNewLine: true)
+      sendStdout(String(describing: buildOutputLine.__class__), insertNewLine: true)
 //     }
   }
   let buildReturnCode = buildProcess.wait()
