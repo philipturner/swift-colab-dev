@@ -333,20 +333,31 @@ fileprivate func processInstall(
   
   for buildOutputLine in Python.iter(
       buildProcess.stdout.readline, PythonBytes(Data())) {
-    let str = String(buildOutputLine.decode("utf8"))!
+    var str = String(buildOutputLine.decode("utf8"))!
     guard str.hasSuffix("\n") else {
       throw Exception("""
         A build output line from SwiftPM did not end with "\\n":
         \(str)
         """)
     }
-// =============================================================================
-// TODO: implement the mechanism
-//     if Bool(Python.isinstance(buildOutputLine, Python.string))! {
-//       sendStdout(, insertNewLine: false) // try "true"
-      sendStdout(String(describing: buildOutputLine), insertNewLine: false)
-//     }
+    str.removeLast(1)
+    
+    if Int(str) != nil {
+      continue 
+    }
+    if str.hasPrefix("{") {
+      currentlyInsideBrackets = true
+      continue
+    }
+    if str.hasPrefix("}") {
+      currentlyInsideBrackets = false
+      continue
+    }
+    if !currentlyInsideBrackets {
+      sendStdout(str)
+    }
   }
+  
   let buildReturnCode = buildProcess.wait()
   if buildReturnCode != 0 {
     throw PackageInstallException("""
