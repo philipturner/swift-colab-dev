@@ -195,6 +195,8 @@ fileprivate func processInstall(
     installedPackagesMap[spec] = packageID
   }
   
+  try writeInstalledPackages()
+  
   // Summary of how this works:
   // - create a Swift package that depends all the modules that
   //   the user requested
@@ -277,10 +279,6 @@ fileprivate func processInstall(
                                       stdout: subprocess.PIPE,
                                       stderr: subprocess.STDOUT,
                                       cwd: packagePath)
-  
-  // Whenever the Swift package has been built at least one time before, it
-  // outputs a massive, ugly JSON blob that cannot be suppressed. This
-  // workaround filters that out.
   var currentlyInsideBrackets = false
   
   for buildOutputLine in Python.iter(
@@ -294,6 +292,9 @@ fileprivate func processInstall(
     }
     str.removeLast(1)
     
+    // Whenever the Swift package has been built at least one time before, it
+    // outputs a massive, ugly JSON blob that cannot be suppressed. This
+    // workaround filters that out.
     if Int(str) != nil {
       continue 
     }
@@ -317,6 +318,4 @@ fileprivate func processInstall(
       \(buildReturnCode).
       """)
   }
-  
-  try writeInstalledPackages()
 }
