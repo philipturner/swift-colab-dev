@@ -150,8 +150,8 @@ fileprivate func readInstalledPackages() throws {
 }
 
 fileprivate func writeInstalledPackages() throws {
-  var packagesString = installedPackages.reduce("") {
-    $0 + $1.spec + "\n"
+  let packagesString = installedPackages.reduce("") {
+    $0 + $1 + "\n"
   }
   let packagesData = packagesString.data(using: .utf8)!
   
