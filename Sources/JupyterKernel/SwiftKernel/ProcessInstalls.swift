@@ -132,7 +132,6 @@ fileprivate var installedPackagesLocation: String! = nil
 
 // To prevent to search for matching package specs from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
-fileprivate var loadedProductsMap: [String: String] = [:]
 
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
@@ -219,21 +218,6 @@ fileprivate func processInstall(
     packageID = installedPackages.count
     installedPackages.append((spec, products))
     installedPackagesMap[spec] = packageID
-  }
-  
-  // Just throw a soft warning if there's a duplicate product. SwiftPM will make
-  // an error if there needs to be one. Also, this warning could help the user 
-  // debug any error caused by duplicated products.
-  for product in products {
-    if let conflictingSpec = loadedProductsMap[product],
-       conflictingSpec != spec {
-      sendStdout("""
-        Warning: Both of these packages produce "\(product)":
-        \(conflictingSpec)
-        \(spec)
-        """)
-    }
-    loadedProductsMap[product] = spec
   }
   
   // Summary of how this works:
