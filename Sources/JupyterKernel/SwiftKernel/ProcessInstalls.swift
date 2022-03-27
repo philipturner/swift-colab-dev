@@ -387,6 +387,9 @@ fileprivate func processInstall(
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
   for path in swiftModules {
+    guard fm.fileExists(atPath: path) else {
+      continue
+    }
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(installLocation)/modules/\(fileName)"
     sendStdout("Iteration")
