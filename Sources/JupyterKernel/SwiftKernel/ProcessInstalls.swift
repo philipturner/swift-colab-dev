@@ -385,5 +385,11 @@ fileprivate func processInstall(
   cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
-  sendStdout("\(swiftModules)")
+  // Can't I just make a symbolic link instead?
+  for path in swiftModules {
+    let fileName = URL(fileURLWithPath: path).lastPathComponent
+    let target = "\(installLocation)/modules/\(fileName)"
+    try? fm.removeItem(atPath: target)
+    try! fm.copyItem(atPath: path, toPath: target)
+  }
 }
