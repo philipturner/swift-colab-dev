@@ -158,7 +158,7 @@ fileprivate func writeInstalledPackages() throws {
   
   guard FileManager.default.createFile(
         atPath: installedPackagesLocation, contents: packagesData) else {
-    throw Exception("""
+    throw PackageInstallException("""
       Could not write to file "\(installedPackagesLocation!)"
       """)
   }
@@ -263,7 +263,7 @@ fileprivate func processInstall(
     let filePath = "\(packagePath)/\(name)"
     let data = contents.data(using: .utf8)!
     guard fm.createFile(atPath: filePath, contents: data) else {
-      throw Exception("Could not write to file \"\(filePath)\".")
+      throw PackageInstallException("Could not write to file \"\(filePath)\".")
     }
   }
   
@@ -287,7 +287,7 @@ fileprivate func processInstall(
       buildProcess.stdout.readline, PythonBytes(Data())) {
     var str = String(buildOutputLine.decode("utf8"))!
     guard str.hasSuffix("\n") else {
-      throw Exception("""
+      throw PackageInstallException("""
         A build output line from SwiftPM did not end with "\\n":
         \(str)
         """)
@@ -328,5 +328,8 @@ fileprivate func processInstall(
     cwd: packagePath)
   let binDir = String(showBinPathResult.decode("utf8").strip())!
   let libFileName = "\(binDir)/lib\(packageName).so"
-    
+  
+  // == Copy .swiftmodule and modulemap files to Swift module search path ==
+  
+  
 }
