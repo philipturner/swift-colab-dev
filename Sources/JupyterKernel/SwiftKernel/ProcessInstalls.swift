@@ -324,5 +324,13 @@ fileprivate func processInstall(
   
   // == Ask SwiftPM to build the package ==
   
-  
+  let swiftBuildPath = "/opt/swift/toolchain/usr/bin/swift-build"
+  let buildProcess = subprocess.Popen([swiftBuildPath] + swiftPMFlags,
+                                      stdout: subprocess.PIPE,
+                                      stderr: subprocess.STDOUT,
+                                      cwd: packagePath)
+  for buildOutputLine in Python.iter(buildProcess.stdout.readline, PythonBytes(Data())) {
+    sendStdout(String(buildOutputLine.decode("utf8"))!)
+  }
+  let buildReturnCode = buildProcess.wait()
 }
