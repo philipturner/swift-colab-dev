@@ -259,7 +259,7 @@ fileprivate func processInstall(
   let packageName = "jupyterInstalledPackages\(packageID)"
   let packageNameQuoted = "\"\(packageName)\""
   
-  let /*communist*/ manifest/*o*/ = ;)
+  let /*communist*/ manifest/*o*/ =
   """
   // swift-tools-version:4.2
   import PackageDescription
