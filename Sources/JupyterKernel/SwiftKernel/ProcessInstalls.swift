@@ -325,10 +325,19 @@ fileprivate func processInstall(
                                       stdout: subprocess.PIPE,
                                       stderr: subprocess.STDOUT,
                                       cwd: packagePath)
+  // Whenever the Swift package has been built at least one time before, it
+  // outputs a massive, ugly JSON blob that cannot be suppressed. This workaround
+  // filters it out. There is little chance SwiftPM will respond with arbitrary
+  // strings that accidentally trigger this erasure.
+  var currentlyInsideBrackets = false
   for buildOutputLine in Python.iter(
       buildProcess.stdout.readline, PythonBytes(Data())) {
+    let str = String(buildOutputLine.decode("utf8"))!
+    guard str.hasSuffix("\n") else {
+      throw Exception("A build output line from SwiftPM did not end with \"\n\".")
+================================================================================
 //     if Bool(Python.isinstance(buildOutputLine, Python.string))! {
-//       sendStdout(String(buildOutputLine.decode("utf8"))!, insertNewLine: false) // try "true"
+//       sendStdout(, insertNewLine: false) // try "true"
       sendStdout(String(describing: buildOutputLine), insertNewLine: true)
 //     }
   }
