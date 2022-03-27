@@ -260,6 +260,8 @@ fileprivate func processInstall(
   let packagePath = "\(installLocation)/\(packageName)"
   try? fm.createDirectory(
     atPath: packagePath, withIntermediateDirectories: false)
+  try? fm.createDirectory(
+    atPath: "\(installLocation)/modules", withIntermediateDirectories: false)
   
   func createFile(name: String, contents: String) throws {
     let filePath = "\(packagePath)/\(name)"
