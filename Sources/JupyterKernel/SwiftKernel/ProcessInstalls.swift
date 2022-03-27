@@ -331,5 +331,8 @@ fileprivate func processInstall(
   
   // == Copy .swiftmodule and modulemap files to Swift module search path ==
   
-  
+  let buildDBPath = "\(binDir)/../build.db"
+  guard fm.fileExists(atPath: buildDBPath) else {
+    throw PackageInstallException("build.db is missing")
+  }
 }
