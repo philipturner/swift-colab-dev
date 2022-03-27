@@ -244,10 +244,6 @@ fileprivate func processInstall(
     installedProductsDictionary[product] = packageID
   }
   
-  defer { 
-    try writeInstalledPackages() 
-  }
-  
   // Summary of how this works:
   // - create a Swift package that depends all the modules that
   //   the user requested
@@ -341,4 +337,6 @@ fileprivate func processInstall(
       \(buildReturnCode).
       """)
   }
+  
+  try writeInstalledPackages()
 }
