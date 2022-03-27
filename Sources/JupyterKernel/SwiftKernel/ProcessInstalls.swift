@@ -302,7 +302,7 @@ fileprivate func processInstall(
     """)
   sendStdout("""
     Working in:
-    \(installLocation)/modules
+    \(installLocation)
     """)
   
   let packagePath = "\(installLocation)/\(packageName)"
