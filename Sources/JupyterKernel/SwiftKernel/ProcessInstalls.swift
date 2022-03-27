@@ -306,5 +306,23 @@ fileprivate func processInstall(
     \(installLocation)/modules
     """)
   
+  let packagePath = "\(installLocation)/\(packageName)"
+  try? fm.createDirectory(
+    atPath: packagePath, withIntermediateDirectories: false)
+  
+  func createFile(name: String, contents: String) throws {
+    let filePath = "\(packagePath)/\(name)"
+    let data = contents.data(using: .utf8)!
+    guard fm.createFile(atPath: filePath, contents: data) else {
+      throw Exception("Could not write to file \"\(filePath)\".")
+    }
+  }
+  
+  try createFile(name: "Package.swift", contents: manifest)
+  try createFile(name: "\(packageName).swift", contents: """
+    // intentionally blank
+    
+    """)
+  
   try writeInstalledPackages()
 }
