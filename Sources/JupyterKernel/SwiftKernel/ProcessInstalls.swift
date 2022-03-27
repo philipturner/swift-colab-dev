@@ -383,7 +383,7 @@ fileprivate func processInstall(
   
   // Process *.swiftmodule files
   cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
-  let swiftModules = cursor.fetchall()
-    .map { String(path[0])! }.filter(isValidDependency)
+  let swiftModules = cursor.fetchall().map { row in String(row[0])! }
+    .filter(isValidDependency)
   sendStdout("\(swiftModules)")
 }
