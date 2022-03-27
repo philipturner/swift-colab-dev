@@ -126,11 +126,9 @@ fileprivate func sendStdout(_ message: String, insertNewLine: Bool = true) {
   ])
 }
 
-typealias InstalledPackages = [(spec: String, products: [String])]
-fileprivate var installedPackages: InstalledP! = nil
+fileprivate var installedPackages: [String]! = nil
 fileprivate var installedPackagesLocation: String! = nil
-
-// To prevent to search for matching package specs from becoming O(n^2)
+// To prevent to search for matching packages from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
 
 fileprivate func readInstalledPackages() throws {
@@ -144,22 +142,17 @@ fileprivate func readInstalledPackages() throws {
     let lines = packagesString.split(separator: "\n").map(String.init)
     
     for i in 0..<lines.count {
-      let spec = lines[i * 2]
-      let productsString = lines[i * 2 + 1]
-      let products = productsString.split(separator: " ").map(String.init)
-      installedPackages.append((spec, products))
+      let spec = lines[i]
+      installedPackages.append(spec)
       installedPackagesMap[spec] = i
     }
   }
 }
 
 fileprivate func writeInstalledPackages() throws {
-  var packagesString = installedPackages.reduce("", {
-    let productString = $1.products.reduce("", {
-      $0 + " " + $1
-    })
-    return $0 + $1.spec + "\n" + productString + "\n"
-  })
+  var packagesString = installedPackages.reduce("") {
+    $0 + $1.spec + "\n"
+  }
   if packagesString.hasSuffix("\n") {
     packagesString.removeLast(1)
   }
