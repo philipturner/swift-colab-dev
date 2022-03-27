@@ -247,20 +247,19 @@ fileprivate func processInstall(
   try writeInstalledPackages()
   
   // Summary of how this works:
-  // - create a SwiftPM package that depends all the modules that
+  // - create a Swift package that depends all the modules that
   //   the user requested
   // - ask SwiftPM to build that package
   // - copy all the .swiftmodule and module.modulemap files that SwiftPM
   //   created to the Swift module search path
   // - dlopen the .so file that SwiftPM created
   
-  // == Create the SwiftPM package ==
+  // == Create the Swift package ==
   
   let packageName = "jupyterInstalledPackages\(packageID)"
   let packageNameQuoted = "\"\(packageName)\""
   
-  // Contents of the Swift package manifest
-  let /*communist*/ manifest/*o*/ = // ;)
+  let /*communist*/ manifest/*o*/ = ;)
   """
   // swift-tools-version:4.2
   import PackageDescription
