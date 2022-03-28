@@ -419,5 +419,8 @@ fileprivate func processInstall(
     var srcFolder = URL(fileURLWithPath: filePath)
     let srcFileName = fileURL.lastPathComponent
     srcFolder.deleteLastPathComponent()
+    
+    let modulemapContents = 
+      String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
   }
 }
