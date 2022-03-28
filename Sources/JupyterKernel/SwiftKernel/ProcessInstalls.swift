@@ -400,4 +400,24 @@ fileprivate func processInstall(
         """)
     }
   }
+  
+  // Process modulemap files
+  cursor.execute(SQL_FILES_SELECT, ["%/module.modulemap"])
+  let modulemapPaths = cursor.fetchall().map { row in String(row[0])! }
+    .filter(isValidDependency)
+  for index in 0..<modulemapPaths.count {
+    let filePath = modulemapPaths[index]
+    // Create a separate directory for each modulemap file because the
+    // ClangImporter requires that they are all named
+    // "module.modulemap".
+    // Use the module name to prevent two modulemaps for the same
+    // dependency ending up in multiple directories after several
+    // installations, causing the kernel to end up in a bad state.
+    // Make all relative header paths in module.modulemap absolute
+    // because we copy file to different location.
+    
+    var srcFolder = URL(fileURLWithPath: filePath)
+    let srcFileName = fileURL.lastPathComponent
+    srcFolder.deleteLastPathComponent()
+  }
 }
