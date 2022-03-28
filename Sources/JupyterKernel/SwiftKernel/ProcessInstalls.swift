@@ -421,8 +421,10 @@ fileprivate func processInstall(
     let srcFileName = fileURL.lastPathComponent
     srcFolder.deleteLastPathComponent()
     
-    let modulemapContents = 
+    var modulemapContents = 
       String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
+    sendStdout("modulemap \(index):")
+    sendStdout(modulemapContents)
     let lambda = PythonFunction 
      { (m: PythonObject) in
       // TODO: After debugging, refactor to remove dependency on
@@ -443,5 +445,12 @@ fileprivate func processInstall(
       header "\(absolutePath)"
       """
     }
+    let headerRegularExpression = ###"""
+    header\s+"(.*?)"
+    """###
+    modulemapContents = String(re.sub(
+      headerRegularExpression, lambda, modulemapContents))!
+    sendStdout("modified modulemap \(index):")
+    sendStdout(modulemapContents)
   }
 }
