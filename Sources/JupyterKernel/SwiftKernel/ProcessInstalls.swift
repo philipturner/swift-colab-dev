@@ -424,13 +424,7 @@ fileprivate func processInstall(
     
     var modulemapContents = 
       String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
-    sendStdout("modulemap \(index):")
-    sendStdout(modulemapContents)
-    let lambda = PythonFunction 
-     { (m: PythonObject) in
-      // TODO: After debugging, refactor to remove dependency on
-      // Python "os" module. Use URL, checking if `absolutePath`
-      // equals `path`.
+    let lambda = PythonFunction { (m: PythonObject) in
       let relativePath = m.group(1)
       var absolutePath: PythonObject
       if Bool(os.path.isabs(relativePath))! {
@@ -438,9 +432,6 @@ fileprivate func processInstall(
       } else {
         absolutePath = os.path.abspath(
           srcFolder + "/" + String(relativePath)!)
-        sendStdout("Regex modulemap replacement:")
-        sendStdout("\(relativePath)")
-        sendStdout("\(absolutePath)")
       }
       return """
       header "\(absolutePath)"
@@ -451,14 +442,16 @@ fileprivate func processInstall(
     """###
     modulemapContents = String(re.sub(
       headerRegularExpression, lambda, modulemapContents))!
-    sendStdout("modified modulemap \(index):")
+    sendStdout("modulemap \(index):")
     sendStdout(modulemapContents)
+    
+    // In the original implementation, it would first search for the module name.
+    // If available, it would name the folder "modulemap-\(moduleName)".
+    // If no module name is available, it would fall back to "modulemap-\(index)".
+    // Now, I would use "modulemap-\(packageID)-\(index)" instead because multiple
+    // packages exist and "\(index)" would be a name collision across multiple
+    // packages. But if that is going to work, why not skip searching for the 
+    // module name to and just use "modulemap-\(packageID)-\(index)"?
   }
-  // In the original implementation, it would first search for the module name.
-  // If available, it would name the folder "modulemap-\(moduleName)".
-  // If no module name is available, it would fall back to "modulemap-\(index)".
-  // Now, I would use "modulemap-\(packageID)-\(index)" instead because multiple
-  // packages exist and "\(index)" would be a name collision across multiple
-  // packages. But if that is going to work, why not skip searching for the 
-  // module name to and just use "modulemap-\(packageID)-\(index)"?
+  
 }
