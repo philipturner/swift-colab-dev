@@ -437,7 +437,7 @@ fileprivate func processInstall(
         absolutePath = relativePath
       } else {
         absolutePath = os.path.abspath(
-          srcFolder + "/" + relativePath)
+          srcFolder + "/" + String(relativePath)!)
       }
       sendStdout("Regex modulemap replacement:")
       sendStdout("\(relativePath)")
