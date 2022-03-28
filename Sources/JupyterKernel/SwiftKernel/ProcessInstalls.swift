@@ -456,9 +456,9 @@ fileprivate func processInstall(
   }
   // In the original implementation, it would first search for the module name.
   // If available, it would name the folder "modulemap-\(moduleName)".
-  // If no module name is available, it would fall back to "modulemap-\(index)"
+  // If no module name is available, it would fall back to "modulemap-\(index)".
   // Now, I would use "modulemap-\(packageID)-\(index)" instead because multiple
   // packages exist and "\(index)" would be a name collision across multiple
   // packages. But if that is going to work, why not skip searching for the 
-  // module name to and just use "modulemap-packageID-index"?
+  // module name to and just use "modulemap-\(packageID)-\(index)"?
 }
