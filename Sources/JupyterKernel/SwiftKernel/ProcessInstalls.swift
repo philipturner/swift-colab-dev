@@ -438,10 +438,10 @@ fileprivate func processInstall(
       } else {
         absolutePath = os.path.abspath(
           srcFolder + "/" + String(relativePath)!)
+        sendStdout("Regex modulemap replacement:")
+        sendStdout("\(relativePath)")
+        sendStdout("\(absolutePath)")
       }
-      sendStdout("Regex modulemap replacement:")
-      sendStdout("\(relativePath)")
-      sendStdout("\(absolutePath)")
       return """
       header "\(absolutePath)"
       """
