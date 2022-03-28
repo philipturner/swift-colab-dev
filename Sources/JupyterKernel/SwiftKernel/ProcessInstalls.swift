@@ -454,5 +454,8 @@ fileprivate func processInstall(
     sendStdout("modified modulemap \(index):")
     sendStdout(modulemapContents)
   }
+  // if no module name is available, it would fall back to "modulemap-\(index)"
+  // in the original implementation. Now, I would use "modulemap-\(packageID)-\(index)"
+  // instead. But if that is going to work, why not skip searching 
   // if no module name available, use "modulemap-packageID-index"
 }
