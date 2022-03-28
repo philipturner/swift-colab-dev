@@ -417,9 +417,10 @@ fileprivate func processInstall(
     // Make all relative header paths in module.modulemap absolute
     // because we copy file to different location.
     
-    var srcFolder = URL(fileURLWithPath: filePath)
-    let srcFileName = srcFolder.lastPathComponent
+    var fileURL = URL(fileURLWithPath: filePath)
+    let srcFileName = fileURL.lastPathComponent
     srcFolder.deleteLastPathComponent()
+    let srcFolder = fileURL.path
     
     var modulemapContents = 
       String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
