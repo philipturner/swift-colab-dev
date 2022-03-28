@@ -419,7 +419,7 @@ fileprivate func processInstall(
     
     var fileURL = URL(fileURLWithPath: filePath)
     let srcFileName = fileURL.lastPathComponent
-    srcFolder.deleteLastPathComponent()
+    fileURL.deleteLastPathComponent()
     let srcFolder = fileURL.path
     
     var modulemapContents = 
