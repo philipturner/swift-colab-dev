@@ -1,5 +1,6 @@
 import Foundation
 fileprivate let json = Python.import("json")
+fileprivate let os = Python.import("os")
 fileprivate let re = Python.import("re")
 fileprivate let shlex = Python.import("shlex")
 fileprivate let sqlite3 = Python.import("sqlite3")
@@ -422,5 +423,25 @@ fileprivate func processInstall(
     
     let modulemapContents = 
       String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
+    let lambda = PythonFunction 
+     { (m: PythonObject) in
+      // TODO: After debugging, refactor to remove dependency on
+      // Python "os" module. Use URL, checking if `absolutePath`
+      // equals `path`.
+      let relativePath = m.group(1)
+      var absolutePath: PythonObject
+      if Bool(os.path.isabs(relativePath))! {
+        absolutePath = relativePath
+      } else {
+        absolutePath = os.path.abspath(
+          srcFolder + "/" + relativePath)
+      }
+      sendStdout("Regex modulemap replacement:")
+      sendStdout("\(relativePath)")
+      sendStdout("\(absolutePath)")
+      return """
+      header "\(absolutePath)"
+      """
+    }
   }
 }
