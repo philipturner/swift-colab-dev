@@ -454,4 +454,5 @@ fileprivate func processInstall(
     sendStdout("modified modulemap \(index):")
     sendStdout(modulemapContents)
   }
+  // if no module name available, use "modulemap-packageID-index"
 }
