@@ -17,20 +17,17 @@ int read_byte_array(SBValue sbvalue,
 
 extern "C" {
 
-int init_repl_process(const char *swift_module_search_path_command, 
-                      const char **repl_env,
+int init_repl_process(const char **repl_env,
                       const char *cwd) {
   SBDebugger::Initialize();
   debugger = SBDebugger::Create();
   if (!debugger.IsValid())
     return 1;
-  debugger.SetAsync(false);
   
-//   if (swift_module_search_path_command) {
-    debugger.HandleCommand(
-      "settings append target.swift-module-search-paths "
-      "/opt/swift/install_location/modules");
-//   }
+  debugger.SetAsync(false);
+  debugger.HandleCommand(
+    "settings append target.swift-module-search-paths "
+    "/opt/swift/install_location/modules");
   
   // LLDB will not crash when scripting because this isn't macOS. However,
   // disabling scripting could decrease startup time if the debugger needs to
