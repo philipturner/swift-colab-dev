@@ -404,19 +404,18 @@ fileprivate func processInstall(
   cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
-  // Can't I just make a symbolic link instead?
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
-    let target = "\(moduleSearchPath)/\(fileName)"
-//     try? fm.removeItem(atPath: target)
-//     do {
-//       try fm.createSymbolicLink(
-//         atPath: target, withDestinationPath: path)
-//     } catch {
-//       throw PackageInstallException("""
-//         Could not copy "\(path)" to "\(target)".
-//         """)
-//     }
+    let linkPath = "\(moduleSearchPath)/\(fileName)"
+    try? fm.removeItem(atPath: linkPath)
+    do {
+      try fm.createSymbolicLink(
+        atPath: linkPath, withDestinationPath: path)
+    } catch {
+      throw PackageInstallException("""
+        Could not create link "\(linkPath)" with destination "\(path)".
+        """)
+    }
   }
   
   // Process modulemap files
