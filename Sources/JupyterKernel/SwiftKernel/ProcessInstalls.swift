@@ -434,7 +434,6 @@ fileprivate func processInstall(
     // because we copy file to different location.
     
     var fileURL = URL(fileURLWithPath: filePath)
-    let srcFileName = fileURL.lastPathComponent
     fileURL.deleteLastPathComponent()
     let srcFolder = fileURL.path
     
