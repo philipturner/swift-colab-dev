@@ -482,7 +482,6 @@ fileprivate func processInstall(
     if moduleMatch != Python.None {
       let moduleName = String(moduleMatch.group(1))!
       moduleFolderName = "module-\(moduleName)"
-      
       if !loadedClangModules.contains(moduleName) {
         warningClangModules.insert(moduleName)
       }
@@ -490,7 +489,7 @@ fileprivate func processInstall(
       moduleFolderName = "modulenoname-\(packageID + 1)-\(index + 1)"
     }
     
-    let newFolderPath = "\(moduleSearchPath)/\(moduleName)"
+    let newFolderPath = "\(moduleSearchPath)/\(moduleFolderName)"
     try? fm.createDirectory(
       atPath: newFolderPath, withIntermediateDirectories: false)
     
