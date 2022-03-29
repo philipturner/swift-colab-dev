@@ -1,1 +1,0 @@
-let meaningOfLife = 42
