@@ -189,7 +189,7 @@ fileprivate func readClangModules() throws {
     let files = try? fm.contentsOfDirectory(atPath: itemFolder)
     if let files = files, files.contains("module.modulemap") {
       var moduleName = item
-      moduleName.dropFirst("module-".count)
+      moduleName.removeFirst("module-".count)
       loadedClangModules.append(moduleName)
     }
   }
@@ -380,7 +380,7 @@ fileprivate func processInstall(
         """)
     }
     sendStdout("Loaded Clang modules:")
-    sendStdout("\(loadedClangModules)")
+    sendStdout("\(loadedClangModules!)")
   }
   
   let buildDBPath = "\(binDir)/../build.db"
