@@ -134,6 +134,10 @@ fileprivate var installedPackages: [String]! = nil
 fileprivate var installedPackagesLocation: String! = nil
 // To prevent to search for matching packages from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
+// To avoid any name conflicts with unused cached modules, the
+// "modules" directory resets before each Jupyter session. The
+// build products are cached elsewhere, and just copied here.
+fileprivate var modulesDirectoryInitialized = false
 
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
@@ -261,9 +265,6 @@ fileprivate func processInstall(
   let packagePath = "\(installLocation)/\(packageName)"
   try? fm.createDirectory(
     atPath: packagePath, withIntermediateDirectories: false)
-  // TODO: destroy and recreate this directory each time the Jupyter session starts
-  try? fm.createDirectory(
-    atPath: "\(installLocation)/modules", withIntermediateDirectories: false)
   
   func createFile(name: String, contents: String) throws {
     let filePath = "\(packagePath)/\(name)"
@@ -337,6 +338,23 @@ fileprivate func processInstall(
   
   // == Copy .swiftmodule and modulemap files to Swift module search path ==
   
+  let moduleSearchPath = "\(installLocation)/modules"
+  if !modulesDirectoryInitialized {
+    try? fm.removeItem(atPath: moduleSearchPath)
+    do {
+      try fm.createDirectory(
+        atPath: moduleSearchPath, withIntermediateDirectories: false)
+    } catch {
+      throw PackageInstallException("""
+        Could not create "\(moduleSearchPath)".
+        """)
+    }
+    modulesDirectoryInitialized = true
+  }
+    // TODO: destroy and recreate this directory each time the Jupyter session starts
+  try? fm.createDirectory(
+    atPath: , withIntermediateDirectories: false)
+  
   let buildDBPath = "\(binDir)/../build.db"
   guard fm.fileExists(atPath: buildDBPath) else {
     throw PackageInstallException("build.db is missing")
@@ -392,13 +410,13 @@ fileprivate func processInstall(
   // Can't I just make a symbolic link instead?
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
-    let target = "\(installLocation)/modules/\(fileName)"
+    let target = "\(moduleSearchPath)/\(fileName)"
     try? fm.removeItem(atPath: target)
     do {
       try fm.copyItem(atPath: path, toPath: target)
     } catch {
       throw PackageInstallException("""
-        Could not copy "\(path)" to "\(target)"
+        Could not copy "\(path)" to "\(target)".
         """)
     }
   }
@@ -455,7 +473,7 @@ fileprivate func processInstall(
     // packages. But if that is going to work, why not skip searching for the 
     // module name and just use "modulemap-\(packageID)-\(index)"?
     let newFolderName = "modulemap-\(packageID)-\(index)"
-    let newFolderPath = "\(installLocation)/\(newFolderName)"
+    let newFolderPath = "\(moduleSearchPath)/\(newFolderName)"
     try? fm.createDirectory(
       atPath: newFolderPath, withIntermediateDirectories: false)
     
