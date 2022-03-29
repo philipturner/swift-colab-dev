@@ -405,82 +405,87 @@ fileprivate func processInstall(
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   for path in swiftModules {
-    let fileName = URL(fileURLWithPath: path).lastPathComponent
+    var fileName = URL(fileURLWithPath: path).lastPathComponent
+    fileName.removeLast(".swiftmodule".count)
+    
     let linkPath = "\(moduleSearchPath)/\(fileName)"
+//     let linkPath = "\(moduleSearchPath)/\(fileName)"
+    
+    let parentFolderPath = URL(fileURLWithPath: path).deletingLastComponent()
     try? fm.removeItem(atPath: linkPath)
     do {
       try fm.createSymbolicLink(
-        atPath: linkPath, withDestinationPath: path)
+        atPath: linkPath, withDestinationPath: parentFolderPath)
     } catch {
       throw PackageInstallException("""
-        Could not create link "\(linkPath)" with destination "\(path)".
+        Could not create link "\(linkPath)" with destination "\(parentFolderPath)".
         """)
     }
   }
   
-  // Process modulemap files
-  cursor.execute(SQL_FILES_SELECT, ["%/module.modulemap"])
-  let modulemapPaths = cursor.fetchall().map { row in String(row[0])! }
-    .filter(isValidDependency)
-  for index in 0..<modulemapPaths.count {
-    let filePath = modulemapPaths[index]
-    // Create a separate directory for each modulemap file because the
-    // ClangImporter requires that they are all named
-    // "module.modulemap".
-    // Use the module name to prevent two modulemaps for the same
-    // dependency ending up in multiple directories after several
-    // installations, causing the kernel to end up in a bad state.
-    // Make all relative header paths in module.modulemap absolute
-    // because we copy file to different location.
+//   // Process modulemap files
+//   cursor.execute(SQL_FILES_SELECT, ["%/module.modulemap"])
+//   let modulemapPaths = cursor.fetchall().map { row in String(row[0])! }
+//     .filter(isValidDependency)
+//   for index in 0..<modulemapPaths.count {
+//     let filePath = modulemapPaths[index]
+//     // Create a separate directory for each modulemap file because the
+//     // ClangImporter requires that they are all named
+//     // "module.modulemap".
+//     // Use the module name to prevent two modulemaps for the same
+//     // dependency ending up in multiple directories after several
+//     // installations, causing the kernel to end up in a bad state.
+//     // Make all relative header paths in module.modulemap absolute
+//     // because we copy file to different location.
     
-    var fileURL = URL(fileURLWithPath: filePath)
-    fileURL.deleteLastPathComponent()
-    let srcFolder = fileURL.path
+//     var fileURL = URL(fileURLWithPath: filePath)
+//     fileURL.deleteLastPathComponent()
+//     let srcFolder = fileURL.path
     
-    var modulemapContents = 
-      String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
-    let lambda = PythonFunction { (m: PythonObject) in
-      let relativePath = m.group(1)
-      var absolutePath: PythonObject
-      if Bool(os.path.isabs(relativePath))! {
-        absolutePath = relativePath
-      } else {
-        absolutePath = os.path.abspath(
-          srcFolder + "/" + String(relativePath)!)
-      }
-      return """
-      header "\(absolutePath)"
-      """
-    }
-    let headerRegularExpression = ###"""
-    header\s+"(.*?)"
-    """###
-    modulemapContents = String(re.sub(
-      headerRegularExpression, lambda, modulemapContents))!
+//     var modulemapContents = 
+//       String(data: fm.contents(atPath: filePath)!, encoding: .utf8)!
+//     let lambda = PythonFunction { (m: PythonObject) in
+//       let relativePath = m.group(1)
+//       var absolutePath: PythonObject
+//       if Bool(os.path.isabs(relativePath))! {
+//         absolutePath = relativePath
+//       } else {
+//         absolutePath = os.path.abspath(
+//           srcFolder + "/" + String(relativePath)!)
+//       }
+//       return """
+//       header "\(absolutePath)"
+//       """
+//     }
+//     let headerRegularExpression = ###"""
+//     header\s+"(.*?)"
+//     """###
+//     modulemapContents = String(re.sub(
+//       headerRegularExpression, lambda, modulemapContents))!
     
-    let moduleRegularExpression = ###"""
-    module\s+([^\s]+)\s.*{
-    """###
-    let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
-    var moduleName: String
-    if moduleMatch != Python.None {
-      moduleName = String(moduleMatch.group(1))!
-    } else {
-      moduleName = "\(packageID + 1)-\(index + 1)"
-    }
+//     let moduleRegularExpression = ###"""
+//     module\s+([^\s]+)\s.*{
+//     """###
+//     let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
+//     var moduleName: String
+//     if moduleMatch != Python.None {
+//       moduleName = String(moduleMatch.group(1))!
+//     } else {
+//       moduleName = "\(packageID + 1)-\(index + 1)"
+//     }
     
-    let newFolderPath = "\(moduleSearchPath)/module-\(moduleName)"
-    try? fm.createDirectory(
-      atPath: newFolderPath, withIntermediateDirectories: false)
+//     let newFolderPath = "\(moduleSearchPath)/module-\(moduleName)"
+//     try? fm.createDirectory(
+//       atPath: newFolderPath, withIntermediateDirectories: false)
     
-    let newFilePath = "\(newFolderPath)/module.modulemap"
-    let modulemapData = modulemapContents.data(using: .utf8)!
-    guard fm.createFile(atPath: newFilePath, contents: modulemapData) else {
-      throw PackageInstallException("""
-        Could not write to "\(newFilePath)".
-        """)
-    }
-  }
+//     let newFilePath = "\(newFolderPath)/module.modulemap"
+//     let modulemapData = modulemapContents.data(using: .utf8)!
+//     guard fm.createFile(atPath: newFilePath, contents: modulemapData) else {
+//       throw PackageInstallException("""
+//         Could not write to "\(newFilePath)".
+//         """)
+//     }
+//   }
   
   // == dlopen the shared lib ==
     
