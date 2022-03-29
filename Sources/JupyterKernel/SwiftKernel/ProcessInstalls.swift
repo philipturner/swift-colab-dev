@@ -405,19 +405,19 @@ fileprivate func processInstall(
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
-  let shutil = Python.import("shutil")
   for path in swiftModules {
-    shutil.copy(path, moduleSearchPath)
-//     let fileName = URL(fileURLWithPath: path).lastPathComponent
-//     let target = "\(moduleSearchPath)/\(fileName)"
-//     try? fm.removeItem(atPath: target)
-//     do {
+    let fileName = URL(fileURLWithPath: path).lastPathComponent
+    let target = "\(moduleSearchPath)/\(fileName)"
+    try? fm.removeItem(atPath: target)
+    do {
+      try fm.createSymbolicLink(
+        atPath: target, withDestinationPath: path)
 //       try fm.copyItem(atPath: path, toPath: target)
-//     } catch {
-//       throw PackageInstallException("""
-//         Could not copy "\(path)" to "\(target)".
-//         """)
-//     }
+    } catch {
+      throw PackageInstallException("""
+        Could not copy "\(path)" to "\(target)".
+        """)
+    }
   }
   
   // Process modulemap files
