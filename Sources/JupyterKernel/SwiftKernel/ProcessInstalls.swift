@@ -134,8 +134,8 @@ fileprivate var installedPackages: [String]! = nil
 fileprivate var installedPackagesLocation: String! = nil
 // To prevent to search for matching packages from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
-// To avoid any name conflicts with unused cached modules, the
-// "modules" directory resets before each Jupyter session. The
+// To avoid any name conflicts with unused/corrupted cached modules,
+// the "modules" directory resets before each Jupyter session. The
 // build products are cached elsewhere, and just copied here.
 fileprivate var modulesDirectoryInitialized = false
 
@@ -458,20 +458,6 @@ fileprivate func processInstall(
     """###
     modulemapContents = String(re.sub(
       headerRegularExpression, lambda, modulemapContents))!
-    sendStdout("modulemap \(index):")
-    sendStdout(modulemapContents)
-    
-    // In the original implementation, it would first search for the module name.
-    // If available, it would name the folder "modulemap-\(moduleName)".
-    // Otherwise, it would fall back to "modulemap-\(index)".
-    //
-    // Now, I would use "modulemap-\(packageID)-\(index)" instead because multiple
-    // packages exist and "\(index)" would be a name collision across multiple
-    // packages. But if that is going to work, why not skip searching for the 
-    // module name and just use "modulemap-\(packageID)-\(index)"?
-    //
-    // Apparently, modulemaps are sometimes duplicated. For now, I will treat
-    // this as if the mechanism described above is used.
     
     let moduleRegularExpression = ###"""
     module\s+([^\s]+)\s.*{
