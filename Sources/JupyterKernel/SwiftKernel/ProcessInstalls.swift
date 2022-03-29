@@ -469,8 +469,22 @@ fileprivate func processInstall(
     // packages exist and "\(index)" would be a name collision across multiple
     // packages. But if that is going to work, why not skip searching for the 
     // module name and just use "modulemap-\(packageID)-\(index)"?
-    let newFolderName = "modulemap-\(packageID)-\(index)"
-    let newFolderPath = "\(moduleSearchPath)/\(newFolderName)"
+    //
+    // Apparently, modulemaps are sometimes duplicated. For now, I will treat
+    // this as if the mechanism described above is used.
+    
+    let moduleRegularExpression = ###"""
+    module\s+([^\s]+)\s.*{
+    """###
+    let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
+    var moduleName: String
+    if moduleMatch != Python.None {
+      moduleName = String(moduleMatch.group(1))
+    } else {
+      moduleName = "\(packageID + 1)-\(index + 1)"
+    }
+    
+    let newFolderPath = "\(moduleSearchPath)/module-\(moduleName)"
     try? fm.createDirectory(
       atPath: newFolderPath, withIntermediateDirectories: false)
     
