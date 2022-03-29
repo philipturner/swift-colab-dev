@@ -480,30 +480,29 @@ fileprivate func processInstall(
         Could not write to "\(newFilePath)".
         """)
     }
-    
-    // == dlopen the shared lib ==
-    
-    sendStdout("Loading dynamic library...")
-    
-    let dynamicLoadResult = execute(code: """
-    import func Glibc.dlopen
-    import var Glibc.RTLD_NOW
-    dlopen("\(libPath)", RTLD_NOW)
-    """)
-    guard let dynamicLoadResult = dynamicLoadResult as? SuccessWithValue else {
-      throw PackageInstallException("""
-        Install error: dlopen crashed: \(dynamicLoadResult)
-        """)
-    }
-    
-    if dynamicLoadResult.description.hasSuffix("nil") {
-      let error = execute(code: "String(cString: dlerror())")
-      throw PackageInstallException("""
-        Install error: dlopen returned `nil`: \(error)
-        """)
-    }
-    
-    sendStdout("Installation complete!")
   }
   
+  // == dlopen the shared lib ==
+    
+  sendStdout("Loading dynamic library...")
+
+  let dynamicLoadResult = execute(code: """
+  import func Glibc.dlopen
+  import var Glibc.RTLD_NOW
+  dlopen("\(libPath)", RTLD_NOW)
+  """)
+  guard let dynamicLoadResult = dynamicLoadResult as? SuccessWithValue else {
+    throw PackageInstallException("""
+      Install error: dlopen crashed: \(dynamicLoadResult)
+      """)
+  }
+
+  if dynamicLoadResult.description.hasSuffix("nil") {
+    let error = execute(code: "String(cString: dlerror())")
+    throw PackageInstallException("""
+      Install error: dlopen returned `nil`: \(error)
+      """)
+  }
+
+  sendStdout("Installation complete!")
 }
