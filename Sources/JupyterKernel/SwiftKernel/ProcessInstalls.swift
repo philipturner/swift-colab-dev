@@ -411,7 +411,7 @@ fileprivate func processInstall(
     let linkPath = "\(moduleSearchPath)/\(fileName)"
 //     let linkPath = "\(moduleSearchPath)/\(fileName)"
     
-    let parentFolderPath = URL(fileURLWithPath: path).deletingLastPathComponent()
+    let parentFolderPath = URL(fileURLWithPath: path).deletingLastPathComponent().path
     try? fm.removeItem(atPath: linkPath)
     do {
       try fm.createSymbolicLink(
