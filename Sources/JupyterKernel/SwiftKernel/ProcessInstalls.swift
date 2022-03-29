@@ -401,11 +401,10 @@ fileprivate func processInstall(
   let cursor = dbConnection.cursor()
   
   // Process *.swiftmodule files
-  cursor.execute(SQL_FILES_SELECT, ["%.swiftModule"])
+  cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
-  sendStdout("files are: \(swiftModules)")
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(moduleSearchPath)/\(fileName)"
