@@ -479,7 +479,7 @@ fileprivate func processInstall(
     let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
     var moduleName: String
     if moduleMatch != Python.None {
-      moduleName = String(moduleMatch.group(1))
+      moduleName = String(moduleMatch.group(1))!
     } else {
       moduleName = "\(packageID + 1)-\(index + 1)"
     }
