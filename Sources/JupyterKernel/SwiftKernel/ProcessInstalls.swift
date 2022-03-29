@@ -491,8 +491,17 @@ fileprivate func processInstall(
     import var Glibc.RTLD_NOW
     dlopen("\(libPath)", RTLD_NOW)
     """)
-    if !(dynamicLoadResult is SuccessWithValue) {
-      throw PackageInstallException()
+    guard let dynamicLoadResult = dynamicLoadResult as? SuccessWithValue else {
+      throw PackageInstallException("""
+        Install error: dlopen crashed: \(dynamicLoadResult)
+        """)
+    }
+    
+    if dynamicLoadResult.description.hasSuffix("nil") {
+      let error = execute(code: "String(cString: dlerror())")
+      throw PackageInstallException("""
+        Install error: dlopen returned `nil`: \(error)
+        """)
     }
     
     sendStdout("Installation complete!")
