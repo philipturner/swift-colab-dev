@@ -169,17 +169,14 @@ fileprivate func writeInstalledPackages() throws {
   }
 }
 
-fileprivate var loadedClangModules: [String]!
-// To prevent the search for matching modules from becoming O(n^2)
-fileprivate var loadedClangModulesMap: [String: Bool]!
+fileprivate var loadedClangModules: Set<String>!
 
-// TODO: test this by logging to Stdout
-fileprivate func readClangModules() throws {
+fileprivate func readClangModules() {
   loadedClangModules = []
   let fm = FileManager.default
   
   let moduleSearchPath = "\(installLocation)/modules"
-  let items = try fm.contentsOfDirectory(atPath: moduleSearchPath)
+  let items = try! fm.contentsOfDirectory(atPath: moduleSearchPath)
   for item in items {
     guard item.hasPrefix("module-") else {
       continue
@@ -190,13 +187,8 @@ fileprivate func readClangModules() throws {
     if let files = files, files.contains("module.modulemap") {
       var moduleName = item
       moduleName.removeFirst("module-".count)
-      loadedClangModules.append(moduleName)
+      loadedClangModules.insert(moduleName)
     }
-  }
-  
-  loadedClangModulesMap = [:]
-  for module in loadedClangModules {
-    loadedClangModulesMap[module] = true
   }
 }
 
@@ -370,17 +362,8 @@ fileprivate func processInstall(
   let moduleSearchPath = "\(installLocation)/modules"
   try? fm.createDirectory(
     atPath: moduleSearchPath, withIntermediateDirectories: false)
-  
   if loadedClangModules == nil {
-    do {
-      try readClangModules()
-    } catch {
-      throw PackageInstallException("""
-        Couldn't read Clang modules: \(error.localizedDescription)
-        """)
-    }
-    sendStdout("Loaded Clang modules:")
-    sendStdout("\(loadedClangModules!)")
+    readClangModules()
   }
   
   let buildDBPath = "\(binDir)/../build.db"
@@ -435,27 +418,21 @@ fileprivate func processInstall(
   cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
-  // TODO: only generate the directory link on the first iteration
   for path in swiftModules {
     var fileName = URL(fileURLWithPath: path).lastPathComponent
-    let swiftModule_linkPath = "\(moduleSearchPath)/\(fileName)"
-    let buildProducts_linkPath = "\(moduleSearchPath)/\(packageName)"
-    
-    let parentFolderPath = URL(fileURLWithPath: path).deletingLastPathComponent().path
-    try? fm.removeItem(atPath: swiftModule_linkPath)
-    try? fm.removeItem(atPath: buildProducts_linkPath)
+    let linkPath = "\(moduleSearchPath)/\(fileName)"
+    try? fm.removeItem(atPath: linkPath)
     do {
       try fm.createSymbolicLink(
-        atPath: swiftModule_linkPath, withDestinationPath: path)
-      try fm.createSymbolicLink(
-        atPath: buildProducts_linkPath, withDestinationPath: parentFolderPath)
+        atPath: linkPath, withDestinationPath: path)
     } catch {
-      // TODO: fix this error to reflect that there are 2 possible sources of an error.
       throw PackageInstallException("""
-        Could not create link "\(linkPath)" with destination "\(parentFolderPath)".
+        Could not create link "\(linkPath)" with destination "\(path)".
         """)
     }
   }
+  
+  var warningClangModules: Set<String> = []
   
   // Process modulemap files
   cursor.execute(SQL_FILES_SELECT, ["%/module.modulemap"])
@@ -501,11 +478,16 @@ fileprivate func processInstall(
     module\s+([^\s]+)\s.*{
     """###
     let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
-    var moduleName: String
+    var moduleFolderName: String
     if moduleMatch != Python.None {
-      moduleName = "module-\(String(moduleMatch.group(1))!)"
+      let moduleName = String(moduleMatch.group(1))!
+      moduleFolderName = "module-\(moduleName)"
+      
+      if !loadedClangModules.contains(moduleName) {
+        warningClangModules.insert(moduleName)
+      }
     } else {
-      moduleName = "modulenoname-\(packageID + 1)-\(index + 1)"
+      moduleFolderName = "modulenoname-\(packageID + 1)-\(index + 1)"
     }
     
     let newFolderPath = "\(moduleSearchPath)/\(moduleName)"
@@ -541,6 +523,15 @@ fileprivate func processInstall(
     throw PackageInstallException("""
       Install error: dlopen returned `nil`: \(error)
       """)
+  }
+  
+  if !warningClangModules.isEmpty {
+    sendStdout("""
+    The following Clang modules cannot be imported in your source code until \
+    you restart the runtime. If you only plan to import modules not listed here, \
+    ignore this warning.
+    \(warningClangModules)
+    """)
   }
 
   sendStdout("Installation complete!")
