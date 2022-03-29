@@ -134,12 +134,8 @@ fileprivate func sendStdout(_ message: String, insertNewLine: Bool = true) {
 
 fileprivate var installedPackages: [String]! = nil
 fileprivate var installedPackagesLocation: String! = nil
-// To prevent to search for matching packages from becoming O(n^2)
+// To prevent the search for matching packages from becoming O(n^2)
 fileprivate var installedPackagesMap: [String: Int]! = nil
-// To avoid any name conflicts with unused/corrupted cached modules,
-// the "modules" directory resets before each Jupyter session. The
-// build products are cached elsewhere, and just copied here.
-fileprivate var modulesDirectoryInitialized = false
 
 fileprivate func readInstalledPackages() throws {
   installedPackages = []
@@ -170,6 +166,23 @@ fileprivate func writeInstalledPackages() throws {
     throw PackageInstallException("""
       Could not write to file "\(installedPackagesLocation!)"
       """)
+  }
+}
+
+fileprivate var loadedClangModules: [String]!
+// To prevent the search for matching modules from becoming O(n^2)
+fileprivate var loadedClangModulesMap: [String: Bool]!
+
+fileprivate func readClangModules() throws {
+  loadedClangModules = []
+  let fm = FileManager.default
+  
+  let moduleSearchPath = "\(installLocation)/modules"
+  let items = try fm.contentsOfDirectory(atPath: moduleSearchPath)
+  for item in items {
+    if item.hasPrefix("module-") {
+      let contents = 
+    }
   }
 }
 
@@ -341,18 +354,8 @@ fileprivate func processInstall(
   // == Copy .swiftmodule and modulemap files to Swift module search path ==
   
   let moduleSearchPath = "\(installLocation)/modules"
-  if !modulesDirectoryInitialized {
-    try? fm.removeItem(atPath: moduleSearchPath)
-    do {
-      try fm.createDirectory(
-        atPath: moduleSearchPath, withIntermediateDirectories: false)
-    } catch {
-      throw PackageInstallException("""
-        Could not create "\(moduleSearchPath)".
-        """)
-    }
-    modulesDirectoryInitialized = true
-  }
+  try? fm.createDirectory(
+    atPath: moduleSearchPath, withIntermediateDirectories: false)
   
   let buildDBPath = "\(binDir)/../build.db"
   guard fm.fileExists(atPath: buildDBPath) else {
@@ -474,12 +477,12 @@ fileprivate func processInstall(
     let moduleMatch = re.match(moduleRegularExpression, modulemapContents)
     var moduleName: String
     if moduleMatch != Python.None {
-      moduleName = String(moduleMatch.group(1))!
+      moduleName = "module-\(String(moduleMatch.group(1))!)"
     } else {
-      moduleName = "\(packageID + 1)-\(index + 1)"
+      moduleName = "modulenoname-\(packageID + 1)-\(index + 1)"
     }
     
-    let newFolderPath = "\(moduleSearchPath)/module-\(moduleName)"
+    let newFolderPath = "\(moduleSearchPath)/\(moduleName)"
     try? fm.createDirectory(
       atPath: newFolderPath, withIntermediateDirectories: false)
     
