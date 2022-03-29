@@ -481,6 +481,21 @@ fileprivate func processInstall(
         Could not write to "\(newFilePath)".
         """)
     }
+    
+    // == dlopen the shared lib ==
+    
+    sendStdout("Loading dynamic library...")
+    
+    let dynamicLoadResult = execute(code: """
+    import func Glibc.dlopen
+    import var Glibc.RTLD_NOW
+    dlopen("lib\(packageName).so", RTLD_NOW)
+    """)
+    if !(dynamicLoadResult is SuccessWithValue) {
+      throw PackageInstallException()
+    }
+    
+    sendStdout("Installation complete!")
   }
   
 }
