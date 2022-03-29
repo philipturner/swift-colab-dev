@@ -453,11 +453,11 @@ fileprivate func processInstall(
     // packages exist and "\(index)" would be a name collision across multiple
     // packages. But if that is going to work, why not skip searching for the 
     // module name and just use "modulemap-\(packageID)-\(index)"?
-    let newFolderName = "modulemap-\(packageID)-\(index + 1)"
+    let newFolderName = "modulemap-\(packageID)-\(index)"
     let newFolderPath = "\(installLocation)/\(newFolderName)"
     do {
       try fm.createDirectory(
-        atPath: newFolderPath, withIntermediateDirectories: false)
+        atPath: newFolderPath, withIntermediateDirectories: true)
     } catch {
       throw PackageInstallException("""
         Could not create folder "\(newFolderPath)": \
