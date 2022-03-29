@@ -408,16 +408,15 @@ fileprivate func processInstall(
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(moduleSearchPath)/\(fileName)"
-    try? fm.removeItem(atPath: target)
-    do {
-      try fm.createSymbolicLink(
-        atPath: target, withDestinationPath: path)
-//       try fm.copyItem(atPath: path, toPath: target)
-    } catch {
-      throw PackageInstallException("""
-        Could not copy "\(path)" to "\(target)".
-        """)
-    }
+//     try? fm.removeItem(atPath: target)
+//     do {
+//       try fm.createSymbolicLink(
+//         atPath: target, withDestinationPath: path)
+//     } catch {
+//       throw PackageInstallException("""
+//         Could not copy "\(path)" to "\(target)".
+//         """)
+//     }
   }
   
   // Process modulemap files
