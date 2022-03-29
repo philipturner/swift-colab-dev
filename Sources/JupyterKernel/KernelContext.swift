@@ -2,7 +2,6 @@ import Foundation
 
 struct KernelContext {
   static var kernel: PythonObject = Python.None
-  
   static var debuggerInitialized = false
   
   static let init_repl_process: @convention(c) (
