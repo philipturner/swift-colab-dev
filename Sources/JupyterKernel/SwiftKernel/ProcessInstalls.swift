@@ -453,6 +453,24 @@ fileprivate func processInstall(
     // packages exist and "\(index)" would be a name collision across multiple
     // packages. But if that is going to work, why not skip searching for the 
     // module name and just use "modulemap-\(packageID)-\(index)"?
+    let newFolderName = "modulemap-\(packageID)-\(index + 1)"
+    let newFolderPath = "\(installLocation)/\(newFolderName)"
+    do {
+      try fm.createDirectory(
+        atPath: newFolderPath, withIntermediateDirectories: false)
+    } catch {
+      throw PackageInstallException("""
+        Could not write to "\(newFolderPath)": \(error.localizedDescription)
+        """)
+    }
+    
+    let newFilePath = "\(newFolderPath)/module.modulemap"
+    let modulemapData = modulemapContents.data(using: .utf8)!
+    guard fm.createFile(atPath: newFilePath) else {
+      throw PackageInstallException("""
+        Could not write to "\(newFilePath)": \(error.localizedDescription)
+        """)
+    }
   }
   
 }
