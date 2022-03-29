@@ -261,6 +261,7 @@ fileprivate func processInstall(
   let packagePath = "\(installLocation)/\(packageName)"
   try? fm.createDirectory(
     atPath: packagePath, withIntermediateDirectories: false)
+  // TODO: destroy and recreate this directory each time the Jupyter session starts
   try? fm.createDirectory(
     atPath: "\(installLocation)/modules", withIntermediateDirectories: false)
   
@@ -455,15 +456,8 @@ fileprivate func processInstall(
     // module name and just use "modulemap-\(packageID)-\(index)"?
     let newFolderName = "modulemap-\(packageID)-\(index)"
     let newFolderPath = "\(installLocation)/\(newFolderName)"
-    do {
-      try fm.createDirectory(
-        atPath: newFolderPath, withIntermediateDirectories: true)
-    } catch {
-      throw PackageInstallException("""
-        Could not create folder "\(newFolderPath)": \
-        \(error.localizedDescription)
-        """)
-    }
+    try? fm.createDirectory(
+      atPath: newFolderPath, withIntermediateDirectories: false)
     
     let newFilePath = "\(newFolderPath)/module.modulemap"
     let modulemapData = modulemapContents.data(using: .utf8)!
