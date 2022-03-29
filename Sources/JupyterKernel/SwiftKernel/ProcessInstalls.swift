@@ -351,9 +351,6 @@ fileprivate func processInstall(
     }
     modulesDirectoryInitialized = true
   }
-    // TODO: destroy and recreate this directory each time the Jupyter session starts
-  try? fm.createDirectory(
-    atPath: , withIntermediateDirectories: false)
   
   let buildDBPath = "\(binDir)/../build.db"
   guard fm.fileExists(atPath: buildDBPath) else {
