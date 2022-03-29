@@ -460,7 +460,7 @@ fileprivate func processInstall(
         atPath: newFolderPath, withIntermediateDirectories: false)
     } catch {
       throw PackageInstallException("""
-        Could not write to "\(newFolderPath)": \(error.localizedDescription)
+        Could not create folder "\(newFolderPath)": \(error.localizedDescription)
         """)
     }
     
@@ -468,7 +468,7 @@ fileprivate func processInstall(
     let modulemapData = modulemapContents.data(using: .utf8)!
     guard fm.createFile(atPath: newFilePath) else {
       throw PackageInstallException("""
-        Could not write to "\(newFilePath)": \(error.localizedDescription)
+        Could not write to "\(newFilePath)".
         """)
     }
   }
