@@ -173,6 +173,7 @@ fileprivate var loadedClangModules: [String]!
 // To prevent the search for matching modules from becoming O(n^2)
 fileprivate var loadedClangModulesMap: [String: Bool]!
 
+// TODO: test this by logging to Stdout
 fileprivate func readClangModules() throws {
   loadedClangModules = []
   let fm = FileManager.default
@@ -180,9 +181,22 @@ fileprivate func readClangModules() throws {
   let moduleSearchPath = "\(installLocation)/modules"
   let items = try fm.contentsOfDirectory(atPath: moduleSearchPath)
   for item in items {
-    if item.hasPrefix("module-") {
-      let contents = 
+    guard item.hasPrefix("module-") else {
+      continue
     }
+    
+    let itemFolder = "\(moduleSearchPath)/\(item)"
+    let files = try? fm.contentsOfDirectory(atPath: itemFolder)
+    if let files = files, files.contains("module.modulemap") {
+      var moduleName = item
+      moduleName.dropFirst("module-".count)
+      loadedClangModules.append(moduleName)
+    }
+  }
+  
+  loadedClangModulesMap = [:]
+  for module in loadedClangModules {
+    loadedClangModulesMap[module] = true
   }
 }
 
@@ -356,6 +370,18 @@ fileprivate func processInstall(
   let moduleSearchPath = "\(installLocation)/modules"
   try? fm.createDirectory(
     atPath: moduleSearchPath, withIntermediateDirectories: false)
+  
+  if loadedClangModules == nil {
+    do {
+      try readClangModules()
+    } catch {
+      throw PackageInstallException("""
+        Couldn't read Clang modules: \(error.localizedDescription)
+        """)
+    }
+    sendStdout("Loaded Clang modules:")
+    sendStdout("\(loadedClangModules)")
+  }
   
   let buildDBPath = "\(binDir)/../build.db"
   guard fm.fileExists(atPath: buildDBPath) else {
