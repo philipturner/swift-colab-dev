@@ -401,7 +401,7 @@ fileprivate func processInstall(
   let cursor = dbConnection.cursor()
   
   // Process *.swiftmodule files
-  cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
+  cursor.execute(SQL_FILES_SELECT, ["%.swiftModule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
