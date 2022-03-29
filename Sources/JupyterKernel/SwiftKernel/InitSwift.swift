@@ -40,7 +40,7 @@ fileprivate func initReplProcess() throws {
   let cEnvironment = CEnvironment(environment: environment)
   
   let error = KernelContext.init_repl_process(
-    nil, cEnvironment.envp, FileManager.default.currentDirectoryPath)
+    cEnvironment.envp, FileManager.default.currentDirectoryPath)
   if error != 0 {
     throw Exception("Got error code \(error) from 'init_repl_process'")
   }
