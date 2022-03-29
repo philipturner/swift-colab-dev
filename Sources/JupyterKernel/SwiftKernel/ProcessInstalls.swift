@@ -489,7 +489,7 @@ fileprivate func processInstall(
     let dynamicLoadResult = execute(code: """
     import func Glibc.dlopen
     import var Glibc.RTLD_NOW
-    dlopen("lib\(packageName).so", RTLD_NOW)
+    dlopen("\(libPath)", RTLD_NOW)
     """)
     if !(dynamicLoadResult is SuccessWithValue) {
       throw PackageInstallException()
