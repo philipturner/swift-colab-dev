@@ -277,6 +277,7 @@ fileprivate func processInstall(
   try createFile(name: "Package.swift", contents: manifest)
   try createFile(name: "\(packageName).swift", contents: """
     // intentionally blank
+    public var meaningOfLife: Int = 42
     
     """)
   
