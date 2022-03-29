@@ -466,7 +466,7 @@ fileprivate func processInstall(
     }
     
     let newFilePath = "\(newFolderPath)/module.modulemap"
-    let modulemapData = modulemapContents.data(using: .utf8)!
+    let modulemapData = modulemapData.data(using: .utf8)!
     guard fm.createFile(atPath: newFilePath, contents: modulemapContents) else {
       throw PackageInstallException("""
         Could not write to "\(newFilePath)".
