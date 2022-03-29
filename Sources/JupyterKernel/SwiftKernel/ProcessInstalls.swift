@@ -405,6 +405,7 @@ fileprivate func processInstall(
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   // Can't I just make a symbolic link instead?
+  sendStdout("files are: \(swiftModules)")
   for path in swiftModules {
     let fileName = URL(fileURLWithPath: path).lastPathComponent
     let target = "\(moduleSearchPath)/\(fileName)"
