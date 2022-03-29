@@ -404,19 +404,22 @@ fileprivate func processInstall(
   cursor.execute(SQL_FILES_SELECT, ["%.swiftmodule"])
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
+  // TODO: only generate the directory link on the first iteration
   for path in swiftModules {
     var fileName = URL(fileURLWithPath: path).lastPathComponent
-    fileName.removeLast(".swiftmodule".count)
-    
-    let linkPath = "\(moduleSearchPath)/\(fileName)"
-//     let linkPath = "\(moduleSearchPath)/\(fileName)"
+    let swiftModule_linkPath = "\(moduleSearchPath)/\(fileName)"
+    let buildProducts_linkPath = "\(moduleSearchPath)/\(packageName)"
     
     let parentFolderPath = URL(fileURLWithPath: path).deletingLastPathComponent().path
-    try? fm.removeItem(atPath: linkPath)
+    try? fm.removeItem(atPath: swiftModule_linkPath)
+    try? fm.removeItem(atPath: buildProducts_linkPath)
     do {
       try fm.createSymbolicLink(
-        atPath: linkPath, withDestinationPath: parentFolderPath)
+        atPath: swiftModule_linkPath, withDestinationPath: path)
+      try fm.createSymbolicLink(
+        atPath: buildProducts_linkPath, withDestinationPath: parentFolderPath)
     } catch {
+      // TODO: fix this error to reflect that there are 2 possible sources of an error.
       throw PackageInstallException("""
         Could not create link "\(linkPath)" with destination "\(parentFolderPath)".
         """)
