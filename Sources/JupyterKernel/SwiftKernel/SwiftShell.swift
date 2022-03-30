@@ -3,8 +3,9 @@ fileprivate let eventloops = Python.import("ipykernel.eventloops")
 fileprivate let session = Python.import("jupyter_client.session")
 fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
-// TODO: Move this module out of JupyterKernel package and into 
-// KernelCommunicator
+// TODO: Expose `create_shell` to C, so that KernelCommunicator can call into it
+// without bloating that file. Also, it lets me validate that this actually
+// compiles on a regular basis.
 
 // Simulates a ZMQ socket, saving messages instead of sending them. We use this 
 // to capture display messages.
@@ -76,3 +77,5 @@ fileprivate let SwiftShell = PythonClass(
     }
   ]
 ).pythonObject
+
+func create_shell
