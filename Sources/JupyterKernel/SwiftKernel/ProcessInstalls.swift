@@ -76,7 +76,7 @@ fileprivate func processSwiftPMFlags(
 
 fileprivate func handleTemplateError(_ anyError: Error, lineIndex: Int) throws {
   guard let pythonError = anyError as? PythonError else {
-    throw error
+    throw anyError
   }
   switch pythonError {
   case .exception(let error, let traceback):
