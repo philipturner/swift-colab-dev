@@ -120,8 +120,7 @@ fileprivate func executeSystemCommand(restOfLine: String) {
   ])
 }
 
-// This is a dictionary to avoid having O(n^2) algorithmic complexity.
-fileprivate var previouslyReadPaths: [String: Bool] = [:]
+fileprivate var previouslyReadPaths: Set<String> = []
 
 fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> String {
   let nameRegularExpression = ###"""
@@ -143,7 +142,7 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
   // Paths later in the list `includePaths` have higher priority.
   for includePath in includePaths {
     let path = includePath + "/" + name
-    if previouslyReadPaths[path, default: false] { 
+    if previouslyReadPaths.contains(path) { 
         rejectedAPath = true
         continue 
     }
@@ -163,7 +162,7 @@ fileprivate func readInclude(restOfLine: String, lineIndex: Int) throws -> Strin
     throw PreprocessorException(
         "Line \(lineIndex + 1): Could not find \"\(name)\". Searched \(includePaths.reversed()).")
   }
-  previouslyReadPaths[chosenPath] = true
+  previouslyReadPaths.insert(chosenPath)
   return """
   #sourceLocation(file: "\(chosenPath)", line: 1)
   \(code)
