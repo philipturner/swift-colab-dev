@@ -81,7 +81,7 @@ fileprivate func handleTemplateError(
     return anyError
   }
   switch pythonError {
-  case .exception(let error, let traceback):
+  case .exception(let error, _):
     if Bool(Python.isinstance(error, Python.KeyError))! {
       return PackageInstallException(
         "Line \(lineIndex + 1): Invalid template argument \(pythonError)")
