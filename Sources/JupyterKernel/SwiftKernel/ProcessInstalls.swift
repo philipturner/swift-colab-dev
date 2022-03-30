@@ -44,9 +44,7 @@ func processInstallDirective(
 
 // %install-swiftpm-flags
 
-fileprivate var swiftPMFlags: [String] = [
-  "-Xswiftc", "-g", "-Xswiftc", "-debug-info-format=dwarf"
-]
+fileprivate var swiftPMFlags: [String] = []
 
 fileprivate func processSwiftPMFlags(
   restOfLine: String, lineIndex: Int
