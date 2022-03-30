@@ -277,9 +277,8 @@ fileprivate func processInstall(
     """, insertNewLine: false)
   sendStdout("""
     With SwiftPM flags: \(swiftPMFlags)
-    """)
-  sendStdout("""
     Working in: \(installLocation)
+    
     """)
   
   let packagePath = "\(installLocation)/\(packageName)"
