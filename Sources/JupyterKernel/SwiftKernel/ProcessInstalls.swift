@@ -80,7 +80,8 @@ fileprivate func handleTemplateError(
   _ anyError: Error, lineIndex: Int
 ) -> Error {
   guard let pythonError = anyError as? PythonError else {
-    return anyError
+    return PackageInstallException(
+      "Line \(lineIndex + 1): Unknown error type \(anyError)")
   }
   switch pythonError {
   case .exception(let error, _):
@@ -91,10 +92,12 @@ fileprivate func handleTemplateError(
       return PackageInstallException(
         "Line \(lineIndex + 1): \(pythonError)")
     } else {
-      return pythonError
+      return PackageInstallException(
+        "Line \(lineIndex + 1): Unknown error type \(pythonError)")
     }
   default:
-    return pythonError
+    return PackageInstallException(
+      "Line \(lineIndex + 1): Unknown error type \(pythonError)")
   }
 }
 
