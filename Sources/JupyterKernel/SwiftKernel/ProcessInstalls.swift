@@ -418,7 +418,7 @@ fileprivate func processInstall(
   let swiftModules = cursor.fetchall().map { row in String(row[0])! }
     .filter(isValidDependency)
   for path in swiftModules {
-    var fileName = URL(fileURLWithPath: path).lastPathComponent
+    let fileName = URL(fileURLWithPath: path).lastPathComponent
     let linkPath = "\(moduleSearchPath)/\(fileName)"
     try? fm.removeItem(atPath: linkPath)
     do {
