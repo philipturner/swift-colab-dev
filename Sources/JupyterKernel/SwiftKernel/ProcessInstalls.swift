@@ -83,16 +83,17 @@ fileprivate func handleTemplateError(
     return anyError
   }
   switch pythonError {
-  case .exception(let error, let traceback):
-    if let traceback = traceback {
+  case .exception(let e, let t):
+    if let t = t {
+      let traceback = Python.import("traceback")
       return PackageInstallException("""
-        Line \(lineIndex + 1): Invalid template argument \(error)
+        Line \(lineIndex + 1): Invalid template argument \(e)
         Traceback:
         \(PythonObject("").join(traceback.format_tb(t)))
         """)
     } else {
       return PackageInstallException("""
-        Line \(lineIndex + 1): Invalid template argument \(error)
+        Line \(lineIndex + 1): Invalid template argument \(e)
         """)
     }
   default:
