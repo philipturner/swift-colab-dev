@@ -50,8 +50,8 @@ fileprivate func processSwiftPMFlags(
   restOfLine: String, lineIndex: Int
 ) throws {
   let id = "$SWIFT_COLAB_sHcpmxAcqC7eHlgD"
-  var hasID = false
   var processedLine: String
+  
   do {
     processedLine = String(try string.Template(template).substitute.throwing
       .dynamicallyCall(withArguments: [
@@ -62,12 +62,15 @@ fileprivate func processSwiftPMFlags(
     try handleTemplateError(error, lineIndex: lineIndex)
   }
   
-  var processedLine = String(restOfLine)!.reversed()
-  if let range = processedLine.range(of: id.reversed()) {
-    processedLine = 
+  // Ensure that only everything after the last "$clear" flag passes into shlex.
+  let reversedLine = String(String(restOfLine)!.reversed())
+  if let idRange = reversedLine.range(of: id.reversed()) {
+    let endRange = reversedLine.startIndex..<idRange.lowerBound
+    processedLine = String(reversedLine[endRange])
+    swiftPMFlags = []
   }
   
-  let flags = shlex[dynamicMember: "split"](restOfLine)
+  let flags = shlex[dynamicMember: "split"](processedLine)
   swiftPMFlags += [String](flags)!
 }
 
