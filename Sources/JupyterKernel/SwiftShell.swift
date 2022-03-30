@@ -1,4 +1,5 @@
 import Foundation
+fileprivate let ctypes = 
 fileprivate let eventloops = Python.import("ipykernel.eventloops")
 fileprivate let interactiveshell = Python.import("IPython.core.interactiveshell")
 fileprivate let session = Python.import("jupyter_client.session")
@@ -6,13 +7,20 @@ fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
 fileprivate let InteractiveShellABC = interactiveshell.InteractiveShellABC
 fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
-
+================================================================================
+// Caller side: use `ctypes` to convert return value, which is the address of a
+// Python object, into an actual Python object. This Swift file stores a
+// reference to the return value's object so that it doesn't deallocate.
 @_cdecl("create_shell")
 public func create_shell(
-  _ username: OpaquePointer,
-  _ sessionID: OpaquePointer, 
-  _ key: OpaquePointer
+  _ username_id: Int64,
+  _ sessionID_id: Int64, 
+  _ key_id: Int64,
 ) {
+  let (cast, py_object) = (ctypes.cast, ctypes.py_object)
+  let username = cast(username_id, py_object).value
+  let sessionID = cast(sessionID_id
+  
   InteractiveShellABC.register(SwiftShell)
 }
 
