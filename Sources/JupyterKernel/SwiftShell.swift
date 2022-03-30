@@ -29,7 +29,7 @@ public func create_shell(
   shell.display_pub.session = session
   shell.display_pub.pub_socket = socket
   
-  socketAndShell = (socket, shell)
+  socketAndShell = [socket, shell]
   return Int64(Python.id(socketAndShell))!
 }
 
