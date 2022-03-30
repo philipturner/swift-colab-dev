@@ -84,7 +84,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   }
   
   let systemRegularExpression = ###"""
-  ^\s*%system (.*)$
+  ^\s*%system\s*$
   """###
   let systemMatch = re.match(systemRegularExpression, line)
   guard systemMatch == Python.None else {
@@ -94,7 +94,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   }
   
   let includeRegularExpression = ###"""
-  ^\s*%include \s*(.*)$
+  ^\s*%include (.*)$
   """###
   let includeMatch = re.match(includeRegularExpression, line)
   guard includeMatch == Python.None else {
