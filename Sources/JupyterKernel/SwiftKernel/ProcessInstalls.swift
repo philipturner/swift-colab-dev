@@ -266,21 +266,20 @@ fileprivate func processInstall(
   )
   """
   
+  let eightSpaces = String(repeating: Character(" "), count: 8)
   let modulesHumanDescription = products.reduce("") {
-    $0 + "    " + $1 + "\n"
+    $0 + eightSpaces + $1 + "\n"
   }
   sendStdout("""
     Installing package:
-    \(spec)
+        \(spec)
     \(modulesHumanDescription)
     """, insertNewLine: false)
   sendStdout("""
-    With SwiftPM flags:
-    \(swiftPMFlags)
+    With SwiftPM flags: \(swiftPMFlags)
     """)
   sendStdout("""
-    Working in:
-    \(installLocation)
+    Working in: \(installLocation)
     """)
   
   let packagePath = "\(installLocation)/\(packageName)"
