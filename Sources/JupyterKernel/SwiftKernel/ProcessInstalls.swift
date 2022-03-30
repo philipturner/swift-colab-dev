@@ -51,7 +51,6 @@ fileprivate func processSwiftPMFlags(
 ) throws {
   let id = "$SWIFT_COLAB_sHcpmxAcqC7eHlgD"
   var processedLine: String
-  
   do {
     processedLine = String(try string.Template(restOfLine).substitute.throwing
       .dynamicallyCall(withArguments: [
@@ -63,7 +62,7 @@ fileprivate func processSwiftPMFlags(
   }
   
   // Ensure that only everything after the last "$clear" flag passes into shlex.
-  let reversedLine = String(String(restOfLine)!.reversed())
+  let reversedLine = String(processedLine.reversed())
   if let idRange = reversedLine.range(of: id.reversed()) {
     let endRange = reversedLine.startIndex..<idRange.lowerBound
     processedLine = String(reversedLine[endRange])
