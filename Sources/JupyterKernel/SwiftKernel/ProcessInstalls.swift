@@ -62,8 +62,9 @@ fileprivate func processSwiftPMFlags(
   }
   
   // Ensure that only everything after the last "$clear" flag passes into shlex.
+  let reversedID = String(id.reversed())
   let reversedLine = String(processedLine.reversed())
-  if let idRange = reversedLine.range(of: id.reversed()) {
+  if let idRange = reversedLine.range(of: reversedID) {
     let endRange = reversedLine.startIndex..<idRange.lowerBound
     processedLine = String(reversedLine[endRange])
     swiftPMFlags = []
