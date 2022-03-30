@@ -15,7 +15,7 @@ fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
 public func create_shell(
   _ username_ptr: UnsafePointer<CChar>,
   _ sessionID_ptr: UnsafePointer<CChar>, 
-  _ key_ptr: UnsafePointer<CChar>,
+  _ key_ptr: UnsafePointer<CChar>
 ) -> Int64 {
   InteractiveShellABC.register(SwiftShell)
   
@@ -30,7 +30,7 @@ public func create_shell(
   shell.display_pub.pub_socket = socket
   
   socketAndShell = (socket, shell)
-  return Python.id(socketAndShell)
+  return Int64(Python.id(socketAndShell))!
 }
 
 fileprivate var socketAndShell: PythonObject!
