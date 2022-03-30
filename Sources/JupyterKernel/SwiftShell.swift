@@ -60,7 +60,7 @@ fileprivate let SwiftShell = PythonClass(
   "SwiftShell",
   superclasses: [ZMQInteractiveShell],
   members: [
-    "kernel": Python.import("ipykernel.inprocess.ipkernel").InProcessKernel()
+    "kernel": Python.import("ipykernel.inprocess.ipkernel").InProcessKernel(),
     
     // -------------------------------------------------------------------------
     // InteractiveShell interface
@@ -76,7 +76,7 @@ fileprivate let SwiftShell = PythonClass(
       }
       `self`.active_eventloop = gui
       return Python.None
-    }
+    },
     
     // Enable matplotlib integration for the kernel.
     "enable_matplotlib": PythonInstanceMethod {
@@ -89,7 +89,7 @@ fileprivate let SwiftShell = PythonClass(
       try ZMQInteractiveShell.enable_matplotlib.throwing
         .dynamicallyCall(withArguments: [`self`, gui])
       return Python.None
-    }
+    },
     
     // Enable pylab support at runtime.
     "enable_pylab": PythonInstanceMethod {
