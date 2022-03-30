@@ -8,7 +8,11 @@ fileprivate let InteractiveShellABC = interactiveshell.InteractiveShellABC
 fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
 
 @_cdecl("create_shell")
-public func create_shell() {
+public func create_shell(
+  _ username: OpaquePointer,
+  _ sessionID: OpaquePointer, 
+  _ key: OpaquePointer
+) {
   InteractiveShellABC.register(SwiftShell)
 }
 
