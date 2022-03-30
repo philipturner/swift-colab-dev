@@ -22,7 +22,7 @@ func processInstallDirective(
   }
   
   try attempt(command: processInstall, ###"""
-    ^\s*%install \s*(.*)$
+    ^\s*%install (.*)$
     """###)
   if isValidDirective { return }
   
@@ -31,7 +31,7 @@ func processInstallDirective(
   """###, line)
   if swiftPMFlagsMatch != Python.None {
     attempt(command: processSwiftPMFlags, ###"""
-    ^\s*%install-swiftpm-flags \s*(.*)$
+    ^\s*%install-swiftpm-flags (.*)$
     """###)
     if isValidDirective { return }
     
@@ -42,12 +42,12 @@ func processInstallDirective(
   }
   
   try attempt(command: processExtraIncludeCommand, ###"""
-    ^\s*%install-extra-include-command \s*(.*)$
+    ^\s*%install-extra-include-command (.*)$
     """###)
   if isValidDirective { return }
   
   try attempt(command: processInstallLocation, ###"""
-    ^\s*%install-location \s*(.*)$
+    ^\s*%install-location (.*)$
     """###)
   if isValidDirective { return }
 }
