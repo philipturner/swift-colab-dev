@@ -53,14 +53,6 @@ fileprivate func processSwiftPMFlags(
   swiftPMFlags += [String](flags)!
 }
 
-// %install-swiftpm-flags-clear
-
-fileprivate func processSwiftPMFlagsClear(
-  restOfLine: String, lineIndex: Int
-) {
-  swiftPMFlags = []
-}
-
 // %install-extra-include-command
 
 fileprivate func processExtraIncludeCommand(
@@ -100,32 +92,14 @@ fileprivate var installLocation = "/opt/swift/build"
 fileprivate func processInstallLocation(
   restOfLine: String, lineIndex: Int
 ) throws {
-  installLocation = try substituteCwd(
-    template: restOfLine, lineIndex: lineIndex)
+  installLocation = substituteCwd(template: restOfLine, lineIndex: lineIndex)
 }
 
-fileprivate func substituteCwd(
-  template: String, lineIndex: Int
-) throws -> String {
-  do {
-    let output = try string.Template(template).substitute.throwing
-      .dynamicallyCall(withArguments: [
-        "cwd": FileManager.default.currentDirectoryPath
-      ])
-    return String(output)!
-  } catch PythonError.exception(let error, let traceback) {
-    let e = PythonError.exception(error, traceback: traceback)
-    
-    if Bool(Python.isinstance(error, Python.KeyError))! {
-      throw PackageInstallException(
-        "Line \(lineIndex + 1): Invalid template argument \(e)")
-    } else if Bool(Python.isinstance(error, Python.ValueError))! {
-      throw PackageInstallException(
-        "Line \(lineIndex + 1): \(e)")
-    } else {
-      throw e
-    }
-  }
+fileprivate func substituteCwd(template: String, lineIndex: Int) -> String {
+  let output = string.Template(template).substitute([
+    "cwd": FileManager.default.currentDirectoryPath
+  ])
+  return String(output)!
 }
 
 // %install
@@ -208,7 +182,7 @@ fileprivate func processInstall(
   }
   
   // Expand template before writing to file
-  let spec = try substituteCwd(template: parsed[0], lineIndex: lineIndex)
+  let spec = substituteCwd(template: parsed[0], lineIndex: lineIndex)
   let products = Array(parsed[1...])
   
   let fm = FileManager.default
