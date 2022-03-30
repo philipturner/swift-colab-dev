@@ -21,10 +21,25 @@ func processInstallDirective(
     }
   }
   
-  attempt(command: processSwiftPMFlags, ###"""
-    ^\s*%install-swiftpm-flags (.*)$
+  try attempt(command: processInstall, ###"""
+    ^\s*%install (.*)$
     """###)
   if isValidDirective { return }
+  
+  let swiftPMFlagsMatch = re.match(###"""
+  ^\s*%install-swiftpm-flags
+  """###, line)
+  if swiftPMFlagsMatch != Python.None {
+    attempt(command: processSwiftPMFlags, ###"""
+    ^\s*%install-swiftpm-flags (.*)$
+    """###)
+    if isValidDirective { return }
+    
+    attempt(command: processSwiftPMFlagsReset, ###"""
+    ^\s*%install-swiftpm-flags-reset (.*)$
+    """###)
+    if isValidDirective { return }
+  }
   
   try attempt(command: processExtraIncludeCommand, ###"""
     ^\s*%install-extra-include-command (.*)$
@@ -33,11 +48,6 @@ func processInstallDirective(
   
   try attempt(command: processInstallLocation, ###"""
     ^\s*%install-location (.*)$
-    """###)
-  if isValidDirective { return }
-  
-  try attempt(command: processInstall, ###"""
-    ^\s*%install (.*)$
     """###)
   if isValidDirective { return }
 }
@@ -51,6 +61,14 @@ fileprivate func processSwiftPMFlags(
 ) {
   let flags = shlex[dynamicMember: "split"](restOfLine)
   swiftPMFlags += [String](flags)!
+}
+
+// %install-swiftpm-flags-reset
+
+fileprivate func processSwiftPMFlagsReset(
+  restOfLine: String, lineIndex: Int
+) {
+  swiftPMFlags = []
 }
 
 // %install-extra-include-command
