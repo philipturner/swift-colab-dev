@@ -1,2 +1,2 @@
 import Foundation
-fileprivate let eventloop = Python.import("ipykernel.eventloop")
+fileprivate let eventloops = Python.import("ipykernel.eventloops")
