@@ -49,15 +49,22 @@ fileprivate var swiftPMFlags: [String] = []
 fileprivate func processSwiftPMFlags(
   restOfLine: String, lineIndex: Int
 ) throws {
-  
-  var restOfLine: PythonObject
+  let id = "$SWIFT_COLAB_sHcpmxAcqC7eHlgD"
+  var hasID = false
+  var processedLine: String
   do {
-    restOfLine = try string.Template(template).substitute.throwing
+    processedLine = String(try string.Template(template).substitute.throwing
       .dynamicallyCall(withArguments: [
-        "cwd": FileManager.default.currentDirectoryPath
+        "clear": id
       ])
+    )!
   } catch {
     try handleTemplateError(error, lineIndex: lineIndex)
+  }
+  
+  var processedLine = String(restOfLine)!.reversed()
+  if let range = processedLine.range(of: id.reversed()) {
+    processedLine = 
   }
   
   let flags = shlex[dynamicMember: "split"](restOfLine)
