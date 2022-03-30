@@ -9,6 +9,16 @@ fileprivate let CapturingSocket = PythonClass(
   "CapturingSocket",
   superclasses: [session.Session],
   members: [
+    "__init__": PythonInstanceMethod { (`self`: PythonObject) in
+      `self`.messages = []
+      return Python.None
+    },
     
+    "send_multipart": PythonInstanceMethod { (params: [PythonObject]) in
+      let `self` = params[0]
+      let msg = params[1]
+      `self`.messages.append(msg)
+      return Python.None
+    }
   ]
 ).pythonObject
