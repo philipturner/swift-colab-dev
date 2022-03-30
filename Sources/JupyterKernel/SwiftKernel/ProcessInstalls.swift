@@ -49,6 +49,12 @@ fileprivate var swiftPMFlags: [String] = []
 fileprivate func processSwiftPMFlags(
   restOfLine: String, lineIndex: Int
 ) {
+  let 
+  let processed = string.Template(template).safe_substitute([
+    "clear": FileManager.default.currentDirectoryPath
+  ])
+  return String(output)!
+  
   let flags = shlex[dynamicMember: "split"](restOfLine)
   swiftPMFlags += [String](flags)!
 }
@@ -96,7 +102,7 @@ fileprivate func processInstallLocation(
 }
 
 fileprivate func substituteCwd(template: String, lineIndex: Int) -> String {
-  let output = string.Template(template).substitute([
+  let output = string.Template(template).safe_substitute([
     "cwd": FileManager.default.currentDirectoryPath
   ])
   return String(output)!
