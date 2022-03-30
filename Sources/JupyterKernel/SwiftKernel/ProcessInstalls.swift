@@ -66,7 +66,7 @@ fileprivate func processSwiftPMFlags(
   let reversedLine = String(processedLine.reversed())
   if let idRange = reversedLine.range(of: reversedID) {
     let endRange = reversedLine.startIndex..<idRange.lowerBound
-    processedLine = String(reversedLine[endRange])
+    processedLine = String(reversedLine[endRange].reversed())
     swiftPMFlags = []
   }
   
