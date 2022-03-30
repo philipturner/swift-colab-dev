@@ -13,13 +13,13 @@ fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
 // reference to the return value's object so that it doesn't deallocate.
 @_cdecl("create_shell")
 public func create_shell(
-  _ username_id: Int64,
-  _ sessionID_id: Int64, 
-  _ key_id: Int64,
+  _ username_ptr: UnsafePointer<CChar>,
+  _ sessionID_ptr: UnsafePointer<CChar>, 
+  _ key_ptr: UnsafePointer<CChar>,
 ) {
-  let (cast, py_object) = (ctypes.cast, ctypes.py_object)
-  let username = cast(username_id, py_object).value
-  let sessionID = cast(sessionID_id
+  let username = String(cString: username_ptr)
+  let sessionID = String(cString: sessionID_ptr)
+  let key = String(cString: key_ptr)
   
   InteractiveShellABC.register(SwiftShell)
 }
