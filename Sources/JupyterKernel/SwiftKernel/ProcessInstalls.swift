@@ -15,7 +15,7 @@ func processInstallDirective(
   ) rethrows {
     let regexMatch = re.match(regex, line)
     if regexMatch != Python.None {
-      let restOfLine = String(regexMatch.group(1))!
+      let restOfLine = String(regexMatch.group(1)) ?? ""
       try command(restOfLine, lineIndex)
       isValidDirective = true
     }
@@ -35,8 +35,8 @@ func processInstallDirective(
     """###)
     if isValidDirective { return }
     
-    attempt(command: processSwiftPMFlagsReset, ###"""
-    ^\s*%install-swiftpm-flags-reset\s*$
+    attempt(command: processSwiftPMFlagsClear, ###"""
+    ^\s*%install-swiftpm-flags-clear\s*$
     """###)
     if isValidDirective { return }
   }
@@ -63,9 +63,9 @@ fileprivate func processSwiftPMFlags(
   swiftPMFlags += [String](flags)!
 }
 
-// %install-swiftpm-flags-reset
+// %install-swiftpm-flags-clear
 
-fileprivate func processSwiftPMFlagsReset(
+fileprivate func processSwiftPMFlagsClear(
   restOfLine: String, lineIndex: Int
 ) {
   swiftPMFlags = []
