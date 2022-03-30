@@ -84,7 +84,7 @@ fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String
   }
   
   let systemRegularExpression = ###"""
-  ^\s*%system\s*$
+  ^\s*%system (.*)$
   """###
   let systemMatch = re.match(systemRegularExpression, line)
   guard systemMatch == Python.None else {
