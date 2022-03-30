@@ -498,10 +498,19 @@ fileprivate func processInstall(
     }
   }
   
+  if !warningClangModules.isEmpty {
+    sendStdout("""
+    ===--------------------------------------------------------------------------===
+    === The following Clang modules cannot be imported in your source code until ===
+    === you restart the runtime. If you only plan to import modules not listed   ===
+    === here, ignore this warning.                                               ===
+    === \(warningClangModules)
+    ===--------------------------------------------------------------------------===
+    """)
+  }
+  
   // == dlopen the shared lib ==
-    
-  sendStdout("Loading dynamic library...")
-
+  
   let dynamicLoadResult = execute(code: """
   import func Glibc.dlopen
   import var Glibc.RTLD_NOW
@@ -518,17 +527,6 @@ fileprivate func processInstall(
     throw PackageInstallException("""
       Install error: dlopen returned `nil`: \(error)
       """)
-  }
-  
-  if !warningClangModules.isEmpty {
-    sendStdout("""
-    ===--------------------------------------------------------------------------===
-    === The following Clang modules cannot be imported in your source code until ===
-    === you restart the runtime. If you only plan to import modules not listed   ===
-    === here, ignore this warning.                                               ===
-    === \(warningClangModules)
-    ===--------------------------------------------------------------------------===
-    """)
   }
 
   sendStdout("Installation complete!")
