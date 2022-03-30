@@ -58,7 +58,7 @@ fileprivate func processSwiftPMFlags(
       ])
     )!
   } catch {
-    try handleTemplateError(error, lineIndex: lineIndex)
+    throw handleTemplateError(error, lineIndex: lineIndex)
   }
   
   // Ensure that only everything after the last "$clear" flag passes into shlex.
@@ -74,23 +74,25 @@ fileprivate func processSwiftPMFlags(
   swiftPMFlags += [String](flags)!
 }
 
-fileprivate func handleTemplateError(_ anyError: Error, lineIndex: Int) throws {
+fileprivate func handleTemplateError(
+  _ anyError: Error, lineIndex: Int
+) -> Error {
   guard let pythonError = anyError as? PythonError else {
-    throw anyError
+    return anyError
   }
   switch pythonError {
   case .exception(let error, let traceback):
     if Bool(Python.isinstance(error, Python.KeyError))! {
-      throw PackageInstallException(
+      return PackageInstallException(
         "Line \(lineIndex + 1): Invalid template argument \(pythonError)")
     } else if Bool(Python.isinstance(error, Python.ValueError))! {
-      throw PackageInstallException(
+      return PackageInstallException(
         "Line \(lineIndex + 1): \(pythonError)")
     } else {
-      throw pythonError
+      return pythonError
     }
   default:
-    throw pythonError
+    return pythonError
   }
 }
 
@@ -147,7 +149,7 @@ fileprivate func substituteCwd(
       ])
     return String(output)!
   } catch {
-    try handleTemplateError(error, lineIndex: lineIndex)
+    throw handleTemplateError(error, lineIndex: lineIndex)
   }
 }
 
