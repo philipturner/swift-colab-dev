@@ -26,22 +26,30 @@ fileprivate let CapturingSocket = PythonClass(
   ]
 ).pythonObject
 
-fileprivate func realEnableGUI(_ gui: PythonObject) {
-  
-}
-
 ================================================================================
 // An IPython shell, modified to work within Swift.
 fileprivate let SwiftShell = PythonClass(
   "SwiftShell",
   superclasses: [zmqshell.ZMQInteractiveShell],
   members: [
+    "kernel": Python.import("ipykernel.inprocess.ipkernel").InProcessKernel()
+    
+    // -------------------------------------------------------------------------
+    // InteractiveShell interface
+    // -------------------------------------------------------------------------
+    
+    // Enable GUI integration for the kernel.
     "enable_gui": PythonInstanceMethod {
       (params: [PythonObject]) in
       let `self` = params[0]
-      let gui = params[1]
-      realEnableGUI(gui)
+      var gui = params[1]
+      if gui == Python.None {
+        gui = `self`.kernel.gui
+      }
       `self`.active_eventloop = gui
+      return Python.None
     }
+    
+    
   ]
 ).pythonObject
