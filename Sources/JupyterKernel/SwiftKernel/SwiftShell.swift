@@ -26,7 +26,6 @@ fileprivate let CapturingSocket = PythonClass(
   ]
 ).pythonObject
 
-================================================================================
 // An IPython shell, modified to work within Swift.
 fileprivate let SwiftShell = PythonClass(
   "SwiftShell",
@@ -50,6 +49,30 @@ fileprivate let SwiftShell = PythonClass(
       return Python.None
     }
     
+    // Enable matplotlib integration for the kernel.
+    "enable_matplotlib": PythonInstanceMethod {
+      (params: [PythonObject]) in
+      let `self` = params[0]
+      var gui = params[1]
+      if gui == Python.None {
+        gui = `self`.kernel.gui
+      }
+      try zmqshell.ZMQInteractiveShell.enable_matplotlib.throwing
+        .dynamicallyCall(withArguments: [`self`, gui])
+      return Python.None
+    }
     
+    // Enable pylab support at runtime.
+    "enable_pylab": PythonInstanceMethod {
+      (params: [PythonObject]) in
+      let `self` = params[0]
+      var gui = params[1]
+      if gui == Python.None {
+        gui = `self`.kernel.gui
+      }
+      try zmqshell.ZMQInteractiveShell.enable_pylab.throwing
+        .dynamicallyCall(withArguments: [`self`, gui])
+      return Python.None
+    }
   ]
 ).pythonObject
