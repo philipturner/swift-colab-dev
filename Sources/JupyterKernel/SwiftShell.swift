@@ -1,13 +1,15 @@
 import Foundation
 fileprivate let eventloops = Python.import("ipykernel.eventloops")
+fileprivate let interactiveshell = Python.import("IPython.core.interactiveshell")
 fileprivate let session = Python.import("jupyter_client.session")
 fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
+fileprivate let InteractiveShellABC = interactiveshell.InteractiveShellABC
 fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
 
 @_cdecl("create_shell")
 public func create_shell() {
-  
+  InteractiveShellABC.register(SwiftShell)
 }
 
 // Simulates a ZMQ socket, saving messages instead of sending them. We use this 
