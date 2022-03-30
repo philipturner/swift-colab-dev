@@ -92,7 +92,7 @@ fileprivate func handleTemplateError(
         "Line \(lineIndex + 1): \(pythonError)")
     } else {
       return PackageInstallException(
-        "Line \(lineIndex + 1): Unknown error type #2 \(pythonError.error.__class__)")
+        "Line \(lineIndex + 1): Unknown error type #2 \(error.__class__)")
     }
   default:
     return pythonError
