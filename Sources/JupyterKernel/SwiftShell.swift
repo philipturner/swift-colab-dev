@@ -3,6 +3,8 @@ fileprivate let eventloops = Python.import("ipykernel.eventloops")
 fileprivate let session = Python.import("jupyter_client.session")
 fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
+fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
+
 @_cdecl("create_shell")
 public func create_shell() {
   
@@ -31,7 +33,7 @@ fileprivate let CapturingSocket = PythonClass(
 // An IPython shell, modified to work within Swift.
 fileprivate let SwiftShell = PythonClass(
   "SwiftShell",
-  superclasses: [zmqshell.ZMQInteractiveShell],
+  superclasses: [ZMQInteractiveShell],
   members: [
     "kernel": Python.import("ipykernel.inprocess.ipkernel").InProcessKernel()
     
@@ -59,7 +61,7 @@ fileprivate let SwiftShell = PythonClass(
       if gui == Python.None {
         gui = `self`.kernel.gui
       }
-      try zmqshell.ZMQInteractiveShell.enable_matplotlib.throwing
+      try ZMQInteractiveShell.enable_matplotlib.throwing
         .dynamicallyCall(withArguments: [`self`, gui])
       return Python.None
     }
@@ -72,7 +74,7 @@ fileprivate let SwiftShell = PythonClass(
       if gui == Python.None {
         gui = `self`.kernel.gui
       }
-      try zmqshell.ZMQInteractiveShell.enable_pylab.throwing
+      try ZMQInteractiveShell.enable_pylab.throwing
         .dynamicallyCall(withArguments: [`self`, gui])
       return Python.None
     }
