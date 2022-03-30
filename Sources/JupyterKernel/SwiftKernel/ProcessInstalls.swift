@@ -26,7 +26,7 @@ func processInstallDirective(
     """###)
   if isValidDirective { return }
   
-  attempt(command: processSwiftPMFlags, ###"""
+  try attempt(command: processSwiftPMFlags, ###"""
     ^\s*%install-swiftpm-flags (.*)$
     """###)
     if isValidDirective { return }
@@ -53,7 +53,7 @@ fileprivate func processSwiftPMFlags(
   var processedLine: String
   
   do {
-    processedLine = String(try string.Template(template).substitute.throwing
+    processedLine = String(try string.Template(restOfLine).substitute.throwing
       .dynamicallyCall(withArguments: [
         "clear": id
       ])
