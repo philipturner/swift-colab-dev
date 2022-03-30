@@ -1,13 +1,13 @@
 import Foundation
-fileprivate let ctypes = 
 fileprivate let eventloops = Python.import("ipykernel.eventloops")
 fileprivate let interactiveshell = Python.import("IPython.core.interactiveshell")
 fileprivate let session = Python.import("jupyter_client.session")
 fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
 fileprivate let InteractiveShellABC = interactiveshell.InteractiveShellABC
+fileprivate let Session = session.Session
 fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
-================================================================================
+
 // Caller side: use `ctypes` to convert return value, which is the address of a
 // Python object, into an actual Python object. This Swift file stores a
 // reference to the return value's object so that it doesn't deallocate.
@@ -16,19 +16,30 @@ public func create_shell(
   _ username_ptr: UnsafePointer<CChar>,
   _ sessionID_ptr: UnsafePointer<CChar>, 
   _ key_ptr: UnsafePointer<CChar>,
-) {
+) -> Int64 {
+  InteractiveShellABC.register(SwiftShell)
+  
   let username = String(cString: username_ptr)
   let sessionID = String(cString: sessionID_ptr)
   let key = String(cString: key_ptr)
   
-  InteractiveShellABC.register(SwiftShell)
+  let socket = CapturingSocket()
+  let session = Session(username: username, session: sessionID, key: key)
+  let shell = SwiftShell.instance()
+  shell.display_pub.session = session
+  shell.display_pub.pub_socket = socket
+  
+  socketAndShell = (socket, shell)
+  return Python.id(socketAndShell)
 }
+
+fileprivate var socketAndShell: PythonObject!
 
 // Simulates a ZMQ socket, saving messages instead of sending them. We use this 
 // to capture display messages.
 fileprivate let CapturingSocket = PythonClass(
   "CapturingSocket",
-  superclasses: [session.Session],
+  superclasses: [Session],
   members: [
     "__init__": PythonInstanceMethod { (`self`: PythonObject) in
       `self`.messages = []
