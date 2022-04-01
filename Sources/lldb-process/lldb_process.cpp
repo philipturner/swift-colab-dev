@@ -133,10 +133,8 @@ int process_is_alive(int *is_alive) {
 
 // Output is in a serialized format:
 // 1st level of recursion (the header that starts the output):
-// - first 8 bytes (UInt64): header that says how many display messages
-// 2nd level of recursion:
 // - first 8 bytes (UInt64): header that says how many byte arrays
-// 3rd level of recursion:
+// 2rd level of recursion:
 // - first 8 bytes (UInt64): header that says how long the byte array is
 // - rest of line: data in the byte array, with allocated capacity rounded
 // up to a multiple of 8 bytes
@@ -156,26 +154,18 @@ int after_successful_execution(uint64_t **serialized_output) {
   uint64_t output_capacity = 1024;
   void *output = malloc(output_capacity);
   
-  uint32_t num_display_messages = result.GetNumChildren();
-  ((uint64_t*)output)[0] = num_display_messages;
+  uint32_t num_byte_arrays = result.GetNumChildren();
+  ((uint64_t*)output)[0] = num_byte_arrays;
   output_size += 8;
   
-  for (uint32_t i = 0; i < num_display_messages; ++i) {
-    auto display_message = result.GetChildAtIndex(i);
-    
-    uint32_t num_byte_arrays = display_message.GetNumChildren();
-    ((uint64_t*)((char*)output + output_size))[0] = num_byte_arrays;
-    output_size += 8;
-    
-    for (uint32_t j = 0; j < num_byte_arrays; ++j) {
-      auto byte_array = display_message.GetChildAtIndex(j);
-      int error_code = read_byte_array(
-        byte_array, &output_size, &output_capacity, &output);
-      if (error_code != 0) {
-        free(output);
-        *serialized_output = NULL;
-        return 1 + error_code;
-      }
+  for (uint32_t i = 0; i < num_byte_arrays; ++i) {
+    auto byte_array = result.GetChildAtIndex(i);
+    int error_code = read_byte_array(
+      byte_array, &output_size, &output_capacity, &output);
+    if (error_code != 0) {
+      free(output);
+      *serialized_output = NULL;
+      return 1 + error_code;
     }
   }
   
@@ -279,9 +269,9 @@ int read_byte_array(SBValue sbvalue,
   }
   
   int64_t needed_new_capacity = 
-    8 // 3rd-level header 
+    8 // 2rd-level header 
     + (~7 & (count + 7)) // byte array's contents
-    + 8; // potential next 2nd-level header
+    + 8; // potential next 1st-level header
   int64_t needed_total_capacity = *output_size + needed_new_capacity;
   if (needed_total_capacity > *output_capacity) {
     uint64_t new_capacity = (*output_capacity) * 2;
@@ -297,7 +287,7 @@ int read_byte_array(SBValue sbvalue,
   }
   
   int64_t added_size = 
-    8 // 3rd-level header 
+    8 // 2rd-level header 
     + (~7 & (count + 7)); // byte array's contents
   int64_t current_size = *output_size;
   int64_t *data_stream = (int64_t*)((char*)(*output) + current_size);
