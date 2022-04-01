@@ -268,11 +268,10 @@ int read_byte_array(SBValue sbvalue,
     return 2;
   }
   
-  int64_t needed_new_capacity = 
-    8 // 2rd-level header 
-    + (~7 & (count + 7)) // byte array's contents
-    + 8; // potential next 1st-level header
-  int64_t needed_total_capacity = *output_size + needed_new_capacity;
+  int64_t added_size = 
+    8 // 2nd-level header 
+    + (~7 & (count + 7)); // byte array's contents
+  int64_t needed_total_capacity = *output_size + added_size;
   if (needed_total_capacity > *output_capacity) {
     uint64_t new_capacity = (*output_capacity) * 2;
     while (needed_total_capacity > new_capacity) {
@@ -286,9 +285,6 @@ int read_byte_array(SBValue sbvalue,
     *output_capacity = new_capacity;
   }
   
-  int64_t added_size = 
-    8 // 2rd-level header 
-    + (~7 & (count + 7)); // byte array's contents
   int64_t current_size = *output_size;
   int64_t *data_stream = (int64_t*)((char*)(*output) + current_size);
   
