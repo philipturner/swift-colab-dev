@@ -7,31 +7,39 @@ func afterSuccessfulExecution() throws {
     throw Exception(
       "C++ part of `afterSuccessfulExecution` failed with error code \(error).")
   }
-  
+   
   let output = try deserialize(executionOutput: serializedOutput)
   print("KernelCommunicator produced: \(output)")
   free(serializedOutput)
 }
 
-fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [String] {
+fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[String]] {
   var stream = executionOutput
-  let numParts = Int(stream.pointee)
+  let numJupyterMessages = Int(stream.pointee)
   stream += 1
   
-  var parts: [String] = []
-  parts.reserveCapacity(numParts)
-  for _ in 0..<numParts {
-    let numBytes = Int(stream.pointee)
+  var jupyterMessages: [[String]] = []
+  jupyterMessages.reserveCapacity(numJupyterMessages)
+  for _ in 0..<numJupyterMessages {
+    let numDisplayMessages = Int(stream.pointee)
     stream += 1
-
-    let byteArray = Data(
-      bytesNoCopy: stream, count: numBytes, deallocator: .none)
-    guard let message = String(data: byteArray, encoding: .utf8) else {
-      throw Exception("Could not decode bytes: \(byteArray.map { $0 })")
+    
+    var displayMessages: [String] = []
+    displayMessages.reserveCapacity(numDisplayMessages)
+    for _ in 0..<numDisplayMessages {
+      let numBytes = Int(stream.pointee)
+      stream += 1
+      
+      let byteArray = Data(
+        bytesNoCopy: stream, count: numBytes, deallocator: .none)
+      guard let message = String(data: byteArray, encoding: .utf8) else {
+        throw Exception("Could not decode bytes: \(byteArray.map { $0 })")
+      }
+      displayMessages.append(message)
+      stream += (numBytes + 7) / 8
     }
-    parts.append(message)
-    stream += (numBytes + 7) / 8
+    jupyterMessages.append(displayMessages)
   }
   
-  return parts
+  return jupyterMessages
 }
