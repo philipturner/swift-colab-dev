@@ -19,7 +19,7 @@ fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) thro
   stream += 1
   
   var parts: [String] = []
-  parts.reserveCapacity(numJupyterMessages)
+  parts.reserveCapacity(numParts)
   for _ in 0..<numParts {
     let numBytes = Int(stream.pointee)
     stream += 1
@@ -33,5 +33,5 @@ fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) thro
     stream += (numBytes + 7) / 8
   }
   
-  return jupyterMessages
+  return parts
 }
