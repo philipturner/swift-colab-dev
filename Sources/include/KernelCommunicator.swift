@@ -19,59 +19,39 @@
 /// ZeroMQ. This is not currently possible, because ZeroMQ sends messages
 /// asynchronously using IO threads, and LLDB pauses those IO threads, which
 /// prevents them from sending the messages.
-public struct KernelCommunicator {
-  private var afterSuccessfulExecutionHandlers: [() -> [JupyterDisplayMessage]]
-  private var parentMessageHandlers: [(ParentMessage) -> ()]
+struct KernelCommunicator {
+  private var afterSuccessfulExecutionHandler: (() -> JupyterDisplayMessage)?
+  private var parentMessageHandler: ((ParentMessage) -> ())?
 
-  public let jupyterSession: JupyterSession
+  let jupyterSession: JupyterSession
 
-  private var previousDisplayMessages: [JupyterDisplayMessage] = []
+  private var previousDisplayMessage: JupyterDisplayMessage?
 
   init(jupyterSession: JupyterSession) {
-    self.afterSuccessfulExecutionHandlers = []
-    self.parentMessageHandlers = []
     self.jupyterSession = jupyterSession
   }
 
-  /// Register a handler to run after the kernel successfully executes a cell
-  /// of user code. The handler may return messages. These messages will be
-  /// sent to the Jupyter client.
-  public mutating func afterSuccessfulExecution(
-      run handler: @escaping () -> [JupyterDisplayMessage]) {
-    afterSuccessfulExecutionHandlers.append(handler)
-  }
-
-  /// Register a handler to run when the parent message changes.
-  public mutating func handleParentMessage(_ handler: @escaping (ParentMessage) -> ()) {
-    parentMessageHandlers.append(handler)
-  }
-
   /// The kernel calls this after successfully executing a cell of user code.
-  /// Returns an array of messages, where each message is returned as an array
-  /// of parts, where each part is returned as an address to the memory containing the part's
-  /// bytes and a count of the number of bytes.
-  public mutating func triggerAfterSuccessfulExecution() -> [[(address: UInt, count: Int)]] {
-    // Keep a reference to the messages, so that their `.unsafeBufferPointer`
+  /// Returns an array of parts, where each part is returned as an address to 
+  /// the memory containing the part's bytes and a count of the number of bytes.
+  mutating func triggerAfterSuccessfulExecution() -> [(address: UInt, count: Int)] {
+    // Keep a reference to the parts, so that their `.unsafeBufferPointer`
     // stays valid while the kernel is reading from them.
-    previousDisplayMessages = afterSuccessfulExecutionHandlers.flatMap { $0() }
-    return previousDisplayMessages.map { message in
-      return message.parts.map { part in
-        let b = part.unsafeBufferPointer
-        return (address: UInt(bitPattern: b.baseAddress), count: b.count)
-      }
-    }
+    previousDisplayMessage = afterSuccessfulExecutionHandler?()
+    return previousDisplayMessage?.parts.map { part in
+      let b = part.unsafeBufferPointer
+      return (address: UInt(bitPattern: b.baseAddress), count: b.count)
+    } ?? []
   }
 
   /// The kernel calls this when the parent message changes.
-  public mutating func updateParentMessage(to parentMessage: ParentMessage) {
-    for parentMessageHandler in parentMessageHandlers {
-      parentMessageHandler(parentMessage)
-    }
+  mutating func updateParentMessage(to parentMessage: ParentMessage) {
+    parentMessageHandler?(parentMessage)
   }
 
   /// A single serialized display message for the Jupyter client.
   /// Corresponds to a ZeroMQ "multipart message".
-  public struct JupyterDisplayMessage {
+  struct JupyterDisplayMessage {
     let parts: [BytesReference]
   }
 
@@ -83,17 +63,18 @@ public struct KernelCommunicator {
   ///
   /// We use this so that we can give the kernel a memory location that it can
   /// read bytes from.
-  public class BytesReference {
+  class BytesReference {
     private var bytes: ContiguousArray<CChar>
 
-    init<S: Sequence>(_ bytes: S) where S.Element == CChar {
+    init(_ bytes: UnsafeBufferPointer<CChar>) {
+      
       // Construct our own array and copy `bytes` into it, so that no one
       // else aliases the underlying memory.
       self.bytes = []
       self.bytes.append(contentsOf: bytes)
     }
 
-    public var unsafeBufferPointer: UnsafeBufferPointer<CChar> {
+    var unsafeBufferPointer: UnsafeBufferPointer<CChar> {
       // We have tried very hard to make the pointer stay valid outside the
       // closure:
       // - No one else aliases the underlying memory.
@@ -107,12 +88,12 @@ public struct KernelCommunicator {
   /// ParentMessage identifies the request that causes things to happen.
   /// This lets Jupyter, for example, know which cell to display graphics
   /// messages in.
-  public struct ParentMessage {
+  struct ParentMessage {
     let json: String
   }
 
   /// The data necessary to identify and sign outgoing jupyter messages.
-  public struct JupyterSession {
+  struct JupyterSession {
     let id: String
     let key: String
     let username: String
