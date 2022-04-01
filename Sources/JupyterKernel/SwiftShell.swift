@@ -21,7 +21,7 @@ public func create_shell(
   
   let username = String(cString: username_ptr)
   let sessionID = String(cString: sessionID_ptr)
-  let key = String(cString: key_ptr)
+  let key = String(cString: key_ptr).data(using: .utf8)!
   
   let socket = CapturingSocket()
   let session = Session(username: username, session: sessionID, key: key)
