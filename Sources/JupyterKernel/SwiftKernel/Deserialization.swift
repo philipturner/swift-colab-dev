@@ -9,8 +9,14 @@ func afterSuccessfulExecution() throws {
   }
    
   let output = try deserialize(executionOutput: serializedOutput)
-  print("KernelCommunicator produced: \(output)")
   free(serializedOutput)
+  print("KernelCommunicator produced: \(output)")
+  
+  let kernel = KernelContext.kernel
+  let send_multipart = kernel.iopub_socket.send_multipart
+  for message in output {
+    send_multipart(message)
+  }
 }
 
 fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[String]] {
