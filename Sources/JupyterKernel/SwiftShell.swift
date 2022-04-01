@@ -2,10 +2,12 @@ import Foundation
 fileprivate let eventloops = Python.import("ipykernel.eventloops")
 fileprivate let interactiveshell = Python.import("IPython.core.interactiveshell")
 fileprivate let session = Python.import("jupyter_client.session")
+fileprivate let traitlets = Python.import("traitlets")
 fileprivate let zmqshell = Python.import("ipykernel.zmqshell")
 
 fileprivate let InteractiveShellABC = interactiveshell.InteractiveShellABC
 fileprivate let Session = session.Session
+fileprivate let Instance = traitlets.Instance
 fileprivate let ZMQInteractiveShell = zmqshell.ZMQInteractiveShell
 
 // Caller side: use `ctypes` to convert return value, which is the address of a
@@ -60,7 +62,8 @@ fileprivate let SwiftShell = PythonClass(
   "SwiftShell",
   superclasses: [ZMQInteractiveShell],
   members: [
-    "kernel": Python.import("ipykernel.inprocess.ipkernel").InProcessKernel(),
+    "kernel": Instance(
+      "ipykernel.inprocess.ipkernel.InProcessKernel", allow_none: true)
     
     // -------------------------------------------------------------------------
     // InteractiveShell interface
