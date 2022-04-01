@@ -63,7 +63,7 @@ fileprivate let SwiftShell = PythonClass(
   superclasses: [ZMQInteractiveShell],
   members: [
     "kernel": Instance(
-      "ipykernel.inprocess.ipkernel.InProcessKernel", allow_none: true)
+      "ipykernel.inprocess.ipkernel.InProcessKernel", allow_none: true),
     
     // -------------------------------------------------------------------------
     // InteractiveShell interface
