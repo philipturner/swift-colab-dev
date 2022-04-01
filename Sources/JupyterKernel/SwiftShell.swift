@@ -69,17 +69,17 @@ fileprivate let SwiftShell = PythonClass(
     // InteractiveShell interface
     // -------------------------------------------------------------------------
     
-    // Enable GUI integration for the kernel.
-    "enable_gui": PythonInstanceMethod {
-      (params: [PythonObject]) in
+//     // Enable GUI integration for the kernel.
+//     "enable_gui": PythonInstanceMethod {
+//       (params: [PythonObject]) in
 //       let `self` = params[0]
 //       var gui = params[1]
 //       if gui == Python.None {
 //         gui = `self`.kernel.gui
 //       }
 //       `self`.active_eventloop = gui
-      return Python.None
-    },
+//       return Python.None
+//     },
     
 //     // Enable matplotlib integration for the kernel.
 //     "enable_matplotlib": PythonInstanceMethod {
