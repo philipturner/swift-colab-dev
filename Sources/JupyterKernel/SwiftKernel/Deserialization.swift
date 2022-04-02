@@ -45,9 +45,11 @@ fileprivate func deserialize(
       stream += 1
       
       let byteArray = PythonObject(consuming: PyMemoryView_FromMemory(
+        UnsafeMutablePointer<CChar>(OpaquePointer(stream)),
+        Int64(numBytes),
+        PyBUF_READ
       ))
-
-      let byteArray = UnsafeBufferPointer(start: stream, count: numBytes)
+      
       message.append(byteArray)
       stream += (numBytes + 7) / 8
     }
