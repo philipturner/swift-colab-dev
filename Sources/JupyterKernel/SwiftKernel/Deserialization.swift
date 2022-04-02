@@ -27,23 +27,26 @@ func afterSuccessfulExecution() throws {
 
 fileprivate func deserialize(
   executionOutput: UnsafeMutablePointer<UInt64>
-) throws -> [[UnsafeBufferPointer]] {
+) throws -> [[PythonObject]] {
   var stream = executionOutput
   let numJupyterMessages = Int(stream.pointee)
   stream += 1
   
-  var jupyterMessages: [[Data]] = []
+  var jupyterMessages: [[PythonObject]] = []
   jupyterMessages.reserveCapacity(numJupyterMessages)
   for _ in 0..<numJupyterMessages {
     let numParts = Int(stream.pointee)
     stream += 1
     
-    var message: [Data] = []
+    var message: [PythonObject] = []
     message.reserveCapacity(numParts)
     for _ in 0..<numParts {
       let numBytes = Int(stream.pointee)
       stream += 1
       
+      let byteArray = PythonObject(consuming: PyMemoryView_FromMemory(
+      ))
+
       let byteArray = UnsafeBufferPointer(start: stream, count: numBytes)
       message.append(byteArray)
       stream += (numBytes + 7) / 8
