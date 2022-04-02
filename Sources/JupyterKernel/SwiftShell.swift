@@ -57,9 +57,11 @@ fileprivate let CapturingSocket = PythonClass(
 //       guard let index = kwargs.firstIndex(where: { $0.key == "msg" }) else {
 //         throw Exception("Uh oh: \(args) \(kwargs)")
 //       }
-      `self`.messages[dynamicMember: "append"](msg)//kwargs[index].value)
+//       `self`.messages[dynamicMember: "append"](msg)//kwargs[index].value)
       return Python.None
     }
+    
+    // add a function to retrieve pointer to the messages from the internal format
   ]
 ).pythonObject
 
