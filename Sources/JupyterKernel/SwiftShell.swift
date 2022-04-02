@@ -50,11 +50,11 @@ fileprivate let CapturingSocket = PythonClass(
     
     "send_multipart": PythonInstanceMethod { args, kwargs in
       let `self` = args[0]
-//       let msg = args[1]
-      guard let index = kwargs.firstIndex(where: { $0.key == "msg" }) else {
-        throw Exception("Uh oh")
-      }
-      `self`.messages.append(kwargs[index].value)
+      let msg = args[1]
+//       guard let index = kwargs.firstIndex(where: { $0.key == "msg" }) else {
+//         throw Exception("Uh oh: \(args) \(kwargs)")
+//       }
+      `self`.messages[dynamicMember: "append"](msg)//kwargs[index].value)
       return Python.None
     }
   ]
