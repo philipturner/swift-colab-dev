@@ -93,11 +93,11 @@ func doExecute(code: String) throws -> PythonObject? {
 
 fileprivate func setParentMessage() throws {
   let parentHeader = KernelContext.kernel._parent_header
-  let jsonObj = json.dumps(jsonutil.squash_dates(parentHeader))
+  let jsonObj = json.dumps(json.dumps(jsonutil.squash_dates(parentHeader)))
   
   let result = execute(code: """
   JupyterKernel.communicator.updateParentMessage(
-    to: KernelCommunicator.ParentMessage(json: "\(String(jsonObj)!)"))
+    to: KernelCommunicator.ParentMessage(json: \(String(jsonObj)!)))
   """)
   if result is ExecutionResultError {
     throw Exception("Error setting parent message: \(result)")
