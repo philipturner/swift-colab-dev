@@ -50,8 +50,9 @@ fileprivate let CapturingSocket = PythonClass(
     
     "send_multipart": PythonInstanceMethod { args, kwargs in
       let `self` = args[0]
-      let msg = args[1]
-      `self`.messages.append(msg)
+//       let msg = args[1]
+      let index = kwargs.firstIndex(where: { $0.key == "msg" })!
+      `self`.messages.append(kwargs[index].value)
       return Python.None
     }
   ]
