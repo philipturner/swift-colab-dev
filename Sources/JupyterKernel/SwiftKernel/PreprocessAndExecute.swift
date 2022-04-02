@@ -64,8 +64,6 @@ fileprivate func preprocess(code: String) throws -> String {
   return preprocessedLines.joined(separator: "\n")
 }
 
-// TODO: move %system and interface into %install commands here
-
 fileprivate func preprocess(line: String, index lineIndex: Int) throws -> String {
   let installRegularExpression = ###"""
   ^\s*%install
