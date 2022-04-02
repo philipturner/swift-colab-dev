@@ -1,4 +1,6 @@
 import Foundation
+fileprivate let json = Python.import("json")
+fileprivate let jsonutil = Python.import("jupyter_client").jsonutil
 
 func doExecute(code: String) throws -> PythonObject? {
   // TODO: make this happen in the very first cell, regardless of
@@ -90,19 +92,12 @@ func doExecute(code: String) throws -> PythonObject? {
 }
 
 fileprivate func setParentMessage() throws {
-  // TODO: remove dependency on Python JSON once I figure
-  // out what this parent message is
-  let json = Python.import("json")
-  let squash_dates = Python.import("jupyter_client").jsonutil.squash_dates
   let parentHeader = KernelContext.kernel._parent_header
-  let firstDump = json.dumps(squash_dates(parentHeader))
-  print("First dump: \(firstDump)")
-  
-  let jsonDumps = String(json.dumps(firstDump))!
+  let jsonObj = json.dumps(jsonutil.squash_dates(parentHeader))
   
   let result = execute(code: """
   JupyterKernel.communicator.updateParentMessage(
-    to: KernelCommunicator.ParentMessage(json: \(jsonDumps)))
+    to: KernelCommunicator.ParentMessage(json: "\(String(jsonObj)!)"))
   """)
   if result is ExecutionResultError {
     throw Exception("Error setting parent message: \(result)")
