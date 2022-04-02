@@ -9,13 +9,14 @@ func afterSuccessfulExecution() throws {
   }
    
   let output = try deserialize(executionOutput: serializedOutput)
-  free(serializedOutput)
   
   let kernel = KernelContext.kernel
   let send_multipart = kernel.iopub_socket.send_multipart.throwing
   for message in output {
     try send_multipart.dynamicallyCall(withArguments: message.pythonObject)
   }
+  
+  free(serializedOutput)
 }
 
 fileprivate func deserialize(
@@ -37,7 +38,7 @@ fileprivate func deserialize(
       let numBytes = Int(stream.pointee)
       stream += 1
       
-      let byteArray = Data(bytes: stream, count: numBytes)
+      let byteArray = UnsafeBufferPointer(start: stream, count: numBytes)
       message.append(byteArray)
       stream += (numBytes + 7) / 8
     }
