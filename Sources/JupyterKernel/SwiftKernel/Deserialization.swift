@@ -1,5 +1,9 @@
 import Foundation
 
+fileprivate let PyMemoryView_FromMemory: @convention(c) (
+  UnsafeMutablePointer<CChar>, Int64, Int32) -> PyObjectPointer = 
+  PythonLibrary.loadSymbol(name: "PyMemoryView_FromMemory")
+
 func afterSuccessfulExecution() throws {
   var serializedOutput: UnsafeMutablePointer<UInt64>?
   let error = KernelContext.after_successful_execution(&serializedOutput)
