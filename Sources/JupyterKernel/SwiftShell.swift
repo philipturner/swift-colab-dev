@@ -37,9 +37,6 @@ public func create_shell(
 
 fileprivate var socketAndShell: PythonObject!
 
-// TODO: store messages externally so they don't constantly copy back 
-// and forth between Swift and Python runtimes
-
 // Simulates a ZMQ socket, saving messages instead of sending them. We use this 
 // to capture display messages.
 fileprivate let CapturingSocket = PythonClass(
@@ -57,7 +54,7 @@ fileprivate let CapturingSocket = PythonClass(
 //       guard let index = kwargs.firstIndex(where: { $0.key == "msg" }) else {
 //         throw Exception("Uh oh: \(args) \(kwargs)")
 //       }
-//       `self`.messages[dynamicMember: "append"](msg)//kwargs[index].value)
+      `self`.messages[dynamicMember: "append"](msg)//kwargs[index].value)
       return Python.None
     }
     
