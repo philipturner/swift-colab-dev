@@ -9,45 +9,37 @@ func afterSuccessfulExecution() throws {
   }
    
   let output = try deserialize(executionOutput: serializedOutput)
-  
-  print("KernelCommunicator produced: \(output)")
-  print("Number of bytes: \(output.reduce(0, { $0 + $1.reduce(0, { $0 + $1.count }) }))")
+  free(serializedOutput)
   
   let kernel = KernelContext.kernel
   let send_multipart = kernel.iopub_socket.send_multipart.throwing
   for message in output {
     try send_multipart.dynamicallyCall(withArguments: message.pythonObject)
   }
-  
-  free(serializedOutput)
 }
 
-fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[String]] {
+fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[Data]] {
   var stream = executionOutput
   let numJupyterMessages = Int(stream.pointee)
   stream += 1
   
-  var jupyterMessages: [[String]] = []
+  var jupyterMessages: [[Data]] = []
   jupyterMessages.reserveCapacity(numJupyterMessages)
   for _ in 0..<numJupyterMessages {
-    let numDisplayMessages = Int(stream.pointee)
+    let numParts = Int(stream.pointee)
     stream += 1
     
-    var displayMessages: [String] = []
-    displayMessages.reserveCapacity(numDisplayMessages)
-    for _ in 0..<numDisplayMessages {
+    var message: [Data] = []
+    message.reserveCapacity(numParts)
+    for _ in 0..<numParts {
       let numBytes = Int(stream.pointee)
       stream += 1
       
-      let byteArray = Data(
-        bytesNoCopy: stream, count: numBytes, deallocator: .none)
-      guard let message = String(data: byteArray, encoding: .utf8) else {
-        throw Exception("Could not decode bytes: \(byteArray.map { $0 })")
-      }
-      displayMessages.append(message)
+      let byteArray = Data(bytes: stream, count: numBytes)
+      message.append(byteArray)
       stream += (numBytes + 7) / 8
     }
-    jupyterMessages.append(displayMessages)
+    jupyterMessages.append(message)
   }
   
   return jupyterMessages
