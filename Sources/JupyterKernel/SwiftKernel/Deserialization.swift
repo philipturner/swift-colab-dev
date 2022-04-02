@@ -18,7 +18,9 @@ func afterSuccessfulExecution() throws {
   }
 }
 
-fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[Data]] {
+fileprivate func deserialize(
+  executionOutput: UnsafeMutablePointer<UInt64>
+) throws -> [[UnsafeBufferPointer]] {
   var stream = executionOutput
   let numJupyterMessages = Int(stream.pointee)
   stream += 1
