@@ -16,7 +16,7 @@ func afterSuccessfulExecution() throws {
   let kernel = KernelContext.kernel
   let send_multipart = kernel.iopub_socket.send_multipart.throwing
   for message in output {
-    try send_multipart.dynamicallyCall(withArguments: message)
+    try send_multipart.dynamicallyCall(withArguments: message.pythonObject)
   }
   
   free(serializedOutput)
