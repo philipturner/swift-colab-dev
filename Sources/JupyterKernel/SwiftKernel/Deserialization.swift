@@ -9,14 +9,17 @@ func afterSuccessfulExecution() throws {
   }
    
   let output = try deserialize(executionOutput: serializedOutput)
-  free(serializedOutput)
-  print("KernelCommunicator produced: \(output)")
   
-//   let kernel = KernelContext.kernel
-//   let send_multipart = kernel.iopub_socket.send_multipart
-//   for message in output {
-//     send_multipart(message)
-//   }
+  print("KernelCommunicator produced: \(output)")
+  print("Number of bytes: \(output.reduce(0, { $0 + $1.reduce(0, { $0 + $1.count }) }))")
+  
+  let kernel = KernelContext.kernel
+  let send_multipart = kernel.iopub_socket.send_multipart.throwing
+  for message in output {
+    try send_multipart.dynamicallyCall(withArguments: message)
+  }
+  
+  free(serializedOutput)
 }
 
 fileprivate func deserialize(executionOutput: UnsafeMutablePointer<UInt64>) throws -> [[String]] {
