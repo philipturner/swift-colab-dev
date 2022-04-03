@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Process command-line arguments
 
 old_IFS=$IFS
