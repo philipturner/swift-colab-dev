@@ -118,7 +118,7 @@ else
     release="swift-$1-RELEASE"
   elif [[ $toolchain_type == "snapshot" ]]; then
     branch="development"
-    release="swift-DEVELOPMENT-SNAPSHOT-$1-a"
+    release="swift-DEVELOPMENT-SNAPSHOT-a"
   fi
   
   echo $branch
