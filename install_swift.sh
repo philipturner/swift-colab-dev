@@ -15,6 +15,8 @@
 
 # Process command-line arguments
 
+version="$1"
+
 IFS='.'
 read -a strarr <<< "$1"
 component_count=${#strarr[*]}
@@ -101,7 +103,6 @@ fi
 
 # Download Swift toolchain
 
-version="$1"
 echo $1
 echo "$1"
 echo "$version"
@@ -119,6 +120,11 @@ else
     branch="development"
     release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
   fi
+  
+  echo $branch
+  echo $release
+  echo "$branch"
+  echo "$release"
   
   tar_file="$release-ubuntu18.04.tar.gz"
   url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
