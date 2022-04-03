@@ -52,10 +52,10 @@ public func JupyterKernel_registerSwiftKernel() {
       try! fm.copyItem(atPath: swiftKernelPath, toPath: activeKernelPath)
       
       print("""
-      ===----------------------------------------------------------------------------------------===
-      === Swift-Colab overwrote the Python kernel with Swift, but Colab is still in Python mode. ===
-      === To enter Swift mode, go to Runtime > Restart runtime (NOT Factory reset runtime).      ===
-      ===----------------------------------------------------------------------------------------===
+      === ------------------------------------------------------------------------ ===
+      === Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
+      === in Python mode. To enter Swift mode, go to Runtime > Restart runtime.    ===
+      === ------------------------------------------------------------------------ ===
       """)
   } else {
       print("Swift Jupyter kernel was already registered")
