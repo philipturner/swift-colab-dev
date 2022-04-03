@@ -121,9 +121,9 @@ export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 # The easiest way to do this (and repeat behavior for other conditionals)
 # is to just add a check of is in dev mode to the conditional.
 
-if [[ ! -e "progress/downloaded-swift-colab" ]]; then
+if [[ $mode == "dev" || ! -e "progress/downloaded-swift-colab" ]]; then
   # Enable these lines only in dev mode
-  rm -r swift-colab
+  rm -r swift-colab # only remove if directory exists
   cp -r /content/swift-colab "swift-colab"
 
   # Enable these lines when not in dev mode
@@ -137,7 +137,7 @@ fi
 
 # Build LLDB bindings
 
-if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
+if [[ $mode == "dev" || ! -e "progress/compiled-lldb-process" ]]; then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/LLDBProcess
   
@@ -157,14 +157,14 @@ if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   
   cd /opt/swift
   # Enable this line when not in dev mode
-#   echo "true" > "progress/compiled-lldb-bindings"
+#   echo "true" > "progress/compiled-lldb-process"
 else
   echo "Using cached Swift LLDB bindings"
 fi
 
 # Build JupyterKernel
 
-if [[ ! -e "progress/jupyterkernel-compiler-version" ||
+if [[ $mode == "dev" || ! -e "progress/jupyterkernel-compiler-version" ||
   $version != `cat "progress/jupyterkernel-compiler-version"` ]]
 then
   echo "Compiling JupyterKernel"
@@ -215,9 +215,9 @@ done
 
 # Overwrite Python kernel
 
-replacing_python_kernel=true
+replacing_python_kernel=true # replace with a progress file
 
-if [[ $replacing_python_kernel == true ]]; then
+if [[ $mode == "dev" || $replacing_python_kernel == true ]]; then
   register_kernel='
 import Foundation
 
