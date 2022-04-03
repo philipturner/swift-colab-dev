@@ -12,9 +12,9 @@ public func JupyterKernel_createSwiftKernel() {
   let currentMode = read(path: "/opt/swift/mode")
   
   // Whether to automatically alternate between runtimes
-  let isDevelopment = currentMode.contains("dev")
-  let runtime1 = isDevelopment ? "swift" : "python3" // Python in release mode
-  let runtime2 = isDevelopment ? "python3" : "swift" // Swift in release mode
+  let isRelease = currentMode.contains("release")
+  let runtime1 = isRelease ? "python3" : "swift"
+  let runtime2 = isRelease ? "swift" : "python3"
   
   let nextRuntime = currentRuntime.contains("python") ? runtime1 : runtime2
   fm.createFile(
