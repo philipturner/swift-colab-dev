@@ -70,10 +70,9 @@ fileprivate let SwiftShell = PythonClass(
     // -------------------------------------------------------------------------
     
     // Enable GUI integration for the kernel.
-    "enable_gui": PythonInstanceMethod {
-      (params: [PythonObject]) in
-      let `self` = params[0]
-      var gui = params[1]
+    "enable_gui": PythonInstanceMethod { (args: [PythonObject]) in
+      let `self` = args[0]
+      var gui = args[1]
       if gui == Python.None {
         gui = `self`.kernel.gui
       }
@@ -82,10 +81,9 @@ fileprivate let SwiftShell = PythonClass(
     },
     
     // Enable matplotlib integration for the kernel.
-    "enable_matplotlib": PythonInstanceMethod {
-      (params: [PythonObject]) in
-      let `self` = params[0]
-      var gui = params[1]
+    "enable_matplotlib": PythonInstanceMethod { (args: [PythonObject]) in
+      let `self` = args[0]
+      var gui = args[1]
       if gui == Python.None {
         gui = `self`.kernel.gui
       }
@@ -95,10 +93,9 @@ fileprivate let SwiftShell = PythonClass(
     },
     
     // Enable pylab support at runtime.
-    "enable_pylab": PythonInstanceMethod {
-      (params: [PythonObject]) in
-      let `self` = params[0]
-      var gui = params[1]
+    "enable_pylab": PythonInstanceMethod { (args: [PythonObject]) in
+      let `self` = args[0]
+      var gui = args[1]
       if gui == Python.None {
         gui = `self`.kernel.gui
       }
