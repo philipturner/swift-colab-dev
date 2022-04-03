@@ -141,20 +141,20 @@ fi
 
 if [[ ! -e "progress/compiled-lldb-bindings" ]]; then
   echo "Compiling Swift LLDB bindings"
-  cd swift-colab/Sources/lldb-process
+  cd swift-colab/Sources/LLDBProcess
   
   if [[ ! -d build ]]; then
     mkdir build
   fi
   cd build
   
-  clang++ -Wall -O0 -I../include -c ../lldb_process.cpp -fpic
-  clang++ -Wall -O0 -L/opt/swift/toolchain/usr/lib -shared -o liblldb_process.so \
-    lldb_process.o -llldb
+  clang++ -Wall -O0 -I../include -c ../LLDBProcess.cpp -fpic
+  clang++ -Wall -O0 -L/opt/swift/toolchain/usr/lib -shared -o libLLDBProcess.so \
+    LLDBProcess.o -llldb
   
-  lldb_process_link="/opt/swift/lib/liblldb_process.so"
+  lldb_process_link="/opt/swift/lib/libLLDBProcess.so"
   if [[ ! -L $lldb_process_link ]]; then
-    ln -s "$(pwd)/liblldb_process.so" $lldb_process_link
+    ln -s "$(pwd)/libLLDBProcess.so" $lldb_process_link
   fi
   
   cd /opt/swift
