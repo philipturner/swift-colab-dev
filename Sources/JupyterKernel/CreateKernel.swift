@@ -4,7 +4,7 @@ import Foundation
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
   func read(path: String) -> String {
-    let data = fm.contents(atPath: runtimePath)!
+    let data = fm.contents(atPath: path)!
     return String(data: data, encoding: .utf8)!.lowercased()
   }
   
