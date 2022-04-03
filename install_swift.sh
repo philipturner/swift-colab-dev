@@ -54,7 +54,7 @@ if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
   # TODO: change to putting Python in there
-  echo "" > /opt/swift/runtime_type
+  echo "swift" > /opt/swift/runtime_type
 fi
 
 cd /opt/swift
