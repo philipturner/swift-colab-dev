@@ -1,5 +1,60 @@
 #!/bin/bash
 
+# # Extract program arguments
+
+# if [[ $# == 2 && $1 == "--snapshot" ]]; then
+#   is_dev=true
+#   version=$2
+# elif [[ $# == 1 && $1 != "--help" ]]; then
+#   is_dev=false
+#   version=$1
+# else
+#   echo "Usage: ./install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
+#   exit -1
+# fi
+
+# Process command-line arguments
+
+IFS='.'
+read -a strarr <<< "$1"
+component_count=${#strarr[*]}
+
+if [[ $component_count -ge 2 ]]; then
+  # First argument is two components separated by a period like "5.6" or three
+  # components like "5.5.3".
+  toolchain_type="release"
+else
+  IFS='-'
+  read -a strarr <<< "$1"
+  component_count=${#strarr[*]}
+  
+  if [[ $component_count == 3 ]]; then
+    # First argument is three components in the format "YYYY-MM-DD".
+    toolchain_type="snapshot"
+  else
+    # First argument is absent or improperly formatted.
+    toolchain_type="invalid"
+  fi
+fi
+
+if [[ $# == 1 ]]; then
+  # Release mode - tailored for the fastest user experience.
+  mode="release"
+elif [[ $# == 2 && $2 == "--swift-colab-dev" ]]; then
+  # Dev mode - for debugging and modifying Swift-Colab.
+  mode="dev"
+else
+  # Unrecognized flags were passed in.
+  mode="invalid"
+fi
+
+if [[ $toolchain_type == "invalid" || $mode == "invalid" ]]; then
+  echo "Usage: install_swift.sh {MAJOR.MINOR.PATCH | YYYY-MM-DD} [--swift-colab-dev]"
+  exit -1
+fi
+
+# Move to /opt/swift
+
 if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift
   mkdir /opt/swift/build
@@ -7,23 +62,12 @@ if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
+  # TODO: change to putting Python in there
   echo "" > /opt/swift/runtime_type
 fi
 
 cd /opt/swift
-
-# Extract program arguments
-
-if [[ $# == 2 && $1 == "--snapshot" ]]; then
-  is_dev=true
-  version=$2
-elif [[ $# == 1 && $1 != "--help" ]]; then
-  is_dev=false
-  version=$1
-else
-  echo "Usage: ./install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
-  exit -1
-fi
+echo $mode > /opt/swift/mode # Is this malformatted?
 
 # Determine whether to reuse cached files
 
@@ -57,17 +101,19 @@ fi
 
 # Download Swift toolchain
 
+version=$1
+
 if [[ $using_cached_swift == true ]]; then
   echo "Using cached Swift $version"
 else
   echo "Downloading Swift $version"
   
-  if [[ $is_dev == true ]]; then
-    branch="development"
-    release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
-  else
+  if [[ $toolchain_type == "release" ]]; then
     branch="swift-$version-release"
     release="swift-$version-RELEASE"
+  elif [[ $toolchain_type == "snapshot" ]]; then
+    branch="development"
+    release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
   fi
   
   tar_file="$release-ubuntu18.04.tar.gz"
@@ -83,6 +129,10 @@ fi
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
 # Download Swift-Colab
+
+# If in dev mode, re-download philipturner/swift-colab[-dev] every time.
+# The easiest way to do this (and repeat behavior for other conditionals)
+# is to just add a check of is in dev mode to the conditional.
 
 if [[ ! -e "progress/downloaded-swift-colab" ]]; then
   # Enable these lines only in dev mode
