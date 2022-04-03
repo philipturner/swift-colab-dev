@@ -47,9 +47,9 @@ public func JupyterKernel_constructSwiftKernelClass(_ classObj: OpaquePointer) {
     "version": ""
   ]
   
-  SwiftKernel.do_execute = PythonInstanceMethod { (params: [PythonObject]) in
-    KernelContext.kernel = params[0]
-    let code = params[1]
+  SwiftKernel.do_execute = PythonInstanceMethod { (args: [PythonObject]) in
+    KernelContext.kernel = args[0]
+    let code = args[1]
     var response: PythonObject?
     
     if Python.len(code) > 0 && 
