@@ -28,7 +28,7 @@ version=$1
 IFS=$old_IFS
 
 if [[ $# == 1 ]]; then
-  # Release mode - tailored for the fastest user experience.
+  # Release mode - fine-tuned for the fastest user experience.
   mode="release"
 elif [[ $# == 2 && $2 == "--swift-colab-dev" ]]; then
   # Dev mode - for debugging and modifying Swift-Colab.
@@ -52,7 +52,7 @@ if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
-  echo "swift" > /opt/swift/runtime_type
+  echo "swift" > /opt/swift/runtime-type
 fi
 
 cd /opt/swift
@@ -125,7 +125,7 @@ if [[ $mode == "dev" || ! -e "progress/downloaded-swift-colab" ]]; then
   git clone --single-branch --branch main \
     "https://github.com/philipturner/swift-colab-dev"
   mv swift-colab-dev swift-colab
-  echo "true" > "progress/downloaded-swift-colab"
+  touch "progress/downloaded-swift-colab"
 else
   echo "Using cached Swift-Colab"
 fi
@@ -151,8 +151,7 @@ if [[ $mode == "dev" || ! -e "progress/compiled-lldb-process" ]]; then
   fi
   
   cd /opt/swift
-  # Enable this line when not in dev mode
-#   echo "true" > "progress/compiled-lldb-process"
+  touch "progress/compiled-lldb-process"
 else
   echo "Using cached Swift LLDB bindings"
 fi
@@ -188,8 +187,7 @@ Removing existing JupyterKernel build products."
   fi
   
   cd /opt/swift
-  # Enable this line when not in dev mode
-#   echo $version > "progress/jupyterkernel-compiler-version"
+  echo $version > "progress/jupyterkernel-compiler-version"
 else
   echo "Using cached JupyterKernel library"
 fi
