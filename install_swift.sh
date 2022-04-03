@@ -102,6 +102,7 @@ fi
 # Download Swift toolchain
 
 version=$1
+echo $version
 
 if [[ $using_cached_swift == true ]]; then
   echo "Using cached Swift $version"
