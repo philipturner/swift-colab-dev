@@ -3,26 +3,28 @@ import Foundation
 @_cdecl("JupyterKernel_createSwiftKernel")
 public func JupyterKernel_createSwiftKernel() {
   let fm = FileManager.default
-  let runtimePath = "/opt/swift/runtime_type"
+  func read(path: String) -> String {
+    let data = fm.contents(atPath: runtimePath)!
+    return String(data: data, encoding: .utf8)!.lowercased()
+  }
   
-  let runtimeData = fm.contents(atPath: runtimePath)!
-  let currentRuntime = String(data: runtimeData, encoding: .utf8)!.lowercased()
+  let currentRuntime = read(path: "/opt/swift/runtime_type")
+  let currentMode = read(path: "/opt/swift/mode")
   
   // Whether to automatically alternate between runtimes
-  // Written as a closure call to suppress compiler warnings
-  let isDevelopment = { true }()
+  let isDevelopment = currentMode.contains(dev)
   let runtime1 = isDevelopment ? "swift" : "python3" // Python in release mode
   let runtime2 = isDevelopment ? "python3" : "swift" // Swift in release mode
   
   let nextRuntime = currentRuntime.contains("python") ? runtime1 : runtime2
-//   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? runtime1 : runtime2
-  fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
+  fm.createFile(
+    atPath: "/opt/swift/runtime_type", 
+    contents: nextRuntime.data(using: .utf8)!)
   
   // Until there is a built-in alternative, switch back into Python mode on the next
   // runtime restart. This makes debugging a lot easier and decreases the chance my
   // main account will be kicked off of Colab for excessive restarts/downloads.
   if currentRuntime.contains("python") {
-//   if ["python3", "python"].contains(currentRuntime) {
     activatePythonKernel()
   } else {
     activateSwiftKernel()
