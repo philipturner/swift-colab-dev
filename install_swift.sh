@@ -40,6 +40,8 @@ else
   fi
 fi
 
+IFS=""
+
 if [[ $# == 1 ]]; then
   # Release mode - tailored for the fastest user experience.
   mode="release"
@@ -119,7 +121,7 @@ else
     release="swift-$1-RELEASE"
   elif [[ $toolchain_type == "snapshot" ]]; then
     branch="development"
-    release="swift-DEVELOPMENT-SNAPSHOT-a"
+    release="swift-DEVELOPMENT-SNAPSHOT-$1-a"
   fi
   
   echo $branch
