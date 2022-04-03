@@ -526,12 +526,12 @@ fileprivate func processInstall(
   
   if !warningClangModules.isEmpty {
     sendStdout("""
-    ===--------------------------------------------------------------------------===
+    === ------------------------------------------------------------------------ ===
     === The following Clang modules cannot be imported in your source code until ===
-    === you restart the runtime. If you only plan to import modules not listed   ===
-    === here, ignore this warning.                                               ===
+    === you restart the runtime. If you do not intend to explicitly import       ===
+    === modules listed here, ignore this warning.                                ===
     === \(warningClangModules)
-    ===--------------------------------------------------------------------------===
+    === ------------------------------------------------------------------------ ===
     """)
   }
   
