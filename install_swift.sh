@@ -1,18 +1,5 @@
 #!/bin/bash
 
-# # Extract program arguments
-
-# if [[ $# == 2 && $1 == "--snapshot" ]]; then
-#   is_dev=true
-#   version=$2
-# elif [[ $# == 1 && $1 != "--help" ]]; then
-#   is_dev=false
-#   version=$1
-# else
-#   echo "Usage: ./install_swift.sh [<version>] | [--snapshot <YYYY-MM-DD>]"
-#   exit -1
-# fi
-
 # Process command-line arguments
 
 old_IFS=$IFS
