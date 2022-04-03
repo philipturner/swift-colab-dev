@@ -58,6 +58,6 @@ public func JupyterKernel_registerSwiftKernel() {
       ===----------------------------------------------------------------------------------------===
       """)
   } else {
-      print("=== Swift Jupyter kernel was already registered ===")
+      print("Swift Jupyter kernel was already registered")
   }
 }
