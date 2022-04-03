@@ -15,8 +15,6 @@
 
 # Process command-line arguments
 
-version="$1"
-
 old_IFS=$IFS
 IFS='.'
 read -a strarr <<< "$1"
@@ -40,6 +38,7 @@ else
   fi
 fi
 
+version=$1
 IFS=$old_IFS
 
 if [[ $# == 1 ]]; then
@@ -106,28 +105,18 @@ fi
 
 # Download Swift toolchain
 
-echo $1
-echo "$1"
-echo "$version"
-echo $version
-
 if [[ $using_cached_swift == true ]]; then
-  echo "Using cached Swift $1"
+  echo "Using cached Swift $version"
 else
-  echo "Downloading Swift $1"
+  echo "Downloading Swift $version"
   
   if [[ $toolchain_type == "release" ]]; then
-    branch="swift-$1-release"
-    release="swift-$1-RELEASE"
+    branch="swift-$version-release"
+    release="swift-$version-RELEASE"
   elif [[ $toolchain_type == "snapshot" ]]; then
     branch="development"
-    release="swift-DEVELOPMENT-SNAPSHOT-$1-a"
+    release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
   fi
-  
-  echo $branch
-  echo $release
-  echo "$branch"
-  echo "$release"
   
   tar_file="$release-ubuntu18.04.tar.gz"
   url="https://download.swift.org/$branch/ubuntu1804/$release/$tar_file"
@@ -136,7 +125,7 @@ else
   curl $url | tar -xz
   mv "$release-ubuntu18.04" "toolchain"
   
-  echo $1 > "progress/swift-version"
+  echo $version > "progress/swift-version"
 fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
