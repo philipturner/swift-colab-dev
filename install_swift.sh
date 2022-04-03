@@ -117,20 +117,15 @@ export PATH="/opt/swift/toolchain/usr/bin:$PATH"
 
 # Download Swift-Colab
 
-# If in dev mode, re-download philipturner/swift-colab[-dev] every time.
-# The easiest way to do this (and repeat behavior for other conditionals)
-# is to just add a check of is in dev mode to the conditional.
-
 if [[ $mode == "dev" || ! -e "progress/downloaded-swift-colab" ]]; then
-  # Enable these lines only in dev mode
-  rm -r swift-colab # only remove if directory exists
-  cp -r /content/swift-colab "swift-colab"
-
-  # Enable these lines when not in dev mode
-#   echo "Downloading Swift-Colab"
-#   git clone --single-branch --branch release/latest \
-#     https://github.com/philipturner/swift-colab
-#   echo "true" > "progress/downloaded-swift-colab"
+  if [[ -d "swift-colab" ]]; then
+    rm -r "swift-colab"
+  fi
+  
+  git clone --single-branch --branch main \
+    "https://github.com/philipturner/swift-colab-dev"
+  mv swift-colab-dev swift-colab
+  echo "true" > "progress/downloaded-swift-colab"
 else
   echo "Using cached Swift-Colab"
 fi
