@@ -16,6 +16,7 @@
 # Process command-line arguments
 
 version="$1"
+echo $IFS
 
 IFS='.'
 read -a strarr <<< "$1"
