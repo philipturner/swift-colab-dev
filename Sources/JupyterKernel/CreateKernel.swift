@@ -8,7 +8,7 @@ public func JupyterKernel_createSwiftKernel() {
     return String(data: data, encoding: .utf8)!.lowercased()
   }
   
-  let currentRuntime = read(path: "/opt/swift/runtime_type")
+  let currentRuntime = read(path: "/opt/swift/runtime-type")
   let currentMode = read(path: "/opt/swift/mode")
   
   // Whether to automatically alternate between runtimes
