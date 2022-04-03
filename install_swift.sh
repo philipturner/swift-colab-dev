@@ -109,16 +109,16 @@ echo "$version"
 echo $version
 
 if [[ $using_cached_swift == true ]]; then
-  echo "Using cached Swift $version"
+  echo "Using cached Swift $1"
 else
-  echo "Downloading Swift $version"
+  echo "Downloading Swift $1"
   
   if [[ $toolchain_type == "release" ]]; then
-    branch="swift-$version-release"
-    release="swift-$version-RELEASE"
+    branch="swift-$1-release"
+    release="swift-$1-RELEASE"
   elif [[ $toolchain_type == "snapshot" ]]; then
     branch="development"
-    release="swift-DEVELOPMENT-SNAPSHOT-$version-a"
+    release="swift-DEVELOPMENT-SNAPSHOT-$1-a"
   fi
   
   echo $branch
@@ -133,7 +133,7 @@ else
   curl $url | tar -xz
   mv "$release-ubuntu18.04" "toolchain"
   
-  echo $version > "progress/swift-version"
+  echo $1 > "progress/swift-version"
 fi
 
 export PATH="/opt/swift/toolchain/usr/bin:$PATH"
