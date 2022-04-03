@@ -79,7 +79,37 @@ extension IPythonDisplay {
   }
 }
 
-// TODO: Add SwiftPlot support after getting basic IPython working
+// This workaround stops the debugger from duplicating the symbol `display`
+// while processing the code inside `Plot.display(size:)`
+extension IPythonDisplay {
+  static func display(base64EncodedPNG: String) {
+    let display = Python.import("IPython.display")
+    let codecs = Python.import("codecs")
+    let Image = display.Image
+    
+    let imageData = codecs.decode(
+        Python.bytes(base64EncodedPNG, encoding: "utf8"), encoding: "base64")
+    display.display(Image(data: imageData, format: "png"))
+  }
+}
+
+// Global function for displaying base64 images in the notebook.
+func display(base64EncodedPNG: String) {
+  IPythonDisplay.display(base64EncodedPNG: base64EncodedPNG)
+}
+
+import SwiftPlot
+import AGGRenderer
+
+// Extend `Plot` to create an instance member that utilizes `Plot.drawGraph`.
+extension Plot {
+  func display(size: Size = Size(width: 1000, height: 660)) {
+    let renderer = AGGRenderer()
+    self.drawGraph(size: size, renderer: renderer)
+    
+    IPythonDisplay.display(base64EncodedPNG: renderer.base64Png())
+  }
+}
 
 IPythonDisplay.enable()
 #endif
