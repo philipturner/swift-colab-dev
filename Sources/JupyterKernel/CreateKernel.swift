@@ -11,8 +11,8 @@ public func JupyterKernel_createSwiftKernel() {
   // Whether to automatically alternate between runtimes
   // Written as a closure call to suppress compiler warnings
   let isDevelopment = { true }()
-  let runtime1 = isDevelopment ? "swift" : "python3"
-  let runtime2 = isDevelopment ? "python3" : "swift"
+  let runtime1 = isDevelopment ? "swift" : "python3" // Python in release mode
+  let runtime2 = isDevelopment ? "python3" : "swift" // Swift in release mode
   
   let nextRuntime = ["python3", "python"].contains(currentRuntime) ? runtime1 : runtime2
   fm.createFile(atPath: runtimePath, contents: nextRuntime.data(using: .utf8)!)
