@@ -16,8 +16,8 @@
 # Process command-line arguments
 
 version="$1"
-echo $IFS
 
+old_IFS=$IFS
 IFS='.'
 read -a strarr <<< "$1"
 component_count=${#strarr[*]}
@@ -40,7 +40,7 @@ else
   fi
 fi
 
-IFS=""
+IFS=$old_IFS
 
 if [[ $# == 1 ]]; then
   # Release mode - tailored for the fastest user experience.
