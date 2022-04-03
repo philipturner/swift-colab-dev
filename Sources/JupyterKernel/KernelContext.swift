@@ -36,13 +36,13 @@ struct KernelContext {
 }
 
 fileprivate struct LLDBProcessLibrary {
-  static var lldb_process: UnsafeMutableRawPointer = {
+  static var library: UnsafeMutableRawPointer = {
     _ = dlopen("/opt/swift/toolchain/usr/lib/liblldb.so", RTLD_LAZY | RTLD_GLOBAL)!
-    return dlopen("/opt/swift/lib/liblldb_process.so", RTLD_LAZY | RTLD_GLOBAL)!
+    return dlopen("/opt/swift/lib/libLLDBProcess.so", RTLD_LAZY | RTLD_GLOBAL)!
   }()
   
   static func loadSymbol<T>(name: String) -> T {
-    let address = dlsym(lldb_process, name)
+    let address = dlsym(library, name)
     return unsafeBitCast(address, to: T.self)
   }
 }
