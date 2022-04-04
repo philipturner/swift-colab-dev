@@ -144,7 +144,9 @@ fi
 
 # Build LLDB bindings
 
-if [[ $mode == "dev" || ! -e "progress/compiled-lldb-process" ]]; then
+if [[ $mode == "dev" || ! -e "progress/lldb-compiler-version" ||
+  $version != `cat progress/lldb-compiler-version` ]]
+then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/LLDBProcess
   
@@ -163,7 +165,7 @@ if [[ $mode == "dev" || ! -e "progress/compiled-lldb-process" ]]; then
   fi
   
   cd /opt/swift
-#   touch "progress/compiled-lldb-process"
+  echo $version > "progress/lldb-compiler-version"
 else
   echo "Using cached Swift LLDB bindings"
 fi
