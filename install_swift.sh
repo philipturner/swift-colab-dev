@@ -163,7 +163,7 @@ if [[ $mode == "dev" || ! -e "progress/compiled-lldb-process" ]]; then
   fi
   
   cd /opt/swift
-  touch "progress/compiled-lldb-process"
+#   touch "progress/compiled-lldb-process"
 else
   echo "Using cached Swift LLDB bindings"
 fi
