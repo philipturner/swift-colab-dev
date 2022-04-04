@@ -144,8 +144,8 @@ fi
 
 # Build LLDB bindings
 
-if [[ $mode == "dev" || ! -e "progress/lldb-compiler-version" ]] #||
-#  $version != `cat progress/lldb-compiler-version` ]]
+if [[ $mode == "dev" || ! -e "progress/lldb-compiler-version" ||
+  $version != `cat progress/lldb-compiler-version` ]]
 then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/LLDBProcess
@@ -209,9 +209,7 @@ fi
 # Overwrite Python kernel
 
 if [[ $mode == "dev" || ! -e "progress/registered-jupyter-kernel" ]]; then
-  register_kernel='
-import Foundation
-
+  register_kernel='import Foundation
 let libJupyterKernel = dlopen("/opt/swift/lib/libJupyterKernel.so", RTLD_LAZY | RTLD_GLOBAL)!
 let funcAddress = dlsym(libJupyterKernel, "JupyterKernel_registerSwiftKernel")!
 
@@ -225,9 +223,7 @@ JupyterKernel_registerSwiftKernel()
   touch "progress/registered-jupyter-kernel"
 fi
 
-echo '
-=== ------------------------------------------------------------------------ ===
+echo '=== ------------------------------------------------------------------------ ===
 === Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
 === in Python mode. To enter Swift mode, go to Runtime > Restart runtime.    ===
-=== ------------------------------------------------------------------------ ===
-'
+=== ------------------------------------------------------------------------ ==='
