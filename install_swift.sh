@@ -224,3 +224,10 @@ JupyterKernel_registerSwiftKernel()
   
   touch "progress/registered-jupyter-kernel"
 fi
+
+echo '
+=== ------------------------------------------------------------------------ ===
+=== Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
+=== in Python mode. To enter Swift mode, go to Runtime > Restart runtime.    ===
+=== ------------------------------------------------------------------------ ===
+'
