@@ -125,6 +125,18 @@ if [[ $mode == "dev" || ! -e "progress/downloaded-swift-colab" ]]; then
   git clone --single-branch --branch main \
     "https://github.com/philipturner/swift-colab-dev"
   mv swift-colab-dev swift-colab
+  
+  swift_colab_include="/opt/swift/swift-colab/Sources/include"
+  for file in $(ls $swift_colab_include)
+  do
+    src_path="$swift_colab_include/$file"
+    dst_path="/opt/swift/include/$file"
+    if [[ -e $dst_path ]]; then
+      rm $dst_path
+    fi
+    cp $src_path $dst_path
+  done
+  
   touch "progress/downloaded-swift-colab"
 else
   echo "Using cached Swift-Colab"
@@ -192,25 +204,9 @@ else
   echo "Using cached JupyterKernel library"
 fi
 
-# Copy "include" files to /opt/swift/include
-
-swift_colab_include="/opt/swift/swift-colab/Sources/include"
-
-for file in $(ls $swift_colab_include)
-do
-  src_path="$swift_colab_include/$file"
-  dst_path="/opt/swift/include/$file"
-  if [[ -e $dst_path ]]; then
-    rm $dst_path
-  fi
-  cp $src_path $dst_path
-done
-
 # Overwrite Python kernel
 
-replacing_python_kernel=true # replace with a progress file
-
-if [[ $mode == "dev" || $replacing_python_kernel == true ]]; then
+if [[ $mode == "dev" || ! -e "progress/registered-jupyter-kernel" ]]; then
   register_kernel='
 import Foundation
 
@@ -223,4 +219,6 @@ JupyterKernel_registerSwiftKernel()
 '
   echo "$register_kernel" > register_kernel.swift
   swift register_kernel.swift
+  
+  touch "progress/registered-jupyter-kernel"
 fi
