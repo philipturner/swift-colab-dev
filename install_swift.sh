@@ -52,7 +52,7 @@ if [[ ! -d /opt/swift ]]; then
   mkdir /opt/swift/lib
   mkdir /opt/swift/packages
   mkdir /opt/swift/progress
-  echo "swift" > /opt/swift/runtime-type
+  echo "swift" > /opt/swift/runtime
 fi
 
 cd /opt/swift
@@ -223,12 +223,12 @@ JupyterKernel_registerSwiftKernel()
   touch "progress/registered-jupyter-kernel"
 fi
 
-runtime=`cat "/opt/swift/runtime-type"`
+runtime=`cat "/opt/swift/runtime"`
 runtime=$(echo $runtime | tr '[:upper:]' '[:lower:]')
 
 if [[ $runtime == "swift" ]]; then
   echo '=== ------------------------------------------------------------------------ ===
-  === Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
+=== Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
 === in Python mode. To enter Swift mode, go to Runtime > Restart runtime.    ===
 === ------------------------------------------------------------------------ ==='
 fi
