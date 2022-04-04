@@ -145,7 +145,7 @@ fi
 # Build LLDB bindings
 
 if [[ $mode == "dev" || ! -e "progress/lldb-compiler-version" ||
-  $version != `cat progress/lldb-compiler-version` ]]
+  $version != `cat "progress/lldb-compiler-version"` ]]
 then
   echo "Compiling Swift LLDB bindings"
   cd swift-colab/Sources/LLDBProcess
@@ -223,7 +223,12 @@ JupyterKernel_registerSwiftKernel()
   touch "progress/registered-jupyter-kernel"
 fi
 
-echo '=== ------------------------------------------------------------------------ ===
-=== Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
+runtime=`cat "/opt/swift/runtime-type"`
+runtime=$(echo $runtime | tr '[:upper:]' '[:lower:]')
+
+if [[ $runtime == "swift" ]]; then
+  echo '=== ------------------------------------------------------------------------ ===
+  === Swift-Colab overwrote the Python kernel with Swift, but Colab is still   ===
 === in Python mode. To enter Swift mode, go to Runtime > Restart runtime.    ===
 === ------------------------------------------------------------------------ ==='
+fi
