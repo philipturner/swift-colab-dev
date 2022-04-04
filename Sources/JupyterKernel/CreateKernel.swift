@@ -8,7 +8,7 @@ public func JupyterKernel_createSwiftKernel() {
     return String(data: data, encoding: .utf8)!.lowercased()
   }
   
-  let currentRuntime = read(path: "/opt/swift/runtime-type")
+  let currentRuntime = read(path: "/opt/swift/runtime")
   let currentMode = read(path: "/opt/swift/mode")
   
   // Whether to automatically alternate between runtimes
@@ -18,7 +18,7 @@ public func JupyterKernel_createSwiftKernel() {
   
   let nextRuntime = currentRuntime.contains("python") ? runtime1 : runtime2
   fm.createFile(
-    atPath: "/opt/swift/runtime-type", 
+    atPath: "/opt/swift/runtime", 
     contents: nextRuntime.data(using: .utf8)!)
   
   // In dev mode, switch back into Python mode on the next runtime restart. This 
